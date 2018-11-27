@@ -9,7 +9,6 @@ var isMobile = window.matchMedia("(max-width: 500px)");
 
 var { COLORS, classify, makeTranslate } = require("./lib/helpers");
 var d3 = Object.assign({},
-  require("d3-array/dist/d3-array.min"),
   require("d3-axis/dist/d3-axis.min"),
   require("d3-scale/dist/d3-scale.min"),
   require("d3-selection/dist/d3-selection.min"),
@@ -116,25 +115,24 @@ var renderLineChart = function(config) {
     var containerElement = d3.select(config.container);
     containerElement.html('');
 
+    var dates = config.data[0].values.map(d => d.date);
+    var extent = [dates[0], dates[dates.length - 1]];
+
     var xScale = d3.scaleTime()
-    .domain(d3.extent(config.data[0].values, d => d.date))
+    .domain(extent)
     .range([ 0, chartWidth ])
 
-    var min = d3.min(config.data, function(d) {
-      return d3.min(d.values, function(v) {
-        return Math.floor(v[valueColumn] / roundTicksFactor) * roundTicksFactor;
-      })
-    });
+    var values = config.data.reduce((acc, d) => acc.concat(d.values.map(v => v[valueColumn])), []);
+
+    var floors = values.map(v => (Math.floor(v / roundTicksFactor) * roundTicksFactor));
+    var min = Math.min.apply(null, floors);
 
     if (min > 0) {
       min = 0;
     }
 
-    var max = d3.max(config.data, function(d) {
-      return d3.max(d.values, function(v) {
-        return Math.ceil(v[valueColumn] / roundTicksFactor) * roundTicksFactor;
-      })
-    });
+    var ceilings = values.map(v => (Math.ceil(v / roundTicksFactor) * roundTicksFactor));
+    var max = Math.max.apply(null, ceilings);
 
     var yScale = d3.scaleLinear()
     .domain([min, max])
