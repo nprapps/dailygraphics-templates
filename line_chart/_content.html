@@ -1,12 +1,12 @@
 <% if (COPY.labels.headline) { %><h1><%= COPY.labels.headline %></h1><% } %>
 <% if (COPY.labels.subhed) { %><h2><%= COPY.labels.subhed %></h2><% } %>
 
-<div id="bar-chart" class="graphic" role="img"
-  <% if (COPY.labels.description) { %>
+<div id="line-chart" class="graphic" role="img"
+<% if (COPY.labels.description) { %>
   aria-label="<%= COPY.labels.description %>"
-  <% } %>
+<% } %>
 >
-  <img src="fallback.png" class="fallback" />
+  <img src="fallback.png" alt="" class="fallback" />
 </div>
 
 <% if (COPY.labels.footnote) { %>
