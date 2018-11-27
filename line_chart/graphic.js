@@ -86,8 +86,8 @@ var renderLineChart = function(config) {
     var dateColumn = 'date';
     var valueColumn = 'amt';
 
-    var aspectWidth = isMobile ? 4 : 16;
-    var aspectHeight = isMobile ? 3 : 9;
+    var aspectWidth = isMobile.matches ? 4 : 16;
+    var aspectHeight = isMobile.matches ? 3 : 9;
 
     var margins = {
       top: 5,
@@ -101,7 +101,7 @@ var renderLineChart = function(config) {
     var roundTicksFactor = 5;
 
     // Mobile
-    if (isMobile) {
+    if (isMobile.matches) {
       ticksX = 5;
       ticksY = 5;
       margins.right = 25;
@@ -180,7 +180,7 @@ var renderLineChart = function(config) {
     .scale(xScale)
     .ticks(ticksX)
     .tickFormat(function(d, i) {
-      if (isMobile) {
+      if (isMobile.matches) {
         return '\u2019' + fmtYearAbbrev(d);
       } else {
         return fmtYearFull(d);
@@ -284,7 +284,7 @@ var renderLineChart = function(config) {
 
       var label = last[valueColumn].toFixed(1);
 
-      if (!isMobile) {
+      if (!isMobile.matches) {
         label = d.name + ': ' + label;
       }
 
