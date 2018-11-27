@@ -1,3 +1,6 @@
+require("./lib/analytics");
+require("./lib/webfonts");
+
 var pymLoader = require("./lib/pym");
 
 // build our custom D3 object

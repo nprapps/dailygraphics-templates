@@ -45,7 +45,6 @@ var isHomepage = false;
  * Create a SVG tansform for a given translation.
  */
 
- var { transform: d3Transform } = require("d3-transform");
  var makeTranslate = (x, y) => `translate(${x}, ${y})`;
 
 /*
