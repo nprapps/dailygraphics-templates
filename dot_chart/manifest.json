@@ -1,0 +1,14 @@
+{
+  "templateSheet": "1pcLyLFhEpKMlNpp3UqWZ1XgW8ZaloVe_d04CGdNnEWc",
+  "files": [
+    "index.html",
+    "graphic.js",
+    "graphic.less",
+    "*.png",
+    "*.jpg",
+    "*.json",
+    "!manifest.json",
+    "*.geojson",
+    "*.csv"
+  ]
+}
