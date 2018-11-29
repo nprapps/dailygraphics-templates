@@ -41,29 +41,28 @@ var { makeTranslate, classify } = require("./lib/helpers");
 };
 
 // Format graphic data for processing by D3.
- var formatData = function() {
+var formatData = function() {
   var numBins = COLOR_BINS.length - 1;
 
-    // init the bins
-    for (var i = 0; i < numBins; i++) {
-      binnedData[i] = [];
-    }
+  // init the bins
+  for (var i = 0; i < numBins; i++) {
+    binnedData[i] = [];
+  }
 
-    // put states in bins
-    DATA.forEach(function(d) {
-      if (d['amt'] != null) {
-        var amt = +d['amt'];
-        var state = d['usps'];
+  // put states in bins
+  DATA.forEach(function(d) {
+    if (d.amt != null) {
+      var state = d.usps;
 
-        for (var i = 0; i < numBins; i++) {
-          if (amt >= COLOR_BINS[i] && amt < COLOR_BINS[i + 1]) {
-            binnedData[i].unshift(state);
-            break;
-          }
+      for (var i = 0; i < numBins; i++) {
+        if (amt >= COLOR_BINS[i] && amt < COLOR_BINS[i + 1]) {
+          binnedData[i].unshift(state);
+          break;
         }
       }
-    });
-  }
+    }
+  });
+}
 
 // Render the graphic(s). Called by pym with the container width.
 var render = function() {
@@ -108,11 +107,11 @@ var renderBlockHistogram = function(config) {
   var largestBin = Math.max.apply(null, binnedData.map(function(b) { return b.length }));
 
   // Calculate actual chart dimensions
-  var chartWidth = config['width'] - margins['left'] - margins['right'];
+  var chartWidth = config.width - margins.left - margins.right;
   var chartHeight = ((blockHeight + blockGap) * largestBin);
 
   // Clear existing graphic (for redraw)
-  var containerElement = d3.select(config['container']);
+  var containerElement = d3.select(config.container);
   containerElement.html('');
 
   // Create the root SVG element.
@@ -120,14 +119,14 @@ var renderBlockHistogram = function(config) {
     .attr('class', 'graphic-wrapper');
 
   var chartElement = chartWrapper.append('svg')
-    .attr('width', chartWidth + margins['left'] + margins['right'])
-    .attr('height', chartHeight + margins['top'] + margins['bottom'])
+    .attr('width', chartWidth + margins.left + margins.right)
+    .attr('height', chartHeight + margins.top + margins.bottom)
     .append('g')
-    .attr('transform', makeTranslate(margins['left'], margins['top']));
+    .attr('transform', makeTranslate(margins.left, margins.top));
 
   // Create D3 scale objects.
   var xScale = d3.scaleBand()
-    .domain(config['bins'].slice(0, -1))
+    .domain(config.bins.slice(0, -1))
     .range([0, chartWidth])
     .padding(.1);
 
@@ -208,7 +207,7 @@ var renderBlockHistogram = function(config) {
     .attr('dy', '0.71em')
     .attr("fill", "currentColor")
     .text(function() {
-      var t = config['bins'][config['bins'].length - 1];
+      var t = config.bins[config.bins.length - 1];
       if (t > 0) {
           return '+' + t + '%';
         } else {
@@ -219,7 +218,7 @@ var renderBlockHistogram = function(config) {
 
   // Render bins to chart.
   var bins = chartElement.selectAll('.bin')
-    .data(config['data'])
+    .data(config.data)
     .enter().append('g')
     .attr('class', function(d,i) {
       return 'bin bin-' + i;
@@ -246,10 +245,10 @@ var renderBlockHistogram = function(config) {
     })
     .attr('height', blockHeight)
     .attr('fill', function(d) {
-      return config['colors'][d['parentIndex']];
+      return config.colors[d.parentIndex];
     })
     .attr('class', function(d) {
-      return classify(d['value']);
+      return classify(d.value);
     });
 
 
@@ -268,7 +267,7 @@ var renderBlockHistogram = function(config) {
     })
     .attr('dy', (blockHeight / 2) + 4)
     .text(function(d) {
-      return d['value'];
+      return d.value;
     });
 
   // Render annotations
@@ -281,7 +280,7 @@ var renderBlockHistogram = function(config) {
     .attr('dx', -15)
     .attr('text-anchor', 'end')
     .attr('y', -10)
-    .html(LABELS['annotation_left']);
+    .html(LABELS.annotation_left);
 
   annotations.append('text')
     .attr('class', 'label-top')
@@ -289,12 +288,12 @@ var renderBlockHistogram = function(config) {
     .attr('dx', 5)
     .attr('text-anchor', 'begin')
     .attr('y', -10)
-    .html(LABELS['annotation_right']);
+    .html(LABELS.annotation_right);
 
   annotations.append('line')
     .attr('class', 'axis-0')
     .attr('x1', xScale(0) - ((xScale.bandwidth() * .1) / 2))
-    .attr('y1', -margins['top'])
+    .attr('y1', -margins.top)
     .attr('x2', xScale(0) - ((xScale.bandwidth() * .1) / 2))
     .attr('y2', chartHeight);
 }
