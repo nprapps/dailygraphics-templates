@@ -56,8 +56,8 @@ var renderColumnChart = function(config) {
     var labelColumn = 'label';
     var valueColumn = 'amt';
 
-    var aspectWidth = isMobile ? 4 : 16;
-    var aspectHeight = isMobile ? 3 : 9;
+    var aspectWidth = isMobile.matches ? 4 : 16;
+    var aspectHeight = isMobile.matches ? 3 : 9;
     var valueGap = 6;
 
     var margins = {
