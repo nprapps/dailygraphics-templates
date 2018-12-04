@@ -1,7 +1,7 @@
-require("./lib/analytics");
+var pym = require("./lib/pym");
+var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
 
-var pymLoader = require("./lib/pym");
 
 // build our custom D3 object
 var d3 = Object.assign({},
@@ -23,7 +23,7 @@ var onWindowLoaded = function() {
 
   window.addEventListener("resize", render);
 
-  pymLoader.then(function(child) {
+  pym.then(function(child) {
     pymChild = child;
     pymChild.sendHeight();
 

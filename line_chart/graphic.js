@@ -1,5 +1,5 @@
 var pym = require("./lib/pym");
-require("./lib/analytics");
+var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
 
 var dataSeries = [];
