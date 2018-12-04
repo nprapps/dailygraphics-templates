@@ -68,9 +68,12 @@ var formatData = function() {
 var render = function() {
 
   // Render the chart!
+  var container = "#block-histogram";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderBlockHistogram({
-    container: '#block-histogram',
-    width: window.innerWidth,
+    container,
+    width,
     data: binnedData,
     bins: COLOR_BINS,
     colors: COLOR_RANGE

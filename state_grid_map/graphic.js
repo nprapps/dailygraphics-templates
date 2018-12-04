@@ -55,10 +55,13 @@ var render = function() {
 isNumeric = LABELS.isNumeric;
 
   // Render the map!
+  var container = "#state-grid-map";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderStateGridMap({
-    container: "#state-grid-map",
+    container,
+    width,
     data: DATA,
-    width: window.innerWidth,
     // isNumeric will style the legend as a numeric scale
     isNumeric
   });

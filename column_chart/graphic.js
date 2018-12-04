@@ -38,9 +38,12 @@ var onWindowLoaded = function() {
 var render = function(containerWidth) {
 
   // Render the chart!
+  var container = "#column-chart";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderColumnChart({
-    container: '#column-chart',
-    width: window.innerWidth,
+    container,
+    width,
     data: DATA
   });
 

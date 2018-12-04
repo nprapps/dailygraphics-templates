@@ -33,9 +33,12 @@ var onWindowLoaded = function() {
 var render = function() {
 
   // Render the chart!
+  var container = "#bar-chart";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderBarChart({
-    container: '#bar-chart',
-    width: window.innerWidth,
+    container,
+    width,
     data: DATA
   });
 

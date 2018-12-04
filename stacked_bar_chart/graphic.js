@@ -66,9 +66,12 @@ var formatData = function() {
 var render = function() {
 
   // Render the chart!
+  var container = "#stacked-bar-chart";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderStackedBarChart({
-    container: '#stacked-bar-chart',
-    width: window.innerWidth,
+    container,
+    width,
     data: DATA
   });
 

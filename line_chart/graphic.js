@@ -67,9 +67,12 @@ var formatData = function() {
 var render = function() {
 
   // Render the chart!
+  var container = "#line-chart";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
   renderLineChart({
-    container: '#line-chart',
-    width: window.innerWidth,
+    container,
+    width,
     data: dataSeries
   });
 
