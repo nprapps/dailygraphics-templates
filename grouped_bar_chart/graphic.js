@@ -1,6 +1,7 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
+var { isMobile } = require("./lib/breakpoints");
 
 var pymChild;
 var skipLabels = [ 'Group', 'key', 'values' ];

@@ -1,7 +1,7 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
-
+var { isMobile } = require("./lib/breakpoints");
 
 // build our custom D3 object
 var d3 = Object.assign({},
@@ -13,7 +13,6 @@ var { COLORS, classify } = require("./lib/helpers");
 var $ = require("./lib/qsa");
 
 // Global vars
-var isMobile = window.matchMedia("(max-width: 500px)");
 var pymChild = null;
 
 // Initialize the graphic.

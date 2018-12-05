@@ -1,10 +1,10 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
+var { isMobile } = require("./lib/breakpoints");
 
 // Global vars
 var pymChild = null;
-var isMobile = window.matchMedia("(max-width: 500px)");
 
 var d3 = {
   ...require("d3-selection"),

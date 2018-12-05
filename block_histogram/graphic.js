@@ -1,6 +1,7 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
+var { isMobile } = require("./lib/breakpoints");
 
 // Global config
 var COLOR_BINS = [ -4, -2, 0, 2, 4, 6, 8, 10 ];
@@ -8,7 +9,6 @@ var COLOR_RANGE = [ '#e68c31', '#eba934', '#efc637', '#c6b550', '#99a363', '#6a9
 
 // Global vars
 var pymChild = null;
-var isMobile = window.matchMedia("(max-width: 500px)");
 var binnedData = [];
 
 var d3 = {

@@ -1,11 +1,10 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
+var { isMobile } = require("./lib/breakpoints");
 
 var dataSeries = [];
 var pymChild;
-
-var isMobile = window.matchMedia("(max-width: 500px)");
 
 var { COLORS, classify, makeTranslate } = require("./lib/helpers");
 var d3 = Object.assign({},
