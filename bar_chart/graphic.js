@@ -1,6 +1,7 @@
 // Global vars
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
+require("./lib/webfonts");
 var pymChild;
 
 var { COLORS, makeTranslate, classify, formatStyle } = require("./lib/helpers");
