@@ -6,4 +6,3 @@ require("./lib/webfonts");
 // window.Tablesort = require("tablesort");
 // require("tablesort/dist/sorts/tablesort.number.min");
 // Tablesort(document.querySelector("#state-table"))
-

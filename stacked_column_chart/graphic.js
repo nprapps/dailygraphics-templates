@@ -105,7 +105,7 @@ var renderStackedColumnChart = function(config) {
   var ticksY = 5;
   var roundTicksFactor = 50;
 
-  if (isMobile) {
+  if (isMobile.matches) {
     aspectWidth = 4;
     aspectHeight = 3;
   }
@@ -128,7 +128,7 @@ var renderStackedColumnChart = function(config) {
     .scaleBand()
     .domain(labels)
     .range([0, chartWidth])
-    .padding(.1);
+    .padding(0.1);
 
   var values = config.data.map(d => d.total);
   var floors = values.map(
@@ -190,7 +190,8 @@ var renderStackedColumnChart = function(config) {
     .attr("transform", makeTranslate(margins.left, margins.top));
 
   // Create D3 axes.
-  var xAxis = d3.axisBottom()
+  var xAxis = d3
+    .axisBottom()
     .scale(xScale)
     .tickFormat(d => d);
 
