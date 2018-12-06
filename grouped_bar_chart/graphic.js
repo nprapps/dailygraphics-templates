@@ -19,6 +19,8 @@ var onWindowLoaded = function() {
   formatData();
   render();
 
+  window.addEventListener("resize", render);
+
   pym.then(child => {
     pymChild = child;
     pymChild.sendHeight();
