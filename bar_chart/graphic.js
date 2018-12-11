@@ -159,7 +159,7 @@ var renderBarChart = function(config) {
     .attr("width", d => Math.abs(xScale(0) - xScale(d[valueColumn])))
     .attr("y", (d, i) => i * (barHeight + barGap))
     .attr("height", barHeight)
-    .attr("class", (d, i) => `bar-${i} ${classify(d[labelColumn]}`);
+    .attr("class", (d, i) => `bar-${i} ${classify(d[labelColumn])}`);
 
   // Render 0-line.
   if (min < 0) {
