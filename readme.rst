@@ -53,18 +53,18 @@ Migrating from the original dailygraphics rig
 When moving graphics and templates over from the classic rig, there are three changes you'll need to make:
 
 * Add a ``manifest.json`` with the sheet/template sheet (formerly defined as ``COPY_GOOGLE_DOC_KEY`` in ``graphic_config.py``)
-* Copy your child template into a ``_content.html`` file, which is (by default) loaded in the base template's ``index.html``.
+* Copy your child template into a ``_content.html`` file, which is (by default) loaded in the base template's ``index.html``. Alternately, if your content file is mostly just an empty placeholder for D3 (most of them are), you may want to just copy ``_content.html`` from the base template and change the ID on the div.
 * Convert the Jinja2 templating to EJS templates. This is usually pretty straightforward translation of tags:
 
-    - ``{{ key }}`` becomes ``<%= key %>``
-    - ``{% if condition %} ... {% endif %}`` becomes ``<% if (condition) { %> ... <% } %>``
-    - ``{% for item in list %} ... {% endfor %}`` becomes ``<% list.forEach(item => { %> ... <% }) %>``
+  - ``{{ key }}`` becomes ``<%= key %>``
+  - ``{% if condition %} ... {% endif %}`` becomes ``<% if (condition) { %> ... <% } %>``
+  - ``{% for item in list %} ... {% endfor %}`` becomes ``<% list.forEach(item => { %> ... <% }) %>``
 
 * Load scripts using Browserify instead of the ``JS.include`` template helpers:
 
-    - Create a normal script tag that points toward the "base" script, which will load the others. This is usually ``graphic.js``.
-    - For scripts that load onto the global object, you can just require their relative path, such as ``require("./lib/pym.js")``
-    - Scripts that are module-aware can be imported to a variable, such as ``var d3 = require("./lib/d3.min")``
-    - Scripts that relied on global scope, such as ``helpers.js``, will need their functions assigned to the window object (e.g., ``var classify = window.classify = ...``).
+  - Create a normal script tag that points toward the "base" script, which will load the others. This is usually ``graphic.js``.
+  - For scripts that load onto the global object, you can just require their relative path, such as ``require("./lib/pym.js")``
+  - Scripts that are module-aware can be imported to a variable, such as ``var d3 = require("./lib/d3.min")``
+  - Scripts that relied on global scope, such as ``helpers.js``, will need their functions assigned to the window object (e.g., ``var classify = window.classify = ...``).
 
 Since most classic dailygraphics already bundled their own JS libraries, you shouldn't need to worry about NPM for these.
