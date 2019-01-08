@@ -21,6 +21,8 @@ var fmtComma = s => s.toLocaleString().replace(/\.0+$/, "");
 var onWindowLoaded = function() {
   render();
 
+  window.addEventListener("resize", render);
+
   pym.then(child => {
     pymChild = child;
     child.sendHeight();
