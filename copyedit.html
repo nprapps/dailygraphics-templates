@@ -1,0 +1,16 @@
+<%
+var m = s => (COPY.metadata && COPY.metadata[s]) || `__${s.toUpperCase()}__`;
+%>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
+
+Story URL (not yet published): http://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
+
+Expected run date: <%= m("time") %>
+
+Primary graphics contact: <%= "user" in config ? config.user.displayName : "__GRAPHICS_CONTACT__" %>
+Primary editorial contact: <%= m("editorial_contact") %>
+
+---- GRAPHIC <%= slug %> ----
+
+Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
+Production URL: https://apps.npr.org/dailygraphics/graphics/<%= slug %>/preview.html
+<% Object.keys(COPY.labels).forEach(key => __p += `\n${key}: ${COPY.labels[key]}\n`); %>
