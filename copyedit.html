@@ -12,5 +12,5 @@ Primary editorial contact: <%= m("editorial_contact") %>
 ---- GRAPHIC <%= slug %> ----
 
 Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
-Production URL: https://apps.npr.org/dailygraphics/graphics/<%= slug %>/preview.html
+Production URL: https://<%= config.s3.bucket %>/<%= config.s3.prefix %>/<%= slug %>/preview.html
 <% Object.keys(COPY.labels).forEach(key => __p += `\n${key}: ${COPY.labels[key]}\n`); %>
