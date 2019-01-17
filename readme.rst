@@ -68,3 +68,14 @@ When moving graphics and templates over from the classic rig, there are three ch
   - Scripts that relied on global scope, such as ``helpers.js``, will need their functions assigned to the window object (e.g., ``var classify = window.classify = ...``).
 
 Since most classic dailygraphics already bundled their own JS libraries, you shouldn't need to worry about NPM for these.
+
+Other files
+-----------
+
+The template folder also contains a set of HTML files that are required for the rig to function, which we've broken out so that they can be customized for non-NPR newsrooms:
+
+* copyedit.html - The copy-edit e-mail text
+* embed.html - The embed code used to place the interactive into a CMS page
+* link.html - The "direct link" (used at NPR for stories distributed via the API, such as in-appp views)
+
+Currently, the rig doesn't check for these to exist on startup, so it may crash if they're missing. Make sure your template repo is up-to-date if you see them listed in the stack trace!
