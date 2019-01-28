@@ -1,9 +1,9 @@
 <% if (COPY.labels.headline) { %>
-<h1><%= COPY.labels.headline %></h1>
+<h1><%= t.smarty(COPY.labels.headline) %></h1>
 <% } %>
 
 <% if (COPY.labels.subhed) { %>
-<h2><%= COPY.labels.subhed %></h2>
+<h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
 <div id="chart" class="graphic" role="img" aria-label="<%- COPY.labels.screenreader %>">

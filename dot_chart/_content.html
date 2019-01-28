@@ -1,5 +1,10 @@
-<% if (COPY.labels.headline) { %><h1><%= COPY.labels.headline %></h1><% } %>
-<% if (COPY.labels.subhed) { %><h2><%= COPY.labels.subhed %></h2><% } %>
+<% if (COPY.labels.headline) { %>
+<h1><%= t.smarty(COPY.labels.headline) %></h1>
+<% } %>
+
+<% if (COPY.labels.subhed) { %>
+<h2><%= t.smarty(COPY.labels.subhed) %></h2>
+<% } %>
 
 <div id="dot-chart" class="graphic" role="img"
   <% if (COPY.labels.screenreader) { %>
