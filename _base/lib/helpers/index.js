@@ -12,5 +12,6 @@ module.exports = {
   getParameterByName: require("./getParameterByName"),
   isProduction: require("./isProduction"),
   makeTranslate: require("./makeTranslate"),
-  urlToLocation: require("./urlToLocation")
+  urlToLocation: require("./urlToLocation"),
+  wrapText: require("./wrapText")
 }
