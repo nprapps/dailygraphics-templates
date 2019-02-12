@@ -3,48 +3,59 @@
 * adapted from http://bl.ocks.org/mbostock/7555321
 */
 module.exports = function(texts, width, lineHeight) {
-  var d3 = require("d3-selection/dist/d3-selection.min");
 
-  texts.each(function() {
-    var text = d3.select(this);
-    var words = text.text().split(/\s+/).reverse();
+  var eachText = function(text) {
+    // work with arrays as well
+    var words = text.textContent.split(/\s+/).reverse();
 
     var word = null;
     var line = [];
     var lineNumber = 0;
 
-    var x = text.attr("x");
-    var y = text.attr("y");
+    var x = text.getAttribute("x");
+    var y = text.getAttribute("y");
 
-    var dx = text.attr("dx") ? parseFloat(text.attr("dx")) : 0;
-    var dy = text.attr("dy") ? parseFloat(text.attr("dy")) : 0;
+    var dx = parseFloat(text.getAttribute("dx")) || 0;
+    var dy = parseFloat(text.getAttribute("dy")) || 0;
 
-    var tspan = text.text(null)
-      .append("tspan")
-      .attr("x", x)
-      .attr("y", y)
-      .attr("dx", dx + "px")
-      .attr("dy", dy + "px");
+    text.textContent = "";
+
+    var NS = "http://www.w3.org/2000/svg";
+    var tspan = document.createElementNS(NS, "tspan");
+    text.appendChild(tspan);
+
+    var attrs = { x, y, dx: dx + "px", dy: dy + "px" };
+    for (var k in attrs) {
+      tspan.setAttribute(k, attrs[k]);
+    }
 
     while (word = words.pop()) {
       line.push(word);
-      tspan.text(line.join(" "));
+      tspan.textContent = line.join(" ");
 
-      if (tspan.node().getComputedTextLength() > width) {
+      if (tspan.getComputedTextLength() > width) {
         line.pop();
-        tspan.text(line.join(" "));
+        tspan.textContent = line.join(" ");
         line = [word];
 
         lineNumber += 1;
 
-        tspan = text.append("tspan")
-          .attr("x", x)
-          .attr("y", y)
-          .attr("dx", dx + "px")
-          .attr("dy", (lineNumber * lineHeight) + dy + "px")
-          // .attr("text-anchor", "begin")
-          .text(word);
+        tspan = document.createElementNS(NS, "tspan");
+        text.appendChild(tspan);
+
+        var attrs = { x, y, dx: dx + "px", dy: (lineNumber * lineHeight) + dy + "px" };
+        for (var k in attrs) {
+          tspan.setAttribute(k, attrs[k]);
+        }
+        tspan.textContent = word;
       }
     }
-  });
+  };
+
+  // convert D3 to array
+  if ("each" in texts) {
+    // call D3-style
+    texts = texts.nodes();
+  } 
+  texts.forEach(eachText);
 };
