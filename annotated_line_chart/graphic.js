@@ -65,16 +65,16 @@ var formatData = function() {
         d[key] = Number(d[key]);
 
         // Annotations
-        var hasAnnotation = !!d["annotate"];
+        var hasAnnotation = !!d.annotate;
         if (hasAnnotation) {
-          var hasCustomLabel = d["annotate"] !== true;
-          var label = hasCustomLabel ? d["annotate"] : null;
+          var hasCustomLabel = d.annotate !== true;
+          var label = hasCustomLabel ? d.annotate : null;
 
-          var xOffset = Number(d["x_offset"]) || 0;
-          var yOffset = Number(d["y_offset"]) || 0;
+          var xOffset = Number(d.x_offset) || 0;
+          var yOffset = Number(d.y_offset) || 0;
 
           annotations.push({
-            date: d["date"],
+            date: d.date,
             amt: d[key],
             series: key,
             xOffset: xOffset,
@@ -98,7 +98,7 @@ var formatData = function() {
       name: column,
       values: DATA.map(function(d) {
         return {
-          date: d["date"],
+          date: d.date,
           amt: d[column]
         };
         // filter out empty data. uncomment this if you have inconsistent data.
@@ -166,7 +166,7 @@ var renderLineChart = function(config) {
     aspectHeight = 3;
     ticksX = 5;
     ticksY = 5;
-    margins["right"] = 25;
+    margins.right = 25;
     annotationXOffset = -6;
     annotationYOffset = -20;
     annotationWidth = 72;
@@ -176,12 +176,12 @@ var renderLineChart = function(config) {
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
   var chartHeight =
-    Math.ceil((config["width"] * aspectHeight) / aspectWidth) -
-    margins["top"] -
-    margins["bottom"];
+    Math.ceil((config.width * aspectHeight) / aspectWidth) -
+    margins.top -
+    margins.bottom;
 
   // Clear existing graphic (for redraw)
-  var containerElement = d3.select(config["container"]);
+  var containerElement = d3.select(config.container);
   containerElement.html("");
 
   var dates = config.data[0].values.map(d => d.date);
@@ -227,11 +227,11 @@ var renderLineChart = function(config) {
       })
     )
     .range([
-      COLORS["red3"],
-      COLORS["yellow3"],
-      COLORS["blue3"],
-      COLORS["orange3"],
-      COLORS["teal3"]
+      COLORS.red3,
+      COLORS.yellow3,
+      COLORS.blue3,
+      COLORS.orange3,
+      COLORS.teal3
     ]);
 
   /*
@@ -243,13 +243,10 @@ var renderLineChart = function(config) {
 
   var chartElement = chartWrapper
     .append("svg")
-    .attr("width", chartWidth + margins["left"] + margins["right"])
-    .attr("height", chartHeight + margins["top"] + margins["bottom"])
+    .attr("width", chartWidth + margins.left + margins.right)
+    .attr("height", chartHeight + margins.top + margins.bottom)
     .append("g")
-    .attr(
-      "transform",
-      "translate(" + margins["left"] + "," + margins["top"] + ")"
-    );
+    .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
 
   /*
    * Create D3 axes.
@@ -344,32 +341,32 @@ var renderLineChart = function(config) {
     .append("g")
     .attr("class", "lines")
     .selectAll("path")
-    .data(config["data"])
+    .data(config.data)
     .enter()
     .append("path")
     .attr("class", function(d, i) {
-      return "line " + classify(d["name"]);
+      return "line " + classify(d.name);
     })
     .attr("stroke", function(d) {
-      return colorScale(d["name"]);
+      return colorScale(d.name);
     })
     .attr("d", function(d) {
-      return line(d["values"]);
+      return line(d.values);
     });
 
   chartElement
     .append("g")
     .attr("class", "value")
     .selectAll("text")
-    .data(config["data"])
+    .data(config.data)
     .enter()
     .append("text")
     .attr("x", function(d, i) {
-      var last = d["values"][d["values"].length - 1];
+      var last = d.values[d.values.length - 1];
       return xScale(last[dateColumn]) + 5;
     })
     .attr("y", function(d) {
-      var last = d["values"][d["values"].length - 1];
+      var last = d.values[d.values.length - 1];
       return yScale(last[valueColumn]) + 3;
     });
 
@@ -393,23 +390,23 @@ var renderLineChart = function(config) {
       return yScale(d[valueColumn]);
     })
     .attr("fill", function(d) {
-      return colorScale(d["series"]);
+      return colorScale(d.series);
     })
     .attr("r", 3);
 
   annotation
     .append("text")
     .html(function(d) {
-      var hasCustomLabel = d["label"] != null && d["label"].length > 0;
-      var text = hasCustomLabel ? d["label"] : fmtDateFull(d[dateColumn]);
+      var hasCustomLabel = d.label != null && d.label.length > 0;
+      var text = hasCustomLabel ? d.label : fmtDateFull(d[dateColumn]);
       var value = d[valueColumn].toFixed(2);
       return text + " " + value;
     })
     .attr("x", function(d, i) {
-      return xScale(d[dateColumn]) + d["xOffset"] + annotationXOffset;
+      return xScale(d[dateColumn]) + d.xOffset + annotationXOffset;
     })
     .attr("y", function(d, i) {
-      return yScale(d[valueColumn]) + d["yOffset"] + annotationYOffset;
+      return yScale(d[valueColumn]) + d.yOffset + annotationYOffset;
     })
     .call(wrapText, annotationWidth, annotationLineHeight);
 };
