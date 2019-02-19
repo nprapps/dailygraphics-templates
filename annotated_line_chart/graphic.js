@@ -103,7 +103,7 @@ var formatData = function() {
         };
         // filter out empty data. uncomment this if you have inconsistent data.
         //        }).filter(function(d) {
-        //            return d['amt'] != null;
+        //            return d.amt != null;
       })
     });
   }
@@ -221,11 +221,7 @@ var renderLineChart = function(config) {
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(
-      config.data.map(function(d) {
-        return d.name;
-      })
-    )
+    .domain(config.data.map(d => d.name))
     .range([
       COLORS.red3,
       COLORS.yellow3,
@@ -330,12 +326,8 @@ var renderLineChart = function(config) {
    */
   var line = d3
     .line()
-    .x(function(d) {
-      return xScale(d[dateColumn]);
-    })
-    .y(function(d) {
-      return yScale(d[valueColumn]);
-    });
+    .x(d => xScale(d[dateColumn]))
+    .y(d => yScale(d[valueColumn]));
 
   chartElement
     .append("g")
@@ -347,12 +339,8 @@ var renderLineChart = function(config) {
     .attr("class", function(d, i) {
       return "line " + classify(d.name);
     })
-    .attr("stroke", function(d) {
-      return colorScale(d.name);
-    })
-    .attr("d", function(d) {
-      return line(d.values);
-    });
+    .attr("stroke", d => colorScale(d.name))
+    .attr("d", d => line(d.values));
 
   chartElement
     .append("g")
@@ -383,15 +371,9 @@ var renderLineChart = function(config) {
   annotation
     .append("circle")
     .attr("class", "dots")
-    .attr("cx", function(d) {
-      return xScale(d[dateColumn]);
-    })
-    .attr("cy", function(d) {
-      return yScale(d[valueColumn]);
-    })
-    .attr("fill", function(d) {
-      return colorScale(d.series);
-    })
+    .attr("cx", d => xScale(d[dateColumn]))
+    .attr("cy", d => yScale(d[valueColumn]))
+    .attr("fill", d => colorScale(d.series))
     .attr("r", 3);
 
   annotation
