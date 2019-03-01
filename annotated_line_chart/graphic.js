@@ -62,7 +62,6 @@ var formatData = function() {
 
     for (var key in d) {
       if (!skipLabels.includes(key) && !!d[key]) {
-        d[key] = Number(d[key]);
 
         // Annotations
         var hasAnnotation = !!d.annotate;
@@ -384,12 +383,8 @@ var renderLineChart = function(config) {
       var value = d[valueColumn].toFixed(2);
       return text + " " + value;
     })
-    .attr("x", function(d, i) {
-      return xScale(d[dateColumn]) + d.xOffset + annotationXOffset;
-    })
-    .attr("y", function(d, i) {
-      return yScale(d[valueColumn]) + d.yOffset + annotationYOffset;
-    })
+    .attr("x", d => xScale(d[dateColumn]) + d.xOffset + annotationXOffset)
+    .attr("y", d => yScale(d[valueColumn]) + d.yOffset + annotationYOffset)
     .call(wrapText, annotationWidth, annotationLineHeight);
 };
 

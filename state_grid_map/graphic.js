@@ -4,7 +4,10 @@ require("./lib/webfonts");
 var { isMobile } = require("./lib/breakpoints");
 
 // build our custom D3 object
-var d3 = Object.assign({}, require("d3-scale"), require("d3-selection"));
+var d3 = {
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
+};
 
 var { COLORS, classify } = require("./lib/helpers");
 var $ = require("./lib/qsa");
@@ -44,9 +47,7 @@ var formatData = function() {
       "American Samoa"
     ];
 
-    DATA = DATA.filter(function(d) {
-      return territories.indexOf(d.state_name) == -1;
-    });
+    DATA = DATA.filter(d => territories.indexOf(d.state_name) == -1);
   }
 };
 
@@ -189,11 +190,11 @@ var renderStateGridMap = function(config) {
       var state = STATES.filter(s => s.name == d.state_name).pop();
       return isMobile.matches ? state.usps : state.ap;
     })
-    .attr("class", function(d) {
-      return d[valueColumn] !== null
-        ? "category-" + classify(d[valueColumn] + "") + " label label-active"
-        : "label";
-    })
+    .attr("class", d =>
+      d[valueColumn] !== null
+        ? `category-${classify(d[valueColumn] + "")} label label-active`
+        : "label"
+    )
     .attr("x", function(d) {
       var className = `.state-${classify(d.state_name)}`;
       var tileBox = $.one(className).getBBox();

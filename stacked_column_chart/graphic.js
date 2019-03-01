@@ -10,9 +10,9 @@ var { COLORS, makeTranslate, classify } = require("./lib/helpers");
 console.clear();
 
 var d3 = {
-  ...require("d3-axis"),
-  ...require("d3-scale"),
-  ...require("d3-selection")
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
 };
 
 // Initialize the graphic.
@@ -49,8 +49,6 @@ var formatData = function(data) {
       if (skipLabels.indexOf(key) > -1) {
         continue;
       }
-
-      d[key] = +d[key];
 
       var y1 = y0 + d[key];
       d.total += d[key];
@@ -166,16 +164,12 @@ var renderStackedColumnChart = function(config) {
     .enter()
     .append("li")
     .attr("class", function(d, i) {
-      return "key-item key-" + i + " " + classify(d);
+      return `key-item key-${i} ${classify(d)}`;
     });
 
-  legend.append("b").style("background-color", function(d) {
-    return colorScale(d);
-  });
+  legend.append("b").style("background-color", d => colorScale(d));
 
-  legend.append("label").text(function(d) {
-    return d;
-  });
+  legend.append("label").text(d => d);
 
   // Create the root SVG element.
   var chartWrapper = containerElement
@@ -234,32 +228,18 @@ var renderStackedColumnChart = function(config) {
     .enter()
     .append("g")
     .attr("class", "bar")
-    .attr("transform", function(d) {
-      return makeTranslate(xScale(d[labelColumn]), 0);
-    });
+    .attr("transform", d => makeTranslate(xScale(d[labelColumn]), 0));
 
   bars
     .selectAll("rect")
     .data(d => d.values)
     .enter()
     .append("rect")
-    .attr("y", function(d) {
-      if (d.y1 < d.y0) {
-        return yScale(d.y0);
-      }
-
-      return yScale(d.y1);
-    })
+    .attr("y", d => d.y1 < d.y0 ? yScale(d.y0) : yScale(d.y1))
     .attr("width", xScale.bandwidth())
-    .attr("height", function(d) {
-      return Math.abs(yScale(d.y0) - yScale(d.y1));
-    })
-    .style("fill", function(d) {
-      return colorScale(d.name);
-    })
-    .attr("class", function(d) {
-      return classify(d.name);
-    });
+    .attr("height", d => Math.abs(yScale(d.y0) - yScale(d.y1)))
+    .style("fill", d => colorScale(d.name))
+    .attr("class", d => classify(d.name));
 
   // Render 0 value line.
   if (min < 0) {
@@ -280,20 +260,11 @@ var renderStackedColumnChart = function(config) {
     })
     .enter()
     .append("text")
-    .text(function(d) {
-      return d.val;
-    })
-    .attr("class", function(d) {
-      return classify(d.name);
-    })
-    .attr("x", function(d) {
-      return xScale.bandwidth() / 2;
-    })
+    .text(d => d.val)
+    .attr("class", d => classify(d.name))
+    .attr("x", xScale.bandwidth() / 2)
     .attr("y", function(d) {
-      var textHeight = d3
-        .select(this)
-        .node()
-        .getBBox().height;
+      var textHeight = this.getBBox().height;
       var barHeight = Math.abs(yScale(d.y0) - yScale(d.y1));
 
       if (textHeight + valueGap * 2 > barHeight) {

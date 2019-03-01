@@ -7,9 +7,9 @@ var pymChild;
 var skipLabels = ["Group", "key", "values"];
 
 var d3 = {
-  ...require("d3-axis"),
-  ...require("d3-scale"),
-  ...require("d3-selection")
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
 };
 
 var { COLORS, classify, makeTranslate, formatStyle } = require("./lib/helpers");
@@ -153,7 +153,7 @@ var renderGroupedBarChart = function(config) {
     .enter()
     .append("li")
     .attr("class", function(d, i) {
-      return "key-item key-" + i + " " + classify(d[labelColumn]);
+      return `key-item key-${i} ${classify(d[labelColumn])}`;
     });
 
   legend.append("b").style("background-color", d => colorScale(d[labelColumn]));

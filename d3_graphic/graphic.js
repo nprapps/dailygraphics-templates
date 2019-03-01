@@ -4,10 +4,10 @@ require("./lib/webfonts");
 var { isMobile } = require("./lib/breakpoints");
 
 var d3 = {
-  ...require("d3-array"),
-  ...require("d3-axis"),
-  ...require("d3-scale"),
-  ...require("d3-selection")
+  ...require("d3-array/dist/d3-array.min"),
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
 };
 
 var pymChild = null;

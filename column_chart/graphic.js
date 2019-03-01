@@ -6,12 +6,11 @@ var { isMobile } = require("./lib/breakpoints");
 // Global vars
 var pymChild = null;
 
-var d3 = Object.assign(
-  {},
-  require("d3-axis"),
-  require("d3-scale"),
-  require("d3-selection")
-);
+var d3 = {
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
+};
 
 var { COLORS, makeTranslate } = require("./lib/helpers");
 
@@ -96,7 +95,7 @@ var renderColumnChart = function(config) {
     .attr("width", chartWidth + margins.left + margins.right)
     .attr("height", chartHeight + margins.top + margins.bottom)
     .append("g")
-    .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+    .attr("transform", `translate(${margins.left},${margins.top})`);
 
   // Create D3 scale objects.
   var xScale = d3
@@ -105,9 +104,7 @@ var renderColumnChart = function(config) {
     .round(true)
     .padding(0.1)
     .domain(
-      config.data.map(function(d) {
-        return d[labelColumn];
-      })
+      config.data.map(d => d[labelColumn])
     );
 
   var floors = config.data.map(
@@ -143,9 +140,7 @@ var renderColumnChart = function(config) {
     .axisLeft()
     .scale(yScale)
     .ticks(ticksY)
-    .tickFormat(function(d) {
-      return fmtComma(d);
-    });
+    .tickFormat(d => fmtComma(d));
 
   // Render axes to chart.
   chartElement
@@ -181,24 +176,13 @@ var renderColumnChart = function(config) {
     .data(config.data)
     .enter()
     .append("rect")
-    .attr("x", function(d) {
-      return xScale(d[labelColumn]);
-    })
-    .attr("y", function(d) {
-      if (d[valueColumn] < 0) {
-        return yScale(0);
-      }
-
-      return yScale(d[valueColumn]);
-    })
+    .attr("x", d => xScale(d[labelColumn]))
+    .attr("y", d => d[valueColumn] < 0 ? yScale(0) : yScale(d[valueColumn]))
     .attr("width", xScale.bandwidth())
-    .attr("height", function(d) {
-      if (d[valueColumn] < 0) {
-        return yScale(d[valueColumn]) - yScale(0);
-      }
-
-      return yScale(0) - yScale(d[valueColumn]);
-    })
+    .attr("height", d => d[valueColumn] < 0
+      ? yScale(d[valueColumn]) - yScale(0)
+      : yScale(0) - yScale(d[valueColumn])
+    )
     .attr("class", function(d) {
       return "bar bar-" + d[labelColumn];
     });
@@ -222,40 +206,32 @@ var renderColumnChart = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .text(function(d) {
-      return d[valueColumn].toFixed(0);
-    })
-    .attr("x", function(d, i) {
-      return xScale(d[labelColumn]) + xScale.bandwidth() / 2;
-    })
-    .attr("y", function(d) {
-      return yScale(d[valueColumn]);
-    })
+    .text(d => d[valueColumn].toFixed(0))
+    .attr("x", d => xScale(d[labelColumn]) + xScale.bandwidth() / 2)
+    .attr("y", d => yScale(d[valueColumn]))
     .attr("dy", function(d) {
-      var textHeight = d3
-        .select(this)
-        .node()
-        .getBBox().height;
+      var textHeight = this.getBBox().height;
+      var $this = d3.select(this);
       var barHeight = 0;
 
       if (d[valueColumn] < 0) {
         barHeight = yScale(d[valueColumn]) - yScale(0);
 
         if (textHeight + valueGap * 2 < barHeight) {
-          d3.select(this).classed("in", true);
+          $this.classed("in", true);
           return -(textHeight - valueGap / 2);
         } else {
-          d3.select(this).classed("out", true);
+          $this.classed("out", true);
           return textHeight + valueGap;
         }
       } else {
         barHeight = yScale(0) - yScale(d[valueColumn]);
 
         if (textHeight + valueGap * 2 < barHeight) {
-          d3.select(this).classed("in", true);
+          $this.classed("in", true);
           return textHeight + valueGap;
         } else {
-          d3.select(this).classed("out", true);
+          $this.classed("out", true);
           return -(textHeight - valueGap / 2);
         }
       }
