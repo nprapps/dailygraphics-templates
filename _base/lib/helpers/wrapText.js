@@ -12,8 +12,8 @@ module.exports = function(texts, width, lineHeight) {
     var line = [];
     var lineNumber = 0;
 
-    var x = text.getAttribute("x");
-    var y = text.getAttribute("y");
+    var x = text.getAttribute("x") || 0;
+    var y = text.getAttribute("y") || 0;
 
     var dx = parseFloat(text.getAttribute("dx")) || 0;
     var dy = parseFloat(text.getAttribute("dy")) || 0;
