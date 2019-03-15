@@ -6,12 +6,12 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div id="bar-chart" class="graphic" role="img"
-  <% if (COPY.labels.screenreader) { %>
+<div id="annotated-line-chart" class="graphic" role="img"
+<% if (COPY.labels.screenreader) { %>
   aria-label="<%- COPY.labels.screenreader %>"
-  <% } %>
+<% } %>
 >
-<img src="fallback.png" alt="" class="fallback" />
+  <img src="fallback.png" alt="" class="fallback" />
 </div>
 
 <% if (COPY.labels.footnote) { %>

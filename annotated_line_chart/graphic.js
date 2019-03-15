@@ -3,10 +3,18 @@ var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
 var { isMobile } = require("./lib/breakpoints");
 
-var dataSeries = [];
 var pymChild;
+var dataSeries = [];
+var annotations = [];
+var skipLabels = ["date", "annotate", "x_offset", "y_offset"];
 
-var { COLORS, classify, makeTranslate } = require("./lib/helpers");
+var {
+  COLORS,
+  classify,
+  getAPMonth,
+  makeTranslate,
+  wrapText
+} = require("./lib/helpers");
 var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
   ...require("d3-scale/dist/d3-scale.min"),
@@ -17,8 +25,12 @@ var d3 = {
 
 var fmtYearAbbrev = d => (d.getFullYear() + "").slice(-2);
 var fmtYearFull = d => d.getFullYear();
+var fmtDayYear = d => d.getDate() + ", " + d.getFullYear();
+var fmtDateFull = d => getAPMonth(d) + " " + fmtDayYear(d).trim();
 
-//Initialize graphic
+/*
+ * Initialize graphic
+ */
 var onWindowLoaded = function() {
   formatData();
   render();
@@ -39,39 +51,77 @@ var onWindowLoaded = function() {
   });
 };
 
-//Format graphic data for processing by D3.
+/*
+ * Format graphic data for processing by D3.
+ */
 var formatData = function() {
   DATA.forEach(function(d) {
     var [m, day, y] = d.date.split("/").map(Number);
     y = y > 50 ? 1900 + y : 2000 + y;
     d.date = new Date(y, m - 1, day);
+
+    for (var key in d) {
+      if (!skipLabels.includes(key) && !!d[key]) {
+
+        // Annotations
+        var hasAnnotation = !!d.annotate;
+        if (hasAnnotation) {
+          var hasCustomLabel = d.annotate !== true;
+          var label = hasCustomLabel ? d.annotate : null;
+
+          var xOffset = Number(d.x_offset) || 0;
+          var yOffset = Number(d.y_offset) || 0;
+
+          annotations.push({
+            date: d.date,
+            amt: d[key],
+            series: key,
+            xOffset: xOffset,
+            yOffset: yOffset,
+            label: label
+          });
+        }
+      }
+    }
   });
 
-  // Restructure tabular data for easier charting.
+  /*
+   * Restructure tabular data for easier charting.
+   */
   for (var column in DATA[0]) {
-    if (column == "date") continue;
+    if (skipLabels.includes(column)) {
+      continue;
+    }
 
     dataSeries.push({
       name: column,
-      values: DATA.map(d => ({
-        date: d.date,
-        amt: d[column]
-      }))
+      values: DATA.map(function(d) {
+        return {
+          date: d.date,
+          amt: d[column]
+        };
+        // filter out empty data. uncomment this if you have inconsistent data.
+        //        }).filter(function(d) {
+        //            return d.amt != null;
+      })
     });
   }
 };
 
-// Render the graphic(s). Called by pym with the container width.
-
-var render = function() {
-  // Render the chart!
-  var container = "#line-chart";
+/*
+ * Render the graphic(s). Called by pym with the container width.
+ */
+var render = function(containerWidth) {
+  var container = "#annotated-line-chart";
   var element = document.querySelector(container);
   var width = element.offsetWidth;
+
+  // Render the chart!
   renderLineChart({
     container,
     width,
-    data: dataSeries
+    data: dataSeries,
+    annotations: annotations
   });
 
   // Update iframe
@@ -80,15 +130,18 @@ var render = function() {
   }
 };
 
-// Render a line chart.
+/*
+ * Render a line chart.
+ */
 var renderLineChart = function(config) {
-  // Setup
-
+  /*
+   * Setup
+   */
   var dateColumn = "date";
   var valueColumn = "amt";
 
-  var aspectWidth = isMobile.matches ? 4 : 16;
-  var aspectHeight = isMobile.matches ? 3 : 9;
+  var aspectWidth = 16;
+  var aspectHeight = 9;
 
   var margins = {
     top: 5,
@@ -101,11 +154,22 @@ var renderLineChart = function(config) {
   var ticksY = 10;
   var roundTicksFactor = 5;
 
+  var annotationXOffset = -4;
+  var annotationYOffset = -24;
+  var annotationWidth = 80;
+  var annotationLineHeight = 14;
+
   // Mobile
-  if (isMobile.matches) {
+  if (isMobile) {
+    aspectWidth = 4;
+    aspectHeight = 3;
     ticksX = 5;
     ticksY = 5;
     margins.right = 25;
+    annotationXOffset = -6;
+    annotationYOffset = -20;
+    annotationWidth = 72;
+    annotationLineHeight = 12;
   }
 
   // Calculate actual chart dimensions
@@ -122,6 +186,9 @@ var renderLineChart = function(config) {
   var dates = config.data[0].values.map(d => d.date);
   var extent = [dates[0], dates[dates.length - 1]];
 
+  /*
+   * Create D3 scale objects.
+   */
   var xScale = d3
     .scaleTime()
     .domain(extent)
@@ -153,11 +220,7 @@ var renderLineChart = function(config) {
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(
-      config.data.map(function(d) {
-        return d.name;
-      })
-    )
+    .domain(config.data.map(d => d.name))
     .range([
       COLORS.red3,
       COLORS.yellow3,
@@ -166,23 +229,9 @@ var renderLineChart = function(config) {
       COLORS.teal3
     ]);
 
-  // Render the HTML legend.
-
-  var legend = containerElement
-    .append("ul")
-    .attr("class", "key")
-    .selectAll("g")
-    .data(config.data)
-    .enter()
-    .append("li")
-    .attr("class", d => "key-item " + classify(d.name));
-
-  legend.append("b").style("background-color", d => colorScale(d.name));
-
-  legend.append("label").text(d => d.name);
-
-  // Create the root SVG element.
-
+  /*
+   * Create the root SVG element.
+   */
   var chartWrapper = containerElement
     .append("div")
     .attr("class", "graphic-wrapper");
@@ -192,16 +241,17 @@ var renderLineChart = function(config) {
     .attr("width", chartWidth + margins.left + margins.right)
     .attr("height", chartHeight + margins.top + margins.bottom)
     .append("g")
-    .attr("transform", `translate(${margins.left},${margins.top})`);
+    .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
 
-  // Create D3 axes.
-
+  /*
+   * Create D3 axes.
+   */
   var xAxis = d3
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
     .tickFormat(function(d, i) {
-      if (isMobile.matches) {
+      if (isMobile) {
         return "\u2019" + fmtYearAbbrev(d);
       } else {
         return fmtYearFull(d);
@@ -213,8 +263,9 @@ var renderLineChart = function(config) {
     .scale(yScale)
     .ticks(ticksY);
 
-  // Render axes to chart.
-
+  /*
+   * Render axes to chart.
+   */
   chartElement
     .append("g")
     .attr("class", "x axis")
@@ -226,8 +277,9 @@ var renderLineChart = function(config) {
     .attr("class", "y axis")
     .call(yAxis);
 
-  // Render grid to chart.
-
+  /*
+   * Render grid to chart.
+   */
   var xAxisGrid = function() {
     return xAxis;
   };
@@ -255,8 +307,9 @@ var renderLineChart = function(config) {
         .tickFormat("")
     );
 
-  // Render 0 value line.
-
+  /*
+   * Render 0 value line.
+   */
   if (min < 0) {
     chartElement
       .append("line")
@@ -267,7 +320,9 @@ var renderLineChart = function(config) {
       .attr("y2", yScale(0));
   }
 
-  // Render lines to chart.
+  /*
+   * Render lines to chart.
+   */
   var line = d3
     .line()
     .x(d => xScale(d[dateColumn]))
@@ -280,11 +335,11 @@ var renderLineChart = function(config) {
     .data(config.data)
     .enter()
     .append("path")
-    .attr("class", d => "line " + classify(d.name))
+    .attr("class", function(d, i) {
+      return "line " + classify(d.name);
+    })
     .attr("stroke", d => colorScale(d.name))
     .attr("d", d => line(d.values));
-
-  var lastItem = d => d.values[d.values.length - 1];
 
   chartElement
     .append("g")
@@ -293,21 +348,48 @@ var renderLineChart = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .attr("x", d => xScale(lastItem(d)[dateColumn]) + 5)
-    .attr("y", d => yScale(lastItem(d)[valueColumn]) + 3)
-    .text(function(d) {
-      var item = lastItem(d);
-      var value = item[valueColumn];
-      var label = value.toFixed(1);
-
-      if (!isMobile.matches) {
-        label = d.name + ": " + label;
-      }
-
-      return label;
+    .attr("x", function(d, i) {
+      var last = d.values[d.values.length - 1];
+      return xScale(last[dateColumn]) + 5;
+    })
+    .attr("y", function(d) {
+      var last = d.values[d.values.length - 1];
+      return yScale(last[valueColumn]) + 3;
     });
+
+  /*
+   * Render annotations.
+   */
+  var annotation = chartElement
+    .append("g")
+    .attr("class", "annotations")
+    .selectAll("circle")
+    .data(config.annotations)
+    .enter();
+
+  annotation
+    .append("circle")
+    .attr("class", "dots")
+    .attr("cx", d => xScale(d[dateColumn]))
+    .attr("cy", d => yScale(d[valueColumn]))
+    .attr("fill", d => colorScale(d.series))
+    .attr("r", 3);
+
+  annotation
+    .append("text")
+    .html(function(d) {
+      var hasCustomLabel = d.label != null && d.label.length > 0;
+      var text = hasCustomLabel ? d.label : fmtDateFull(d[dateColumn]);
+      var value = d[valueColumn].toFixed(2);
+      return text + " " + value;
+    })
+    .attr("x", d => xScale(d[dateColumn]) + d.xOffset + annotationXOffset)
+    .attr("y", d => yScale(d[valueColumn]) + d.yOffset + annotationYOffset)
+    .call(wrapText, annotationWidth, annotationLineHeight);
 };
 
-//Initially load the graphic
-// (NB: Use window.load to ensure all images have loaded)
+/*
+ * Initially load the graphic
+ * (NB: Use window.load to ensure all images have loaded)
+ */
 window.onload = onWindowLoaded;

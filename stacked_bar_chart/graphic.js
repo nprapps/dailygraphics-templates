@@ -8,9 +8,9 @@ var pymChild = null;
 var skipLabels = ["label", "values"];
 
 var d3 = {
-  ...require("d3-axis"),
-  ...require("d3-scale"),
-  ...require("d3-selection")
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min"),
+  ...require("d3-selection/dist/d3-selection.min")
 };
 
 var { COLORS, classify, makeTranslate, formatStyle } = require("./lib/helpers");
@@ -207,9 +207,7 @@ var renderStackedBarChart = function(config) {
 
   group
     .selectAll("rect")
-    .data(function(d) {
-      return d.values;
-    })
+    .data(d => d.values)
     .enter()
     .append("rect")
     .attr("x", d => (d.x0 < d.x1 ? xScale(d.x0) : xScale(d.x1)))

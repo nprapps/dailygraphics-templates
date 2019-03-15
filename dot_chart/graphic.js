@@ -7,9 +7,9 @@ var { isMobile } = require("./lib/breakpoints");
 var pymChild = null;
 
 var d3 = {
-  ...require("d3-selection"),
-  ...require("d3-axis"),
-  ...require("d3-scale")
+  ...require("d3-selection/dist/d3-selection.min"),
+  ...require("d3-axis/dist/d3-axis.min"),
+  ...require("d3-scale/dist/d3-scale.min")
 };
 
 var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
@@ -99,7 +99,7 @@ var renderDotChart = function(config) {
     .attr("width", chartWidth + margins.left + margins.right)
     .attr("height", chartHeight + margins.top + margins.bottom)
     .append("g")
-    .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
+    .attr("transform", `translate(${margins.left},${margins.top})`);
 
   // Create D3 scale objects.
   var min = 0;
@@ -123,9 +123,7 @@ var renderDotChart = function(config) {
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
-    .tickFormat(function(d) {
-      return d + "%";
-    });
+    .tickFormat(d => d + "%");
 
   // Render axes to chart.
   chartElement
