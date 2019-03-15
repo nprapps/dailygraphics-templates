@@ -6,12 +6,14 @@ script.onload = function() {
   WebFont.load({
       custom: {
           families: [
-              'Gotham SSm:n4,n7',
-              'Knockout 31 4r:n4'
+              'Source Sans Pro'
+              // 'Gotham SSm:n4,n7',
+              // 'Knockout 31 4r:n4'
           ],
           urls: [
-              'https://s.npr.org/templates/css/fonts/GothamSSm.css',
-              'https://s.npr.org/templates/css/fonts/Knockout.css'
+              // 'https://s.npr.org/templates/css/fonts/GothamSSm.css',
+              // 'https://s.npr.org/templates/css/fonts/Knockout.css'
+              'https://fonts.googleapis.com/css?family=Source+Sans+Pro'
           ]
       },
       timeout: 10000

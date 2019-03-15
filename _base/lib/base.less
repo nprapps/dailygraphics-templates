@@ -4,51 +4,35 @@
 @screen-mobile: ~"screen and (max-width: 500px)";
 
 // Colors
-@red1       : #6C2315;
-@red2       : #A23520;
-@red3       : #D8472B;
-@red4       : #E27560;
-@red5       : #ECA395;
-@red6       : #F5D1CA;
+@red1       : #EF0F52;
+@red2       : #FF0066;
+@red3       : #CB0066;
 
-@orange1    : #714616;
-@orange2    : #AA6A21;
-@orange3    : #E38D2C;
-@orange4    : #EAAA61;
-@orange5    : #F1C696;
-@orange6    : #F8E2CA;
+@yellow1    : #F6C241;
+@yellow2    : #FFF100;
+@yellow3    : #FFE033;
 
-@yellow1    : #77631B;
-@yellow2    : #B39429;
-@yellow3    : #EFC637;
-@yellow4    : #F3D469;
-@yellow5    : #F7E39B;
-@yellow6    : #FBF1CD;
+@green1     : #C2C932;
+@green2     : #CBEE00;
+@green3     : #DFDF00;
 
-@teal1      : #0B403F;
-@teal2      : #11605E;
-@teal3      : #17807E;
-@teal4      : #51A09E;
-@teal5      : #8BC0BF;
-@teal6      : #C5DFDF;
+@blue1      : #2BA8E0;
+@blue2      : #00DBFF;
+@blue3      : #00BDFF;
+@blue4      : #0087B6;
 
-@blue1      : #28556F;
-@blue2      : #3D7FA6;
-@blue3      : #51AADE;
-@blue4      : #7DBFE6;
-@blue5      : #A8D5EF;
-@blue6      : #D3EAF7;
+@gray1      : #333333;
 
 // Fonts
-.gotham() {
-  font-family: 'Gotham SSm',Helvetica,Arial,sans-serif;
+.source() {
+  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
   font-weight: normal;
   font-weight: 400;
 }
 
 // Normal Knockout
 .knockout() {
-  font-family: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: Source Sans Pro,Helvetica, Arial, sans-serif;
   font-weight: normal;
 }
 
@@ -66,7 +50,7 @@
 }
 
 .sans-serif() {
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
 }
 
 // Mixins
@@ -91,8 +75,9 @@ html { -webkit-text-size-adjust: none; }
 body {
   margin: 0;
   padding: 33px 0;
-  font: 14px/1.4 Helvetica, Arial, sans-serif;
-  color: #555;
+  font-size: 14px;
+  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
+  color: @gray1;
   //remove 300ms click delay in Safari, AKA still the worst
   touch-action: manipulation;
 }
@@ -100,17 +85,17 @@ body {
 h1 {
   margin: 0 0 33px 0;
   font-size: 20px;
-  color: #666;
-  font-family: 'Gotham SSm',Helvetica,Arial,sans-serif;
+  color: @gray1;
+  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
   font-weight: normal;
   line-height: 1.3;
-  font-weight: 400;
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
 }
 
 h2 {
   font-weight: normal;
-  color: #777;
+  color: @gray1;
   font-size: 12px;
   margin: -22px 0 22px 0;
   line-height: 1.6;
@@ -118,7 +103,7 @@ h2 {
 
 h3 {
   margin: 0 0 15px 0;
-  font-family: 'Knockout 31 4r';
+  font-family: Source Sans Pro;
   font-weight: normal;
   text-transform: uppercase;
   padding-top: 0;
@@ -126,7 +111,7 @@ h3 {
   letter-spacing: 0.05em;
   -webkit-font-smoothing: antialiased;
   font-size: 12px;
-  color: #333;
+  color: @gray1;
 }
 
 .nowrap {
@@ -138,7 +123,7 @@ h3 {
 
   h4 {
     margin: 2px 0 7px 0;
-    color: #666;
+    color: @gray1;
     font-size: 11px;
   }
 }
@@ -148,19 +133,19 @@ h3 {
   margin: 2px 0 0 0;
   font-size: 11px;
   line-height: 1.7;
-  color: #999;
+  color: @gray1;
 }
 
 .footer p { font-style: italic; }
 .footer p em { font-style: normal; }
-.footnotes p strong { color: #666; }
+.footnotes p strong { color: @gray1; }
 
 a, a:link, a:visited {
-  color: #4774CC;
+  color: @blue1;
   text-decoration: none;
 }
 
-a:hover, a:active { color: #bccae5; }
+a:hover, a:active { color: @blue1; }
 
 // Standard graphic styles
 .graphic-wrapper {
@@ -200,7 +185,7 @@ a:hover, a:active { color: #bccae5; }
     label {
       white-space: nowrap;
       font-size: 12px;
-      color: #666;
+      color: @gray1;
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
     }
@@ -212,12 +197,12 @@ svg { overflow: hidden; }
 .axis {
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
-  fill: #999;
+  fill: @gray1;
 
   path,
   line {
     fill: none;
-    stroke: #ccc;
+    stroke: @gray1;
     shape-rendering: crispEdges;
   }
 
@@ -243,7 +228,7 @@ svg { overflow: hidden; }
 }
 
 .zero-line  {
-  stroke: #666;
+  stroke: @gray1;
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
@@ -253,7 +238,7 @@ rect {
   shape-rendering: crispEdges;
 }
 
-.bars rect { fill: @teal3; }
+.bars rect { fill: @blue1; }
 
 .labels {
   position: absolute;
@@ -267,7 +252,7 @@ rect {
     text-align: right;
     font-size: 12px;
     line-height: 1.3;
-    color: #666;
+    color: @gray1;
     display: table;
     -webkit-font-smoothing: antialiased;
 
@@ -283,7 +268,7 @@ rect {
   -webkit-font-smoothing: antialiased;
 
   &.in { fill: #fff; }
-  &.out { fill: #999; }
+  &.out { fill: @gray1; }
 }
 
 // HOMEPAGE
