@@ -22,35 +22,20 @@
 @blue4      : #0087B6;
 
 @gray1      : #333333;
+@gray2      : #999999;
+@gray3      : #D3D3D3;
+@gray4      : #eeeeee;
 
 // Fonts
-.source() {
-  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
-  font-weight: normal;
+.source-regular() {
+  font-family: 'Source Sans Pro',Helvetica,Arial,sans-serif;
   font-weight: 400;
 }
 
 // Normal Knockout
-.knockout() {
-  font-family: Source Sans Pro,Helvetica, Arial, sans-serif;
-  font-weight: normal;
-}
-
-// Knockout, uppercased
-.knockout-upper() {
-  .knockout();
-  text-transform: uppercase;
-}
-
-// Knockout for headings
-.knockout-header() {
-  .knockout-upper();
-  letter-spacing: 0.05em;
-  -webkit-font-smoothing: antialiased;
-}
-
-.sans-serif() {
-  font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
+.source-bold() {
+  font-family: 'Source Sans Pro',Helvetica, Arial, sans-serif;
+  font-weight: 700;
 }
 
 // Mixins
@@ -63,54 +48,47 @@
   }
 }
 
+
+
 // Base styles
 * {
   box-sizing: border-box;
-  //Safari, you're the worst
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent; //Safari, you're the worst
 }
 
-html { -webkit-text-size-adjust: none; }
+html {
+  -webkit-text-size-adjust: none;
+  .source-regular();
+ }
 
 body {
   margin: 0;
   padding: 33px 0;
-  font-size: 14px;
-  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
+  font-size: 1em;
   color: @gray1;
-  //remove 300ms click delay in Safari, AKA still the worst
-  touch-action: manipulation;
+  touch-action: manipulation; //remove 300ms click delay in Safari, AKA still the worst
 }
 
 h1 {
+  .source-bold();
   margin: 0 0 33px 0;
-  font-size: 20px;
+  font-size: 1.4em;
   color: @gray1;
-  font-family: Source Sans Pro,Helvetica,Arial,sans-serif;
-  font-weight: normal;
-  line-height: 1.3;
-  font-weight: 700;
-  -webkit-font-smoothing: antialiased;
 }
 
 h2 {
-  font-weight: normal;
+  .source-regular();
   color: @gray1;
-  font-size: 12px;
+  font-size: 0.9em;
   margin: -22px 0 22px 0;
-  line-height: 1.6;
 }
 
 h3 {
   margin: 0 0 15px 0;
-  font-family: Source Sans Pro;
-  font-weight: normal;
   text-transform: uppercase;
   padding-top: 0;
-  line-height: 1.2;
   letter-spacing: 0.05em;
-  -webkit-font-smoothing: antialiased;
-  font-size: 12px;
+  font-size: 0.9em;
   color: @gray1;
 }
 
@@ -123,22 +101,20 @@ h3 {
 
   h4 {
     margin: 2px 0 7px 0;
-    color: @gray1;
-    font-size: 11px;
+    color: @gray2;
+    font-size: 0.8em;
   }
 }
 
 .footnotes p,
 .footer p {
   margin: 2px 0 0 0;
-  font-size: 11px;
-  line-height: 1.7;
-  color: @gray1;
+  font-size: 0.8em;
+  color: @gray2;
 }
 
-.footer p { font-style: italic; }
-.footer p em { font-style: normal; }
-.footnotes p strong { color: @gray1; }
+
+.footnotes p strong { color: @gray2; }
 
 a, a:link, a:visited {
   color: @blue1;
@@ -146,6 +122,9 @@ a, a:link, a:visited {
 }
 
 a:hover, a:active { color: @blue1; }
+
+
+
 
 // Standard graphic styles
 .graphic-wrapper {
@@ -172,7 +151,6 @@ a:hover, a:active { color: @blue1; }
     display: inline-block;
     margin: 0 18px 0 0;
     padding: 0;
-    line-height: 15px;
 
     b {
       display: inline-block;
@@ -184,9 +162,8 @@ a:hover, a:active { color: @blue1; }
 
     label {
       white-space: nowrap;
-      font-size: 12px;
+      font-size: 0.8em;
       color: @gray1;
-      font-weight: normal;
       -webkit-font-smoothing: antialiased;
     }
   }
@@ -195,14 +172,14 @@ a:hover, a:active { color: @blue1; }
 svg { overflow: hidden; }
 
 .axis {
-  font-size: 11px;
+  font-size: 0.7em;
   -webkit-font-smoothing: antialiased;
   fill: @gray1;
 
   path,
   line {
     fill: none;
-    stroke: @gray1;
+    stroke: none;
     shape-rendering: crispEdges;
   }
 
@@ -216,8 +193,8 @@ svg { overflow: hidden; }
   path { display: none; }
 
   .tick {
-    stroke: #eee;
-    color: #eee;
+    stroke: @gray3;
+    color: @gray3;
     stroke-width: 1px;
     shape-rendering: crispEdges;
   }
@@ -250,11 +227,10 @@ rect {
   li {
     position: absolute;
     text-align: right;
-    font-size: 12px;
+    font-size: 0.8em;
     line-height: 1.3;
     color: @gray1;
     display: table;
-    -webkit-font-smoothing: antialiased;
 
     span {
       display: table-cell;
@@ -264,12 +240,24 @@ rect {
 }
 
 .value text {
-  font-size: 10px;
-  -webkit-font-smoothing: antialiased;
+  font-size: 0.8em;
 
   &.in { fill: #fff; }
   &.out { fill: @gray1; }
 }
+
+.tick {
+  line {
+    stroke: @gray3;
+  }
+  text {
+    .source-regular();
+    color: @gray2;
+  }
+}
+
+
+
 
 // HOMEPAGE
 // * styles for when a project is embedded on the homepage
@@ -292,12 +280,4 @@ body.childlink {
 
 img:not([alt]) {
   outline: 3px solid red;
-<<<<<<< HEAD
 }
-=======
-
-  [role="img"] & {
-    outline: none;
-  }
-}
->>>>>>> 1c2afa2bf2e9d4f7c87599768a1c46feeefb7762
