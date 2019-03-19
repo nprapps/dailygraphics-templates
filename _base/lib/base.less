@@ -151,18 +151,19 @@ a:hover, a:active { color: @blue1; }
     display: inline-block;
     margin: 0 18px 0 0;
     padding: 0;
+    line-height: 0.7em;
 
     b {
       display: inline-block;
-      width: 15px;
-      height: 15px;
+      width: 12px;
+      height: 12px;
       margin-right: 6px;
       float: left;
     }
 
     label {
       white-space: nowrap;
-      font-size: 0.8em;
+      font-size: 0.9em;
       color: @gray1;
       -webkit-font-smoothing: antialiased;
     }
@@ -172,7 +173,7 @@ a:hover, a:active { color: @blue1; }
 svg { overflow: hidden; }
 
 .axis {
-  font-size: 0.7em;
+  font-size: 0.8em;
   -webkit-font-smoothing: antialiased;
   fill: @gray1;
 
@@ -254,6 +255,11 @@ rect {
     .source-regular();
     color: @gray2;
   }
+}
+
+.x text{
+  .source-bold();
+  font-size: 1.2em;
 }
 
 

@@ -222,11 +222,11 @@ var renderLineChart = function(config) {
     .scaleOrdinal()
     .domain(config.data.map(d => d.name))
     .range([
-      COLORS.red3,
-      COLORS.yellow3,
-      COLORS.blue3,
-      COLORS.orange3,
-      COLORS.teal3
+      COLORS.red1,
+      COLORS.yellow1,
+      COLORS.blue1,
+      COLORS.green1,
+      COLORS.gray1
     ]);
 
   /*
