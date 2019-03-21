@@ -9,6 +9,7 @@
     "*.json",
     "!manifest.json",
     "*.geojson",
-    "*.csv"
+    "*.csv",
+    "!README.md"
   ]
 }
