@@ -138,7 +138,7 @@ var renderStackedBarChart = function(config) {
     .domain(
       Object.keys(config.data[0]).filter(d => skipLabels.indexOf(d) == -1)
     )
-    .range([COLORS.teal3, COLORS.orange3, COLORS.blue3, "#ccc"]);
+    .range([COLORS.gray1, COLORS.blue1, COLORS.red1, COLORS.green1]);
 
   // Render the legend.
   var legend = containerElement

@@ -156,7 +156,7 @@ var renderGroupedStackedColumnChart = function(config) {
         }
       })
     )
-    .range(["#787878", COLORS.blue3, "#ccc"]);
+    .range([COLORS.gray1, COLORS.blue1, COLORS.red1]);
 
   // Render the legend.
   var legend = containerElement
