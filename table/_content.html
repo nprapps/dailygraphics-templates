@@ -7,22 +7,22 @@
 <% } %>
 
 <div class="graphic" id="table-graphic">
-  <table id="state-table">
-    <thead>
-      <tr>
-        <th>
+  <table id="state-table" role="table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader">
           <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_state %></div>
         </th>
-        <th>
+        <th role="columnheader">
           <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_usps %></div>
         </th>
-        <th>
+        <th role="columnheader">
           <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_ap %></div>
         </th>
-        <th class="amt">
+        <th class="amt" role="columnheader">
           <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_value %></div>
         </th>
@@ -30,13 +30,13 @@
     </thead>
 
     <% COPY.data.forEach(function(row) { %>
-    <tr class="state-<%= t.classify(row.usps) %>">
-      <td data-title="<%= COPY.labels.hdr_state %>"><%= row.name %></td>
-      <td data-title="<%= COPY.labels.hdr_usps %>"><%= row.usps %></td>
-      <td data-title="<%= COPY.labels.hdr_ap %>"><%= t.ap_state(row.usps) %></td>
-      <td data-title="<%= COPY.labels.hdr_value %>" class="amt"><%= t.comma(row.value) %></td>
+    <tr class="state-<%= t.classify(row.usps) %>" role="row">
+      <td role="cell" data-title="<%= COPY.labels.hdr_state %>"><%= row.name %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_usps %>"><%= row.usps %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_ap %>"><%= t.ap_state(row.usps) %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_value %>" class="amt"><%= t.comma(row.value) %></td>
     </tr>
-    <% }) %>
+  <% }) %>
 
   </table>
 </div>
