@@ -6,6 +6,7 @@
     "graphic.less",
     "*.png",
     "*.jpg",
+    "*.gif",
     "*.json",
     "!manifest.json",
     "*.geojson",
