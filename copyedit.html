@@ -2,7 +2,7 @@
 var m = s => (COPY.metadata && COPY.metadata[s]) || `__${s.toUpperCase()}__`;
 %>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
 
-Story URL (not yet published): http://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
+Story URL (not yet published): https://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
 
 Expected run date: <%= m("time") %>
 
