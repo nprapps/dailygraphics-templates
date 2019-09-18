@@ -28,10 +28,10 @@ pym.then(function(child) {
 });
 
 var render = function() {
-  var containerSelector = document.querySelector(".graphic");
+  var containerElement = document.querySelector(".graphic");
   //remove fallback
-  containerSelector.innerHTML = "";
-  var containerWidth = containerSelector.offsetWidth;
+  containerElement.innerHTML = "";
+  var containerWidth = containerElement.offsetWidth;
 
   var container = d3.select(containerSelector);
   var svg = container.append("svg");
