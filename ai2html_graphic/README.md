@@ -27,7 +27,7 @@ The basic ai2html project includes an Illustrator file in `assets`, which you'll
 
 You can only use fonts that are supported on our website, so make sure
 you are using the correct typeface and weight. [Here's a list of
-supported fonts](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.js#L138-L151). (For users outside of NPR, refer to the [ai2html docs](http://ai2html.org/#using-fonts-other-than-arial-and-georgia) to learn how to customize your fonts.)
+supported fonts](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx#L592-L605). (For users outside of NPR, refer to the [ai2html docs](http://ai2html.org/#using-fonts-other-than-arial-and-georgia) to learn how to customize your fonts.)
 
 Create your graphic within Illustrator, referring to the [ai2html
 documentation](http://ai2html.org/#how-to-use-ai2html) for help. When
