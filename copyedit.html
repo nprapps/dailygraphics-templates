@@ -13,4 +13,7 @@ Primary editorial contact: <%= m("editorial_contact") %>
 
 Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
 Production URL: https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/preview.html
+<% if (typeof children != "undefined") { %>
+NOTE: this graphic contains multiple embeds. Use the select box on the preview page to see each one.
+<% } %>
 <% Object.keys(COPY.labels).filter(k => COPY.labels[k]).forEach(key => print(`\n${key}: ${COPY.labels[key]}\n`)); %>
