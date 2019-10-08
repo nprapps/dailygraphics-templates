@@ -1,1 +1,10 @@
-<p data-pym-loader data-child-src="https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/<%= typeof childPage != "undefined" ? childPage : "" %>" id="responsive-embed-<%= slug %>"> Loading... </p> <script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>
+<%
+  if (typeof childPage == "undefined") var childPage = "";
+%>
+<p
+  data-pym-loader
+  data-child-src="https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/<%= childPage %>" 
+  id="responsive-embed-<%= slug + (childPage ? "-" + childPage.replace(".html", "") : "") %>">
+    Loading...
+</p>
+<script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>
