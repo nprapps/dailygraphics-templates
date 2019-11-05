@@ -4,38 +4,38 @@
 @screen-mobile: ~"screen and (max-width: 500px)";
 
 // Colors
-@red1       : #EF0F52;
-@red2       : #FF0066;
-@red3       : #CB0066;
+@purple1    : #855279;
+@purple2    : #BD75AC;
+@purple3    : #DBC0D4;
 
-@yellow1    : #F6C241;
-@yellow2    : #FFF100;
-@yellow3    : #FFE033;
+@yellow1    : #AC8E4C;
+@yellow2    : #F4C96C;
+@yellow3    : #F0DFBC;
 
-@green1     : #C2C932;
-@green2     : #CBEE00;
-@green3     : #DFDF00;
+@peach1     : #AE6E52;
+@peach2     : #F79C75;
+@peach3     : #F1CEBF;
 
-@blue1      : #2BA8E0;
-@blue2      : #00DBFF;
-@blue3      : #00BDFF;
-@blue4      : #0087B6;
+@blue1      : #1B6383;
+@blue2      : #268CBA;
+@blue3      : #A1C8DA;
 
-@gray1      : #333333;
-@gray2      : #999999;
-@gray3      : #D3D3D3;
-@gray4      : #eeeeee;
+@teal2      : #127479;
+@teal2      : #19A4AB;
+@teal3      : #9CD1D4;
+
+@gray1      : #393939;
+@gray2      : #828282;
+@gray3      : #DCDCDC;
+@gray4      : #ECECEC;
 
 // Fonts
-.source-regular() {
-  font-family: 'Source Sans Pro',Helvetica,Arial,sans-serif;
-  font-weight: 400;
+.serif() {
+  font-family: 'IBM Plex Serif',Times,serif;
 }
 
-// Normal Knockout
-.source-bold() {
-  font-family: 'Source Sans Pro',Helvetica, Arial, sans-serif;
-  font-weight: 700;
+.sans-serif() {
+  font-family: 'Barlow Condensed',Helvetica, Arial, sans-serif;
 }
 
 // Mixins
@@ -68,7 +68,8 @@
 
 html {
   -webkit-text-size-adjust: none;
-  .source-regular();
+  .serif();
+  font-weight: 400;
  }
 
 body {
@@ -84,24 +85,28 @@ img, svg {
 }
 
 h1 {
-  .source-bold();
+  .sans-serif();
   margin: 0 0 33px 0;
   font-size: 1.4em;
+  font-weight: 600; // Semibold
   color: @gray1;
 }
 
 h2 {
-  .source-regular();
+  .sans-serif();
   color: @gray1;
   font-size: 0.9em;
+  font-weight: 600; // Semibold
   margin: -22px 0 22px 0;
 }
 
 h3 {
+  .sans-serif();
   margin: 0 0 15px 0;
   text-transform: uppercase;
   padding-top: 0;
   letter-spacing: 0.05em;
+  font-weight: 600; // Semibold
   font-size: 0.9em;
   color: @gray1;
 }
@@ -114,8 +119,10 @@ h3 {
   margin-bottom: 20px;
 
   h4 {
+    .sans-serif();
     margin: 2px 0 7px 0;
     color: @gray2;
+    font-weight: 600; // Semibold
     font-size: 0.8em;
   }
 }
@@ -135,7 +142,7 @@ a, a:link, a:visited {
   text-decoration: none;
 }
 
-a:hover, a:active { color: @blue1; }
+a:hover, a:active { color: @teal1; }
 
 
 
@@ -230,7 +237,7 @@ rect {
   shape-rendering: crispEdges;
 }
 
-.bars rect { fill: @blue1; }
+.bars rect { fill: @teal2; }
 
 .labels {
   position: absolute;
@@ -255,6 +262,8 @@ rect {
 }
 
 .value text {
+  .sans-serif();
+  font-weight: 600; // Semibold
   font-size: 0.8em;
 
   &.in { fill: #fff; }
@@ -266,13 +275,13 @@ rect {
     stroke: @gray3;
   }
   text {
-    .source-regular();
+    .serif();
     color: @gray2;
   }
 }
 
 .x text{
-  .source-bold();
+  .serif();
   font-size: 1.2em;
 }
 
