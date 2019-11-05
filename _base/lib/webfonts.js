@@ -5,8 +5,9 @@ document.head.appendChild(script);
 script.onload = function() {
   WebFont.load({
       google: {
-          families: ['Source Sans Pro:Light,Regular,Bold']
-      },
+        families: ['Barlow Condensed:Semi-Bold,Semi-Bold Italic',
+                   'IBM Plex Serif:Regular,Regular Italic,Bold,Bold Italic']
+     },
       timeout: 10000
   });
 };
