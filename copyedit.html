@@ -2,7 +2,7 @@
 var m = s => (COPY.metadata && COPY.metadata[s]) || `__${s.toUpperCase()}__`;
 %>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
 
-Story URL (not yet published): http://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
+Story URL (not yet published): https://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
 
 Expected run date: <%= m("time") %>
 
@@ -10,7 +10,9 @@ Primary graphics contact: <%= "user" in config ? config.user.displayName : "__GR
 Primary editorial contact: <%= m("editorial_contact") %>
 
 ---- GRAPHIC <%= slug %> ----
-
+<% if (typeof children != "undefined" && children) { %>
+NOTE: This graphic contains multiple sections that will be embedded as separate graphics. On the preview page, use the dropdown box above the graphic to preview each section.
+<% } %>
 Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
-Production URL: https://<%= config.s3.bucket %>/<%= config.s3.prefix %>/<%= slug %>/preview.html
-<% Object.keys(COPY.labels).forEach(key => __p += `\n${key}: ${COPY.labels[key]}\n`); %>
+Production URL: https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/preview.html
+<% Object.keys(COPY.labels).filter(k => COPY.labels[k]).forEach(key => print(`\n${key}: ${COPY.labels[key]}\n`)); %>

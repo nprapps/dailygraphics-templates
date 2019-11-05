@@ -28,12 +28,12 @@ pym.then(function(child) {
 });
 
 var render = function() {
-  var container = document.querySelector(".graphic");
+  var containerElement = document.querySelector(".graphic");
   //remove fallback
-  container.innerHTML = "";
-  var containerWidth = container.offsetWidth;
+  containerElement.innerHTML = "";
+  var containerWidth = containerElement.offsetWidth;
 
-  var $container = d3.select(container);
+  var container = d3.select(containerSelector);
   var svg = container.append("svg");
 
   //put your D3 code here
