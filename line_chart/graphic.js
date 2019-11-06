@@ -159,11 +159,12 @@ var renderLineChart = function(config) {
       })
     )
     .range([
-      COLORS.red1,
-      COLORS.yellow1,
-      COLORS.blue1,
-      COLORS.green1,
-      COLORS.gray1
+      COLORS.purple2,
+      COLORS.yellow2,
+      COLORS.blue2,
+      COLORS.teal2,
+      COLORS.peach2,
+      COLORS.gray2
     ]);
 
   // Render the HTML legend.

@@ -143,7 +143,7 @@ var renderGroupedBarChart = function(config) {
         d => skipLabels.indexOf(d) == -1
       )
     )
-    .range([COLORS.gray1, COLORS.blue1]);
+    .range([COLORS.teal2, COLORS.gray1]);
   // Render a color legend.
   var legend = containerElement
     .append("ul")
@@ -312,7 +312,7 @@ var renderGroupedBarChart = function(config) {
         }
       }
     })
-    .attr("dy", barHeight / 2 + 4);
+    .attr("dy", barHeight / 2 + 6);
 };
 
 /*

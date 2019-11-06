@@ -20,7 +20,7 @@
 @blue2      : #268CBA;
 @blue3      : #A1C8DA;
 
-@teal2      : #127479;
+@teal1      : #127479;
 @teal2      : #19A4AB;
 @teal3      : #9CD1D4;
 
@@ -87,16 +87,15 @@ img, svg {
 h1 {
   .sans-serif();
   margin: 0 0 33px 0;
-  font-size: 1.4em;
+  font-size: 1.5em;
   font-weight: 600; // Semibold
   color: @gray1;
 }
 
 h2 {
-  .sans-serif();
   color: @gray1;
   font-size: 0.9em;
-  font-weight: 600; // Semibold
+  font-weight: 400;
   margin: -22px 0 22px 0;
 }
 
@@ -240,6 +239,8 @@ rect {
 .bars rect { fill: @teal2; }
 
 .labels {
+  .sans-serif();
+  font-weight: 600;
   position: absolute;
   margin: 0;
   padding: 0;
@@ -261,13 +262,15 @@ rect {
   }
 }
 
-.value text {
+.value text,
+.bar text {
   .sans-serif();
   font-weight: 600; // Semibold
-  font-size: 0.8em;
+  font-size: 0.9em;
+  fill: @gray2;
 
   &.in { fill: #fff; }
-  &.out { fill: @gray1; }
+  &.out { fill: @gray2; }
 }
 
 .tick {
@@ -282,7 +285,6 @@ rect {
 
 .x text{
   .serif();
-  font-size: 1.2em;
 }
 
 

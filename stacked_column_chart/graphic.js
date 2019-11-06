@@ -97,7 +97,7 @@ var renderStackedColumnChart = function(config) {
     top: 5,
     right: 5,
     bottom: 20,
-    left: 30
+    left: 38
   };
 
   var ticksY = 5;
@@ -153,7 +153,7 @@ var renderStackedColumnChart = function(config) {
     .domain(
       Object.keys(config.data[0]).filter(k => skipLabels.indexOf(k) == -1)
     )
-    .range([COLORS.gray1, COLORS.blue1]);
+    .range([COLORS.teal2, COLORS.purple1]);
 
   // Render the legend.
   var legend = containerElement

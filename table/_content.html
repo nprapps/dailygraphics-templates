@@ -11,20 +11,20 @@
     <thead role="rowgroup">
       <tr role="row">
         <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_state %></div>
+          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
         </th>
         <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_usps %></div>
+          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
         </th>
         <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_ap %></div>
+          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
         </th>
         <th class="amt" role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
           <div class="header"><%= COPY.labels.hdr_value %></div>
+          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
         </th>
       </tr>
     </thead>
@@ -52,7 +52,7 @@
   <% if (COPY.labels.source) { %>
   <p>Source: <%= COPY.labels.source %></p>
   <% } %>
-  
+
   <% if (COPY.labels.credit) { %>
   <p>Credit: <%= COPY.labels.credit %></p>
   <% } %>

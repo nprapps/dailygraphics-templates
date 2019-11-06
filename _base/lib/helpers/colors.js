@@ -1,7 +1,8 @@
 module.exports = {
-  "red1": "#EF0F52", "red2": "#FF0066", "red3": "#CB0066",
-  "yellow1": "#F6C241", "yellow2": "#FFF100", "yellow3": "#FFE033",
-  "green1": "#C2C932", "green2": "#CBEE00", "green3": "#DFDF00",
-  "blue1": "#2BA8E0", "blue2": "#00DBFF", "blue3": "#00BDFF", "blue4": "#0087B6",
-  "gray1": "#333333", "gray2": "#999999", "gray3": "#D3D3D3", "gray4": "#eeeeee"
+  "purple1" : "#855279", "purple2" : "#BD75AC", "purple3" : "#DBC0D4",
+  "yellow1" : "#AC8E4C", "yellow2" : "#F4C96C", "yellow3" : "#F0DFBC",
+  "peach1" : "#AE6E52", "peach2" : "#F79C75", "peach3" : "#F1CEBF",
+  "blue1" : "#1B6383", "blue2" : "#268CBA", "blue3" : "#A1C8DA",
+  "teal1" : "#127479", "teal2" : "#19A4AB", "teal3" : "#9CD1D4",
+  "gray1" : "#393939", "gray2" : "#828282", "gray3" : "#DCDCDC", "gray4" : "#ECECEC"
 };

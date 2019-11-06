@@ -154,8 +154,8 @@ var renderLineChart = function(config) {
   var ticksY = 10;
   var roundTicksFactor = 5;
 
-  var annotationXOffset = -4;
-  var annotationYOffset = -24;
+  var annotationXOffset = 0;
+  var annotationYOffset = -10;
   var annotationWidth = 80;
   var annotationLineHeight = 14;
 
@@ -166,8 +166,8 @@ var renderLineChart = function(config) {
     ticksX = 5;
     ticksY = 5;
     margins.right = 25;
-    annotationXOffset = -6;
-    annotationYOffset = -20;
+    annotationXOffset = 0;
+    annotationYOffset = -10;
     annotationWidth = 72;
     annotationLineHeight = 12;
   }
@@ -222,11 +222,12 @@ var renderLineChart = function(config) {
     .scaleOrdinal()
     .domain(config.data.map(d => d.name))
     .range([
-      COLORS.red1,
-      COLORS.yellow1,
-      COLORS.blue1,
-      COLORS.green1,
-      COLORS.gray1
+      COLORS.purple2,
+      COLORS.yellow2,
+      COLORS.blue2,
+      COLORS.teal2,
+      COLORS.peach2,
+      COLORS.gray2
     ]);
 
   /*
@@ -381,11 +382,11 @@ var renderLineChart = function(config) {
       var hasCustomLabel = d.label != null && d.label.length > 0;
       var text = hasCustomLabel ? d.label : fmtDateFull(d[dateColumn]);
       var value = d[valueColumn].toFixed(2);
-      return text + " " + value;
+      return text + " — " + value;
     })
     .attr("x", d => xScale(d[dateColumn]) + d.xOffset + annotationXOffset)
-    .attr("y", d => yScale(d[valueColumn]) + d.yOffset + annotationYOffset)
-    .call(wrapText, annotationWidth, annotationLineHeight);
+    .attr("y", d => yScale(d[valueColumn]) + d.yOffset + annotationYOffset);
+    // .call(wrapText, annotationWidth, annotationLineHeight);
 };
 
 /*

@@ -3,17 +3,6 @@ var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
 var { isMobile } = require("./lib/breakpoints");
 
-// Global config
-var COLOR_BINS = [-4, -2, 0, 2, 4, 6, 8, 10];
-var COLOR_RANGE = [
-  "#e68c31",
-  "#eba934",
-  "#efc637",
-  "#c6b550",
-  "#99a363",
-  "#6a9171",
-  "#17807e"
-];
 
 // Global vars
 var pymChild = null;
@@ -25,7 +14,19 @@ var d3 = {
   ...require("d3-axis/dist/d3-axis.min")
 };
 
-var { makeTranslate, classify } = require("./lib/helpers");
+var { COLORS, makeTranslate, classify } = require("./lib/helpers");
+
+// Global config
+var COLOR_BINS = [-4, -2, 0, 2, 4, 6, 8, 10];
+var COLOR_RANGE = [
+  "#e68c31",
+  "#eba934",
+  "#efc637",
+  "#c6b550",
+  "#99a363",
+  "#6a9171",
+  COLORS.teal1
+];
 
 // Initialize the graphic.
 var onWindowLoaded = function() {
@@ -63,7 +64,7 @@ var formatData = function() {
       var state = d.usps;
 
       for (var i = 0; i < numBins; i++) {
-        if (amt >= COLOR_BINS[i] && amt < COLOR_BINS[i + 1]) {
+        if (d.amt >= COLOR_BINS[i] && d.amt < COLOR_BINS[i + 1]) {
           binnedData[i].unshift(state);
           break;
         }
@@ -106,9 +107,9 @@ var renderBlockHistogram = function(config) {
 
   var margins = {
     top: 20,
-    right: 12,
-    bottom: 20,
-    left: 10
+    right: 14,
+    bottom: 24,
+    left: 14
   };
 
   var ticksY = 4;

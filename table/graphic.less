@@ -5,18 +5,23 @@ table {
   border-collapse: collapse;
   padding: 0;
   width: 100%;
-  font-size: 12px;
-  color: #666;
+  font-size: 14px;
+  color: @gray1;
 
   tr.shadedrow {
-    background-color: #f1f1f1;
-    color: #333;
+    background-color: @gray4;
+    color: @gray1;
     font-weight: bold;
   }
 
+  tr:nth-child(even) {
+    background-color: @gray4;
+  }
+
   th {
-    .knockout-header();
+    .sans-serif();
     line-height: 1.2;
+    font-size: 16px;
     text-align: left;
     vertical-align: bottom;
   }
@@ -26,45 +31,40 @@ table {
 
 // Tablesorter styles
 table {
+
+  .header,
+  .sorter,
+  .sorter * {
+    display: inline-block;
+  }
+
   th {
     &.sort-header {
       cursor: pointer;
 
-      &::-moz-selection,
-      &::selection {
-        background: transparent;
-      }
-
       .sorter {
-        border-top: 2px solid #404040;
-        visibility: hidden;
-
-        .icon {
-          content: '▼';
-          width: 1px;
-          margin: 3px auto 7px auto;
-          border-width: 0 4px 4px;
-          border-style: solid;
-          border-color: #404040 transparent;
+        margin-left: 4px;
+        font-size: 12px;
+        color: @gray3;
+        .arrow-down {
+          margin-left: -4px;
         }
       }
 
-      &:hover .sorter {
-        visibility: visible;
+      &[aria-sort="ascending"] {
+        .arrow-up {
+          color: @teal2;
+        }
       }
+
+      &[aria-sort="descending"] {
+        .arrow-down {
+          color: @teal2;
+        }
+      }
+
     }
 
-    &[aria-sort="descending"] .sorter,
-    &[aria-sort="ascending"] .sorter,
-    &[aria-sort="ascending"]:hover .sorter {
-      visibility: visible;
-      opacity: 0.4;
-    }
-
-    &[aria-sort="descending"] .sorter .icon {
-      border-bottom: none;
-      border-width: 4px 4px 0;
-    }
   }
 }
 
@@ -76,13 +76,17 @@ table {
 @media @screen-mobile-above {
   table {
     th, td {
-      padding: 10px;
+      padding: 8px 10px;
 
       // comment these two out if you want to highlight particular rows
       &:first-child { padding-left: 0; }
       &:last-child { padding-right: 0; }
 
       &.amt { text-align: right; }
+    }
+
+    tbody tr:hover{
+      background-color: @teal3;
     }
 
     th {
@@ -114,7 +118,7 @@ table {
 
     tr {
       border-bottom: 1px solid #eee;
-      padding: 10px 0;
+      padding: 6px 0;
 
       &:first-child { border-top: 1px solid #eee; }
     }
@@ -126,9 +130,9 @@ table {
     }
 
     tr td:first-child {
-      .knockout-header();
-      color: #333;
-      font-size: 14px;
+      .sans-serif();
+      color: @gray1;
+      font-size: 16px;
       margin-bottom: 6px;
 
       &:before {
