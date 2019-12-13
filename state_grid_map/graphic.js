@@ -53,7 +53,7 @@ var formatData = function() {
 
 // Render the graphic(s). Called by pym with the container width.
 var render = function() {
-  isNumeric = LABELS.isNumeric;
+  isNumeric = LABELS.is_numeric;
 
   // Render the map!
   var container = "#state-grid-map";
