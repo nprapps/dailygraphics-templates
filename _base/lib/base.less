@@ -316,3 +316,12 @@ img:not([alt]) {
     outline: none;
   }
 }
+
+.sr-only {
+  opacity: 0;
+  position: absolute;
+  left: -1000px;
+  clip: inset(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+}
