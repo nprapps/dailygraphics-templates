@@ -6,40 +6,7 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div class="graphic" id="table-graphic">
-  <table id="state-table" role="table">
-    <thead role="rowgroup">
-      <tr role="row">
-        <th role="columnheader">
-          <div class="header"><%= COPY.labels.hdr_state %></div>
-          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
-        </th>
-        <th role="columnheader">
-          <div class="header"><%= COPY.labels.hdr_usps %></div>
-          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
-        </th>
-        <th role="columnheader">
-          <div class="header"><%= COPY.labels.hdr_ap %></div>
-          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
-        </th>
-        <th class="amt" role="columnheader">
-          <div class="header"><%= COPY.labels.hdr_value %></div>
-          <div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>
-        </th>
-      </tr>
-    </thead>
-
-    <% COPY.data.forEach(function(row) { %>
-    <tr class="state-<%= t.classify(row.usps) %>" role="row">
-      <td role="cell" data-title="<%= COPY.labels.hdr_state %>"><%= row.name %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_usps %>"><%= row.usps %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_ap %>"><%= t.ap_state(row.usps) %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_value %>" class="amt"><%= t.comma(row.value) %></td>
-    </tr>
-  <% }) %>
-
-  </table>
-</div>
+<div class="graphic" id="table-graphic"></div>
 
 <% if (COPY.labels.footnote) { %>
 <div class="footnotes">
@@ -57,3 +24,7 @@
   <p>Credit: <%= COPY.labels.credit %></p>
   <% } %>
 </div>
+
+<script type="text/javascript">
+  var DATA = <%= JSON.stringify(COPY.data) %>;
+</script>

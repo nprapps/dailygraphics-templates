@@ -1,5 +1,10 @@
 @import "./lib/base";
 
+body {
+  max-width: 700px;
+  margin: auto;
+}
+
 // Base table styles
 table {
   border-collapse: collapse;
@@ -18,7 +23,7 @@ table {
     background-color: @gray4;
   }
 
-  th {
+  thead {
     .sans-serif();
     line-height: 1.2;
     font-size: 16px;
@@ -38,7 +43,7 @@ table {
     display: inline-block;
   }
 
-  th {
+  thead {
     &.sort-header {
       cursor: pointer;
 
@@ -75,7 +80,7 @@ table {
 */
 @media @screen-mobile-above {
   table {
-    th, td {
+    thead, td {
       padding: 8px 10px;
 
       // comment these two out if you want to highlight particular rows
@@ -89,7 +94,7 @@ table {
       background-color: @teal3;
     }
 
-    th {
+    thead {
       border-bottom: 2px solid #eee;
       padding-top: 0;
     }
@@ -141,7 +146,7 @@ table {
       }
     }
 
-    th[data-title]:before,
+    thead[data-title]:before,
     td[data-title]:before {
       content: attr(data-title) ":\00A0";
       display: inline-block;
