@@ -21,6 +21,7 @@ var onWindowLoaded = function() {
 
 
 var render = function() {
+  div.innerHTML = "";
 
   // Create the table using for each to add rows
   var table = document.createElement("TABLE");
