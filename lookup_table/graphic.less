@@ -1,0 +1,271 @@
+@import "./lib/base";
+
+body {
+  max-width: 700px;
+  margin: auto;
+}
+
+.autocomplete {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+input {
+  .serif();
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid transparent;
+  background-color: @gray4;
+  font-size: 16px;
+  -webkit-appearance: none;
+  border-radius: 0;
+  }
+input[type=search] {
+  -webkit-appearance: none;
+  width: 100%;
+  background-color: @gray4;
+  flex-grow: 1;
+  border-radius: 4px 0 0 4px;
+}
+input[type=submit] {
+  border-radius: 0 4px 4px 0;
+  background-color: @gray1;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: @teal2;
+  }
+}
+.autocomplete-items {
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: auto;
+  margin-top: -20px;
+  overflow-y: scroll;
+  position: absolute;
+  border: 1px solid @gray3;
+  border-top: none;
+  border-bottom: none;
+  max-height: 200px;
+}
+.autocomplete-items div {
+  padding: 10px;
+  border-bottom: 1px solid @gray3;
+  background-color: #fff;
+  cursor: pointer;
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: @teal3;
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: @teal3 !important;
+}
+
+
+
+// Base table styles
+.table-container {
+  border-top: 2px solid @teal1;
+  border-bottom: 2px solid @teal1;
+
+  tbody {
+    display: block;
+    max-height: 390px;
+    overflow-y: scroll;
+    width: 100%;
+  }
+
+  tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+}
+
+table {
+  width: 100%;
+  padding: 0;
+  border-collapse: collapse;
+  color: @gray1;
+  font-size: 14px;
+
+  thead td {
+    font-weight: bold;
+  }
+
+  tr.shadedrow {
+    background-color: @gray4;
+    color: @gray1;
+    font-weight: bold;
+  }
+
+  thead {
+    .sans-serif();
+    font-size: 1.3em;
+    line-height: 1.2;
+    text-align: left;
+    vertical-align: bottom;
+  }
+
+  thead tr th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: @teal1;
+    color: white;
+  }
+
+
+  td { vertical-align: top; }
+}
+
+// Tablesorter styles
+thead {
+  cursor: default;
+  .arrow-up,
+  .arrow-down {
+    cursor: pointer;
+  }
+
+  .header,
+  .sorter,
+  .sorter * {
+    display: inline-block;
+  }
+
+  .sorter {
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+    margin-left: 4px;
+    color: white;
+    font-size: 12px;
+    user-select: none; /* supported by Chrome and Opera */
+    .arrow-down {
+      margin-left: -4px;
+    }
+  }
+
+  .sort-header {
+    &[aria-sort="ascending"] {
+      .arrow-up {
+        color: @peach2;
+      }
+    }
+    &[aria-sort="descending"] {
+      .arrow-down {
+        color: @peach2;
+      }
+    }
+  }
+
+}
+
+/*
+* larger-than-small-screen styles
+* ~ defining some desktop-only styles here to avoid
+* ~ writing extra mobile styles to undo them.
+*/
+@media @screen-mobile-above {
+
+  .mobile {
+    display: none;
+  }
+
+  table {
+    th, td {
+      padding: 8px 10px;
+      // &:first-child { padding-left: 0; }
+      // &:last-child { padding-right: 0; }
+      &.number,
+      &.percent,
+      &.dollars {
+        text-align: right;
+      }
+    }
+
+    tbody tr:hover{
+      background-color: @gray4;
+    }
+
+    // th {
+    //   border-bottom: 2px solid @gray1;
+    // }
+
+    tr {
+      padding: 6px 0;
+      border-bottom: 1px solid @gray3;
+
+      &:last-child { border-bottom: none; }
+    }
+  }
+}
+
+/*
+* small-screen styles
+*/
+@media @screen-mobile {
+  tbody {
+    display: block;
+    width: 100%;
+  }
+
+  table {
+    thead {
+      th {
+        display: none;
+      }
+      tr {
+        // display: flex;
+      }
+      .sort-header {
+        display: inline-block;
+        width: 50%;
+        border: 1px solid #fff;
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+    }
+
+    .mobile-table-header {
+      .sans-serif();
+      font-size: 16px;
+    }
+
+    tr, th, td {
+      display: block;
+      padding: 0 10px;
+      white-space: normal;
+    }
+
+    tr {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+
+      &:last-child { border-bottom: none; }
+    }
+
+    td {
+      margin-bottom: 6px;
+
+      &:empty { display: none; }
+    }
+
+    thead[data-title]:before,
+    td[data-title]:before {
+      .sans-serif();
+      font-size: 16px;
+      display: inline-block;
+      // width: 70%;
+      // margin-right: 10px;
+      content: attr(data-title) ":\00A0";
+    }
+  }
+}
