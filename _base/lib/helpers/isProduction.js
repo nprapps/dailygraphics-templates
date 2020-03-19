@@ -5,20 +5,12 @@
  * - If no url is given checks window.location.href
  */
 
-module.exports = function(u) {
-  var result = true;
-  var u = u || window.location.href;
-  var re_embedded = /^.*parentUrl=(.*)$/;
-    // Check if we are inside the dailygraphics local rig
-    var m = u.match(re_embedded)
-    if (m) {
-      u = decodeURIComponent(m[1])
-    }
-    l = getLocation(u);
-    if (l.hostname.startsWith("localhost") ||
-      l.hostname.startsWith("stage-") ||
-      l.hostname.startsWith("www-s1")) {
-      result = false
+module.exports = function(u = window.location.href) {
+  var url = new URL(u);
+  var parentURL = url.searchParams.get("parentUrl");
+  if (parentURL) {
+    var parent = new URL(parentURL);
+    return !parent.hostname.match(/^localhost|^stage-|^www-s1/i);
   }
-  return result;
+  return true;
 };
