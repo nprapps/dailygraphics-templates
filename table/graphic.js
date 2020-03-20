@@ -1,13 +1,16 @@
 var pym = require("./lib/pym");
 require("./lib/webfonts");
+var comma = require("./lib/helpers/fmtComma");
+// If sortable:
+window.Tablesort = require("tablesort");
+require("tablesort/dist/sorts/tablesort.number.min");
 
 // Global vars
 var pymChild = null;
-var keys, input, div;
+var input, table;
 
 var onWindowLoaded = function() {
-  keys = Object.keys(DATA[0]);
-  div = document.getElementById("table-graphic");
+  table = document.getElementById("table-graphic");
   render();
 
   window.addEventListener("resize", render);
@@ -21,27 +24,44 @@ var onWindowLoaded = function() {
 
 
 var render = function() {
-  div.innerHTML = "";
+  table.innerHTML = "";
 
-  // Create the table using for each to add rows
-  var table = document.createElement("TABLE");
+  // Insert table content
   var header = table.createTHead();
   var body = table.createTBody();
   var headerRow = header.insertRow(0);
-  for(i=0; i<keys.length; i++) {
-    var cell = headerRow.insertCell(-1);
-    cell.innerHTML = keys[i];
-  }
-
+  DATA_HEADERS.forEach(function(d) {
+    var cell = document.createElement("th");
+    cell.innerHTML = d.label;
+    cell.classList.add("columheader");
+    cell.classList.add(d.format);
+    cell.setAttribute("width",d.width);
+    if(d.sort == "yes") {
+      cell.classList.add("sortheader");
+      cell.innerHTML += '<div class="sorter"><div class="arrow-up">&#9650;</div><div class="arrow-down">&#9660;</div></div>';
+    }
+    headerRow.appendChild(cell);
+  });
   for(i=0; i<DATA.length; i++) {
-    var row = body.insertRow(0);
-    for(a=0; a<keys.length; a++) {
+    var row = body.insertRow(-1);
+    for(a=0; a<DATA_HEADERS.length; a++) {
       var cell = row.insertCell(-1);
-      cell.innerHTML = "<span class='mobile mobile-table-header'>"+ keys[a] +": </span>" + DATA[i][keys[a]];
+      cell.setAttribute("width",DATA_HEADERS[a].width);
+      cell.setAttribute("data-title",DATA_HEADERS[a].label);
+      cell.classList.add(DATA_HEADERS[a].format);
+      if(DATA_HEADERS[a].format == "number") {
+        cell.innerHTML = comma(DATA[i][DATA_HEADERS[a].label]);
+      } else if(DATA_HEADERS[a].format == "dollars") {
+        cell.innerHTML = "$" + comma(DATA[i][DATA_HEADERS[a].label]);
+      } else if(DATA_HEADERS[a].format == "percent") {
+        cell.innerHTML = Math.round(DATA[i][DATA_HEADERS[a].label] * 100) + "%";
+      } else {
+        cell.innerHTML = DATA[i][DATA_HEADERS[a].label];
+      }
     }
   }
 
-  div.appendChild(table);
+  Tablesort(document.querySelector("#table-graphic"));
 
   // Update iframe
   if (pymChild) {

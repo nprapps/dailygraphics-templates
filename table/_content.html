@@ -6,7 +6,9 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div class="graphic" id="table-graphic"></div>
+<div class="graphic table-container">
+    <table id="table-graphic" class="<%='scroll-' + COPY.labels.scroll %>" cellspacing="0"></table>
+</div>
 
 <% if (COPY.labels.footnote) { %>
 <div class="footnotes">
@@ -26,5 +28,6 @@
 </div>
 
 <script type="text/javascript">
+  var DATA_HEADERS = <%= JSON.stringify(COPY.columns) %>;
   var DATA = <%= JSON.stringify(COPY.data) %>;
 </script>
