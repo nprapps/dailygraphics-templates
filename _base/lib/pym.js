@@ -1,4 +1,5 @@
 var { getParameterByName } = require("./helpers");
+var analytics = require("./analytics");
 
 module.exports = new Promise(ok => {
   var url = "https://pym.nprapps.org/pym.v1.min.js";
@@ -6,7 +7,20 @@ module.exports = new Promise(ok => {
   script.src = url;
   document.head.appendChild(script);
 
-  script.onload = () => ok(new pym.Child());
+  script.onload = function() {
+
+    var child = new pym.Child();
+
+    // child.onMessage("on-screen", function(bucket) {
+    //   analytics.trackEvent("on-screen", bucket);
+    // });
+    // child.onMessage("scroll-depth", function(data) {
+    //   data = JSON.parse(data);
+    //   analytics.trackEvent("scroll-depth", data.percent, data.seconds);
+    // });
+
+    ok(child);
+  }
 });
 
 switch (getParameterByName("mode")) {
