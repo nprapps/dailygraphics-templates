@@ -6,13 +6,10 @@ var skipLabels = ["date", "annotate", "x_offset", "y_offset"];
 
 var renderLineChart = require("./renderAnnotatedLine");
 
-/*
- * Initialize graphic
- */
+// Initialize graphic
 var onWindowLoaded = function() {
   var { annotations, series } = formatData(window.DATA);
   render(series, annotations);
-
   window.addEventListener("resize", () => render(series, annotations));
 
   pym.then(child => {
@@ -21,9 +18,7 @@ var onWindowLoaded = function() {
   });
 };
 
-/*
- * Format graphic data for processing by D3.
- */
+// Reformat data for renderAnnotatedLine()
 var formatData = function(data) {
   var annotations = [];
   var series = [];
@@ -33,8 +28,8 @@ var formatData = function(data) {
     y = y > 50 ? 1900 + y : 2000 + y;
     d.date = new Date(y, m - 1, day);
 
-    for (var key in d) {
-      if (skipLabels.includes(key) || !(key in d)) continue;
+    for (var series in d) {
+      if (skipLabels.includes(series) || !(series in d)) continue;
 
       // Annotations
       var hasAnnotation = !!d.annotate;
@@ -47,23 +42,19 @@ var formatData = function(data) {
 
         annotations.push({
           date: d.date,
-          amt: d[key],
-          series: key,
-          xOffset: xOffset,
-          yOffset: yOffset,
-          label: label
+          amt: d[series],
+          series,
+          xOffset,
+          yOffset,
+          label
         });
       }
     }
   });
 
-  /*
-   * Restructure tabular data for easier charting.
-   */
+  // Restructure tabular data for easier charting.
   for (var name in data[0]) {
-    if (skipLabels.includes(name)) {
-      continue;
-    }
+    if (skipLabels.includes(name)) continue;
 
     var values = data.map(function(d) {
       return {
@@ -71,10 +62,8 @@ var formatData = function(data) {
         amt: d[name]
       };
     });
-
     // filter out empty data, if your set is inconsistent
     // values = values.filter(d => d.amt);
-
     series.push({ name, values });
   }
 

@@ -5,8 +5,9 @@
 module.exports = {
   classify: require("./classify"),
   COLORS: require("./colors"),
-  formatStyle: require("./formatStyle"),
   fmtComma: require("./fmtComma"),
+  formatDate: require("./formatDate"),
+  formatStyle: require("./formatStyle"),
   getAPMonth: require("./getAPMonth"),
   getLocation: require("./getLocation"),
   getParameterByName: require("./getParameterByName"),

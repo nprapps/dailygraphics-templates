@@ -5,17 +5,13 @@
 var {
   COLORS,
   classify,
-  getAPMonth,
   makeTranslate,
   wrapText
 } = require("./lib/helpers");
 
 var { isMobile } = require("./lib/breakpoints");
 
-var fmtYearAbbrev = d => (d.getFullYear() + "").slice(-2);
-var fmtYearFull = d => d.getFullYear();
-var fmtDayYear = d => d.getDate() + ", " + d.getFullYear();
-var fmtDateFull = d => getAPMonth(d) + " " + fmtDayYear(d).trim();
+var { yearAbbrev, yearFull, dayYear, dateFull } = require("./lib/helpers/formatDate");
 
 var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
@@ -144,9 +140,9 @@ module.exports = function(config) {
     .ticks(ticksX)
     .tickFormat(function(d, i) {
       if (isMobile) {
-        return "\u2019" + fmtYearAbbrev(d);
+        return "\u2019" + yearAbbrev(d);
       } else {
-        return fmtYearFull(d);
+        return yearFull(d);
       }
     });
 
@@ -172,20 +168,13 @@ module.exports = function(config) {
   /*
    * Render grid to chart.
    */
-  var xAxisGrid = function() {
-    return xAxis;
-  };
-
-  var yAxisGrid = function() {
-    return yAxis;
-  };
 
   chartElement
     .append("g")
     .attr("class", "x grid")
     .attr("transform", makeTranslate(0, chartHeight))
     .call(
-      xAxisGrid()
+      xAxis
         .tickSize(-chartHeight, 0, 0)
         .tickFormat("")
     );
@@ -194,7 +183,7 @@ module.exports = function(config) {
     .append("g")
     .attr("class", "y grid")
     .call(
-      yAxisGrid()
+      yAxis
         .tickSize(-chartWidth, 0, 0)
         .tickFormat("")
     );
@@ -271,7 +260,7 @@ module.exports = function(config) {
     .append("text")
     .html(function(d) {
       var hasCustomLabel = d.label != null && d.label.length > 0;
-      var text = hasCustomLabel ? d.label : fmtDateFull(d[dateColumn]);
+      var text = hasCustomLabel ? d.label : dateFull(d[dateColumn]);
       var value = d[valueColumn].toFixed(2);
       return text + " " + value;
     })
