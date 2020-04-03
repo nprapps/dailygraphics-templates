@@ -1,6 +1,6 @@
 var pym = require("./lib/pym");
 require("./lib/webfonts");
-var skipLabels = [ 'label', 'category', 'values', 'total' ];
+var skipLabels = ["label", "category", "values", "total"];
 
 var pymChild;
 var renderGroupedStackedColumnChart = require("./renderStackedGroupedColumns");
@@ -48,7 +48,7 @@ var formatData = function(input) {
       y0 = y1;
     }
 
-    return { values, total, category, label }
+    return { values, total, category, label };
   });
 
   return output;

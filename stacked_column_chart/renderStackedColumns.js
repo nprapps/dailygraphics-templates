@@ -133,11 +133,7 @@ module.exports = function(config) {
   chartElement
     .append("g")
     .attr("class", "y grid")
-    .call(
-      yAxis
-        .tickSize(-chartWidth, 0)
-        .tickFormat("")
-    );
+    .call(yAxis.tickSize(-chartWidth, 0).tickFormat(""));
 
   // Render bars to chart.
   var bars = chartElement
