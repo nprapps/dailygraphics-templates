@@ -25,8 +25,7 @@ module.exports = function(config) {
   /*
    * Setup
    */
-  var dateColumn = "date";
-  var valueColumn = "amt";
+  var { dateColumn, valueColumn } = config;
 
   var aspectWidth = 16;
   var aspectHeight = 9;

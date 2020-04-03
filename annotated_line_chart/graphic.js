@@ -83,7 +83,9 @@ var render = function(data, annotations) {
     container,
     width,
     data,
-    annotations
+    annotations,
+    dateColumn: "date",
+    valueColumn: "amt"
   });
 
   // Update iframe
