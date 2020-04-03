@@ -26,7 +26,7 @@ var render = function() {
   var container = d3.select(containerSelector);
   var svg = container.append("svg");
 
-  //put your D3 code here
+  //run your D3 functions here
 
   pymChild.sendHeight();
 };
