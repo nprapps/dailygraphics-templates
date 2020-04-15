@@ -62,7 +62,8 @@ var render = function(data) {
     container,
     width,
     data,
-    labelColumn: "name"
+    labelColumn: "label",
+    nameColumn: "name"
   });
 
   // Update iframe

@@ -10,7 +10,7 @@ var { isMobile } = require("./lib/breakpoints");
 // Render a stacked bar chart.
 module.exports = function(config) {
   // Setup
-  var { labelColumn } = config;
+  var { labelColumn, nameColumn } = config;
 
   var barHeight = 30;
   var barGap = 5;
@@ -62,7 +62,7 @@ module.exports = function(config) {
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(config.data[0].values.map(d => d[labelColumn]))
+    .domain(config.data[0].values.map(d => d[nameColumn]))
       .range([COLORS.teal3, COLORS.orange3, COLORS.blue3, "#ccc"]);
 
   // Render the legend.
@@ -137,8 +137,8 @@ module.exports = function(config) {
     .attr("x", d => (d.x0 < d.x1 ? xScale(d.x0) : xScale(d.x1)))
     .attr("width", d => Math.abs(xScale(d.x1) - xScale(d.x0)))
     .attr("height", barHeight)
-    .style("fill", d => colorScale(d.name))
-    .attr("class", d => classify(d.name));
+    .style("fill", d => colorScale(d[nameColumn]))
+    .attr("class", d => classify(d[nameColumn]));
 
   // Render bar values.
   group
