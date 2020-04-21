@@ -1,6 +1,5 @@
 var pym = require("./lib/pym");
 require("./lib/webfonts");
-var { isMobile } = require("./lib/breakpoints");
 
 // build our custom D3 object
 var d3 = {
@@ -9,6 +8,7 @@ var d3 = {
 };
 
 var { COLORS, classify } = require("./lib/helpers");
+var { isMobile } = require("./lib/breakpoints");
 var $ = require("./lib/qsa");
 
 // Global vars
