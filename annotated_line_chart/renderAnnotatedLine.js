@@ -47,7 +47,7 @@ module.exports = function(config) {
   var annotationLineHeight = 14;
 
   // Mobile
-  if (isMobile) {
+  if (isMobile.matches) {
     aspectWidth = 4;
     aspectHeight = 3;
     ticksX = 5;
