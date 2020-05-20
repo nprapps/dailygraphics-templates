@@ -82,6 +82,12 @@ var renderStateGridMap = function(config) {
   if (LABELS.legend_labels && LABELS.legend_labels !== "") {
     // If custom legend labels are specified
     categories = LABELS.legend_labels.split("|").map(l => l.trim());
+
+    if (config.isNumeric) {
+      categories.forEach(function(d,i) {
+        categories[i] = Number(categories[i]);
+      });
+    }
   } else {
     // Default: Return sorted array of categories
     config.data.forEach(function(state) {
