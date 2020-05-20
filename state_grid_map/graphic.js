@@ -108,7 +108,7 @@ var renderStateGridMap = function(config) {
     legendWrapper.classed("numeric-scale", true);
 
     var colorScale = d3
-      .scaleOrdinal()
+      .scaleThreshold()
       .domain(categories)
       .range([
         COLORS.teal6,
