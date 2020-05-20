@@ -158,13 +158,13 @@ var renderStateGridMap = function(config) {
 
   // Set state colors
   config.data.forEach(function(state) {
-    if (state[valueColumn] !== null) {
+    if (state[valueColumn] !== null && state[valueColumn] !== undefined) {
       var stateClass = "state-" + classify(state.state_name);
       var categoryClass = "category-" + classify(state[valueColumn] + "");
 
       chartElement
         .select("." + stateClass)
-        .attr("class", stateClass + " state-active " + categoryClass)
+        .attr("class", `${ stateClass } ${ categoryClass } state-active`)
         .attr("fill", colorScale(state[valueColumn]));
     }
   });
@@ -182,7 +182,7 @@ var renderStateGridMap = function(config) {
       return isMobile.matches ? state.usps : state.ap;
     })
     .attr("class", d =>
-      d[valueColumn] !== null
+      (d[valueColumn] !== null && d[valueColumn] !== undefined)
         ? `category-${classify(d[valueColumn] + "")} label label-active`
         : "label"
     )
