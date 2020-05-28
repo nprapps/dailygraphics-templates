@@ -96,9 +96,11 @@ module.exports = function(config) {
 
   // Render the HTML legend.
 
+  var oneLine = config.data.length > 1 ? "" : " one-line";
+
   var legend = containerElement
     .append("ul")
-    .attr("class", "key")
+    .attr("class", "key" + oneLine)
     .selectAll("g")
     .data(config.data)
     .enter()
