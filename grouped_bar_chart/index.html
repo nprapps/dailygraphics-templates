@@ -1,3 +1,5 @@
+<%= await t.include("_head.html") %>
+
 <% if (COPY.labels.headline) { %>
 <h1><%= t.smarty(COPY.labels.headline) %></h1>
 <% } %>
@@ -6,12 +8,12 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div id="bar-chart" class="graphic" role="img"
+<div id="grouped-bar-chart" class="graphic" role="img"
   <% if (COPY.labels.screenreader) { %>
   aria-label="<%- COPY.labels.screenreader %>"
   <% } %>
 >
-<img src="fallback.png" alt="" class="fallback" />
+  <img src="fallback.png" alt="" class="fallback" />
 </div>
 
 <% if (COPY.labels.footnote) { %>
@@ -29,3 +31,7 @@
 <script type="text/javascript">
   var DATA = <%= JSON.stringify(COPY.data) %>;
 </script>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("_foot.html") %>

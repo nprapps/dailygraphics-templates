@@ -1,3 +1,5 @@
+<%= await t.include("_head.html") %>
+
 <% if (COPY.labels.headline) { %>
 <h1><%= t.smarty(COPY.labels.headline) %></h1>
 <% } %>
@@ -30,3 +32,7 @@ aria-label="<%- COPY.labels.screenreader %>"
     var DATA = <%= JSON.stringify(COPY.data) %>;
     var LABELS = <%= JSON.stringify(COPY.labels) %>;
 </script>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("_foot.html") %>

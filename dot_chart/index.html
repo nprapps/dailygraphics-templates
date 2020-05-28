@@ -1,3 +1,5 @@
+<%= await t.include("_head.html") %>
+
 <% if (COPY.labels.headline) { %>
 <h1><%= t.smarty(COPY.labels.headline) %></h1>
 <% } %>
@@ -6,12 +8,12 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div id="graphic" class="graphic" role="img"
+<div id="dot-chart" class="graphic" role="img"
   <% if (COPY.labels.screenreader) { %>
   aria-label="<%- COPY.labels.screenreader %>"
   <% } %>
 >
-    <%= await t.include("_ai2html-graphic.html") %>
+  <img src="fallback.png" alt="" class="fallback" />
 </div>
 
 <% if (COPY.labels.footnote) { %>
@@ -25,3 +27,11 @@
   <% if (COPY.labels.source) { %><p>Source: <%= COPY.labels.source %></p><% } %>
   <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
 </div>
+
+<script type="text/javascript">
+  var DATA = <%= JSON.stringify(COPY.data) %>;
+</script>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("_foot.html") %>
