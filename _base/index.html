@@ -8,29 +8,25 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div id="line-chart" class="graphic" role="img"
+<div id="" class="graphic" role="img"
 <% if (COPY.labels.screenreader) { %>
-  aria-label="<%- COPY.labels.screenreader %>"
+aria-label="<%- COPY.labels.screenreader %>"
 <% } %>
 >
-  <img src="fallback.png" alt="" class="fallback" />
+    <img src="fallback.png" alt="" class="fallback" />
 </div>
 
 <% if (COPY.labels.footnote) { %>
 <div class="footnotes">
-  <h4>Notes</h4>
-  <p><%= COPY.labels.footnote %></p>
+    <h4>Notes</h4>
+    <p><%= COPY.labels.footnote %></p>
 </div>
 <% } %>
 
 <div class="footer">
-  <% if (COPY.labels.source) { %><p>Source: <%= COPY.labels.source %></p><% } %>
-  <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
+    <% if (COPY.labels.source) { %><p>Source: <%= COPY.labels.source %></p><% } %>
+    <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
 </div>
-
-<script type="text/javascript">
-  var DATA = <%= JSON.stringify(COPY.data) %>;
-</script>
 
 <script src="./graphic.js"></script>
 
