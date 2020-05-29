@@ -19,7 +19,7 @@ var ANALYTICS = (function () {
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-        ga('create', window.GOOGLE_ANALYTICS_ID, 'auto', { sampleRate: 10 });
+        ga('create', window.GOOGLE_ANALYTICS_ID, 'auto');
 
         // By default Google tracks the query string, but we want to ignore it.
         var location = window.location.protocol +
