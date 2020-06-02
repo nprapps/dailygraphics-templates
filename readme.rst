@@ -24,11 +24,11 @@ The only technical requirements for the instantiation process are the presence o
 Template conventions
 --------------------
 
-The ``_base`` template contains common files that are used across most graphics, such as the base styles, JavaScript helper modules, and an ``index.html`` file that's the actual entrypoint for the graphic. This HTML file, however, doesn't include any visible page markup: it contains the header and footer boilerplate, but for the body of the page it expects to import a ``_content.html`` file. For most templates, this is the only HTML file you'll need to actually create.
+The ``_base`` template contains common files that are used across most graphics, such as the base styles, JavaScript helper modules, and an ``index.html`` file that's the actual entrypoint for the graphic and includes the header and footer boilerplate.
 
 The index file also loads two asset files, ``graphic.js`` and ``graphic.less`` (loaded with a .css extension). The template base includes boilerplate versions of these files, but you'll likely want to add versions of these files with your own scripts and styles in your template.
 
-Many of the templates included here only override two files from the base: ``_content.html`` for markup and ``graphic.js`` for visualization, since they don't require any custom styles.
+Many of the templates included here only override two files from the base: ``index.html`` for markup and ``graphic.js`` for visualization, since they don't require any custom styles.
 
 Your template's ``manifest.json`` file should also include a "files" property, which details which source files should be uploaded during deployments. The deployment task has a default list if this isn't included, but most templates should have their own version. The property is an array of `minimatch <https://github.com/isaacs/minimatch>`_ globbing patterns. Most templates included here have a list that deploys ``index.html``, ``graphic.js``, ``graphic.less``, and any image or common data files that it can find, including those in subdirectories.
 
@@ -53,7 +53,7 @@ Migrating from the original dailygraphics rig
 When moving graphics and templates over from the classic rig, there are three changes you'll need to make:
 
 * Add a ``manifest.json`` with the sheet/template sheet (formerly defined as ``COPY_GOOGLE_DOC_KEY`` in ``graphic_config.py``)
-* Copy your child template into a ``_content.html`` file, which is (by default) loaded in the base template's ``index.html``. Alternately, if your content file is mostly just an empty placeholder for D3 (most of them are), you may want to just copy ``_content.html`` from the base template and change the ID on the div.
+* Copy your child template into ``index.html``, or copy ``index.html`` from the base template and change the ID on the div.
 * Convert the Jinja2 templating to EJS templates. This is usually pretty straightforward translation of tags:
 
   - ``{{ key }}`` becomes ``<%= key %>``
