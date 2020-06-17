@@ -82,6 +82,12 @@ var renderStateGridMap = function(config) {
   if (LABELS.legend_labels && LABELS.legend_labels !== "") {
     // If custom legend labels are specified
     categories = LABELS.legend_labels.split("|").map(l => l.trim());
+
+    if (config.isNumeric) {
+      categories.forEach(function(d,i) {
+        categories[i] = Number(categories[i]);
+      });
+    }
   } else {
     // Default: Return sorted array of categories
     config.data.forEach(function(state) {
@@ -102,7 +108,7 @@ var renderStateGridMap = function(config) {
     legendWrapper.classed("numeric-scale", true);
 
     var colorScale = d3
-      .scaleOrdinal()
+      .scaleThreshold()
       .domain(categories)
       .range([
         COLORS.teal6,
@@ -158,13 +164,13 @@ var renderStateGridMap = function(config) {
 
   // Set state colors
   config.data.forEach(function(state) {
-    if (state[valueColumn] !== null) {
+    if (state[valueColumn] !== null && state[valueColumn] !== undefined) {
       var stateClass = "state-" + classify(state.state_name);
       var categoryClass = "category-" + classify(state[valueColumn] + "");
 
       chartElement
         .select("." + stateClass)
-        .attr("class", stateClass + " state-active " + categoryClass)
+        .attr("class", `${ stateClass } ${ categoryClass } state-active`)
         .attr("fill", colorScale(state[valueColumn]));
     }
   });
@@ -182,7 +188,7 @@ var renderStateGridMap = function(config) {
       return isMobile.matches ? state.usps : state.ap;
     })
     .attr("class", d =>
-      d[valueColumn] !== null
+      (d[valueColumn] !== null && d[valueColumn] !== undefined)
         ? `category-${classify(d[valueColumn] + "")} label label-active`
         : "label"
     )

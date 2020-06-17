@@ -1,3 +1,5 @@
+<%= await t.include("lib/_head.html") %>
+
 <% if (COPY.labels.headline) { %>
 <h1><%= t.smarty(COPY.labels.headline) %></h1>
 <% } %>
@@ -29,3 +31,7 @@
 <script type="text/javascript">
   var DATA = <%= JSON.stringify(COPY.data) %>;
 </script>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>
