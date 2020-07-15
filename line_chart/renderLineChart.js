@@ -87,11 +87,11 @@ module.exports = function(config) {
       })
     )
     .range([
-      COLORS.red3,
-      COLORS.yellow3,
-      COLORS.blue3,
-      COLORS.orange3,
-      COLORS.teal3
+      COLORS.teal2,
+      COLORS.purple2,
+      COLORS.peach2,
+      COLORS.blue2,
+      COLORS.gray2
     ]);
 
   // Render the HTML legend.
