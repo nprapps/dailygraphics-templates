@@ -51,4 +51,21 @@ body {
 
 .candidate-answer {
   line-height: 1.4em;
+
+  a {
+    color: @gray1;
+    border-bottom: 1px solid @teal1;
+    &:hover {
+      border-bottom: none;
+      color: @teal1;
+    }
+  }
+
+}
+
+.callout {
+  .sans-serif();
+  padding: 0.5em 1em;
+  margin: 1em auto;
+  background-color: @yellow3;
 }
