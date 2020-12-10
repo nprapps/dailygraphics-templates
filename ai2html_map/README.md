@@ -37,20 +37,20 @@ graphic will appear within the base template when you load the preview!
 Some tips for making a map
 --------------------------
 
-Potential questions to ask that might be helpful:
+##Potential questions to ask that might be helpful:
 - Does this story need a map?
 - Is the data location-based?
 - Could this data be shown better in another non-map format?
 - What elements are important to include?
 - What location markers might be important for people to orient themselves on the map? (ex. highways or buildings for city-level mapping; major cities or physical features for country-level mapping)
 
-Common workflows for mapmaking:
+##Common workflows for mapmaking:
 - Usually the bulk of the work, like analyzing data or mapping it onto different elements, can be done in a GIS software. [QGIS](https://qgis.org/en/site/) is a good free option to use.
 - If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there.
 - Another more advanced option is using [command line tools](https://moriartynaps.org/command-carto-part-one/) and scripting as steps to join data and map files.
 - Then, if additional styling is needed, using or modifying the Illustrator styles in here.
 
-Here are some good free GIS data sources to pull from:
+##Here are some good free GIS data sources to pull from:
 - [Natural Earth](https://www.naturalearthdata.com/downloads/) for global cultural, physical and raster data
 - [USGS EarthExplorer](https://earthexplorer.usgs.gov/) for global satellite imagery
 - [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Downloading_data) for crowd-sourced street level data
