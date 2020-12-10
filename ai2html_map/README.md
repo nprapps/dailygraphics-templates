@@ -46,7 +46,7 @@ Some tips for making a map
 
 **Common workflows for mapmaking:**
 - Usually the bulk of the work, like analyzing data or mapping it onto different elements, can be done in a GIS software. [QGIS](https://qgis.org/en/site/) is a good free option to use.
-- If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there.
+- If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there. The `locator-template` is the most up-to-date template in the repo, and contains styles used in recent locator maps that can be adapted for other maps as well. 
 - Another more advanced option is using [command line tools](https://moriartynaps.org/command-carto-part-one/) and scripting as steps to join data and map files.
 - Then, if additional styling is needed, using or modifying the Illustrator styles in here.
 
