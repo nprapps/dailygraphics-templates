@@ -32,7 +32,7 @@ module.exports = function(config) {
   // Determine largest bin
   var largestBin = Math.max.apply(
     null,
-    binnedData.map(b => b.length)
+    config.data.map(b => b.length)
   );
 
   // Calculate actual chart dimensions
@@ -158,7 +158,7 @@ module.exports = function(config) {
     .enter()
     .append("g")
     .attr("class", (d, i) => "bin bin-" + i)
-    .attr("transform", (d, i) => makeTranslate(xScale(COLOR_BINS[i]), 0));
+    .attr("transform", (d, i) => makeTranslate(xScale(config.bins[i]), 0));
 
   bins
     .selectAll("rect")

@@ -47,7 +47,7 @@ var formatData = function(data) {
       var state = d.usps;
 
       for (var i = 0; i < numBins; i++) {
-        if (amt >= COLOR_BINS[i] && amt < COLOR_BINS[i + 1]) {
+        if (d.amt >= COLOR_BINS[i] && d.amt < COLOR_BINS[i + 1]) {
           binnedData[i].unshift(state);
           break;
         }
