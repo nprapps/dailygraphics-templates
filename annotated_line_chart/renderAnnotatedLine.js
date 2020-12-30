@@ -138,7 +138,7 @@ module.exports = function(config) {
     .scale(xScale)
     .ticks(ticksX)
     .tickFormat(function(d, i) {
-      if (isMobile) {
+      if (isMobile.matches) {
         return "\u2019" + yearAbbrev(d);
       } else {
         return yearFull(d);

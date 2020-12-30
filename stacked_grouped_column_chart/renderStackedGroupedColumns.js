@@ -26,7 +26,7 @@ module.exports = function(config) {
   var ticksY = 5;
   var roundTicksFactor = 50;
 
-  if (isMobile) {
+  if (isMobile.matches) {
     aspectWidth = 4;
     aspectHeight = 3;
     margins.bottom = 65;
