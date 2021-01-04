@@ -1,0 +1,89 @@
+<%= await t.include("lib/_head.html") %>
+
+<% if (COPY.labels.headline) { %>
+<h1><%= t.smarty(COPY.labels.headline) %></h1>
+<% } %>
+
+<% if (COPY.labels.subhed) { %>
+<h2><%= t.smarty(COPY.labels.subhed) %></h2>
+<% } %>
+
+<div class="graphic" id="table-graphic">
+  <table id="state-table" role="table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader" role="columnheader">
+          <div class="header"><%= COPY.labels.group %></div>
+        </th>
+        <th role="amt columnheader" role="columnheader">
+          <div class="header"><%= COPY.labels.hdr_total %></div>
+        </th>
+        <th role="amt columnheader" role="columnheader">
+          <div class="header"><%= COPY.labels.hdr_category1 %></div>
+        </th>
+        <th class="amt columnheader" role="columnheader">
+          <div class="header"><%= COPY.labels.hdr_category2 %></div>
+        </th>
+      </tr>
+    </thead>
+
+    <% 
+    var d3 = {
+      ...require("d3-scale/dist/d3-scale.min"),
+      ...require("d3-selection/dist/d3-selection.min")
+    };
+    var min = 0;
+    var max = 100;
+
+    var scale = d3.scaleLinear().domain([min, max]).range([0, 1]); 
+
+    var colorFunction = function(input) { 
+      return (isNaN(input)) ? '#ccc' : 'rgba(23, 128, 126,' + scale(input) + ')';
+    } 
+    
+    var darkFunction = function(input) { 
+      return (Number(input) > 50) ? 'light' : 'dark';
+    }
+
+    var getCellValue = function(input) {
+      return (isNaN(input)) ? 'N/A' : input.toFixed(0) + "%"
+    }
+
+    COPY.data.forEach(function(row) { %>
+    <tr class="row" role="row">
+      <td role="cell" data-title="<%= COPY.labels.hdr_group %>"><%= row.group %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_total %>" class="amt <%= darkFunction(row.total) %>" style="background-color: <%= colorFunction(row.total) %>">
+        <%= getCellValue(row.total) %>
+      </td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_category1 %>" class="amt <%= darkFunction(row.category1) %>" style="background-color: <%= colorFunction(row.category1) %>">
+        <%= getCellValue(row.category1) %>
+      </td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_category2 %>" class="amt <%= darkFunction(row.category2) %>" style="background-color: <%= colorFunction(row.category2)%>">
+        <%= getCellValue(row.category2) %>
+      </td>
+    </tr>
+  <% }) %>
+
+  </table>
+</div>
+
+<% if (COPY.labels.footnote) { %>
+<div class="footnotes">
+  <h4>Notes</h4>
+  <p><%= COPY.labels.footnote %></p>
+</div>
+<% } %>
+
+<div class="footer">
+  <% if (COPY.labels.source) { %>
+  <p>Source: <%= COPY.labels.source %></p>
+  <% } %>
+
+  <% if (COPY.labels.credit) { %>
+  <p>Credit: <%= COPY.labels.credit %></p>
+  <% } %>
+</div>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>
