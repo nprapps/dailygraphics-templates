@@ -8,12 +8,35 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
+ <% 
+  var d3 = {
+    ...require("d3-scale/dist/d3-scale.min"),
+    ...require("d3-selection/dist/d3-selection.min")
+  };
+  // Update these if graphic is on a different scale.
+  var min = 0;
+  var max = 100;
+
+  var scale = d3.scaleLinear().domain([min, max]).range([0, 1]); 
+
+  var colorFunction = function(input) { 
+    return (isNaN(input)) ? '#ccc' : 'rgba(23, 128, 126,' + scale(input) + ')';
+  } 
+  
+  var darkFunction = function(input) { 
+    return (Number(input) > 50) ? 'light' : 'dark';
+  }
+
+  var getCellValue = function(input) {
+    return (isNaN(input)) ? 'N/A' : input.toFixed(0) + "%";
+  }
+%>
 <div class="graphic" id="table-graphic">
   <table id="state-table" role="table">
     <thead role="rowgroup">
       <tr role="row">
         <th role="columnheader" role="columnheader">
-          <div class="header"><%= COPY.labels.group %></div>
+          <div class="header"><%= COPY.labels.hdr_group %></div>
         </th>
         <th role="amt columnheader" role="columnheader">
           <div class="header"><%= COPY.labels.hdr_total %></div>
@@ -27,28 +50,7 @@
       </tr>
     </thead>
 
-    <% 
-    var d3 = {
-      ...require("d3-scale/dist/d3-scale.min"),
-      ...require("d3-selection/dist/d3-selection.min")
-    };
-    var min = 0;
-    var max = 100;
-
-    var scale = d3.scaleLinear().domain([min, max]).range([0, 1]); 
-
-    var colorFunction = function(input) { 
-      return (isNaN(input)) ? '#ccc' : 'rgba(23, 128, 126,' + scale(input) + ')';
-    } 
-    
-    var darkFunction = function(input) { 
-      return (Number(input) > 50) ? 'light' : 'dark';
-    }
-
-    var getCellValue = function(input) {
-      return (isNaN(input)) ? 'N/A' : input.toFixed(0) + "%"
-    }
-
+    <%
     COPY.data.forEach(function(row) { %>
     <tr class="row" role="row">
       <td role="cell" data-title="<%= COPY.labels.hdr_group %>"><%= row.group %></td>
