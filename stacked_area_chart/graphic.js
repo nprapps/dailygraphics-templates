@@ -23,7 +23,6 @@ var onWindowLoaded = function() {
 
 //Format graphic data for processing by D3.
 var formatData = function(data) {
-  var series = [];
 
   data.forEach(function(d) {
     if (d.date instanceof Date) return;
@@ -33,24 +32,8 @@ var formatData = function(data) {
   });
 
   // Restructure tabular data for easier charting.
-  for (var column in data[0]) {
-    if (column == "date") continue;
-
-    series.push({
-      name: column,
-      values: data.map(d => ({
-        date: d.date,
-        amt: d[column]
-      }))
-    });
-  }
-
   var dataKeys = Object.keys(data[0]).slice(1);
   var stackedData = d3.stack().keys(dataKeys)(data);  
-
-  // for (var i = 0; i < stackedData.length; i++) {
-  //   stackedData[i]
-  // }
 
   return stackedData;
 };
