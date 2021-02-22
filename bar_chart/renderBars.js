@@ -13,7 +13,7 @@ var renderBarChart = function(config) {
   // Setup
   var { labelColumn, valueColumn } = config;
 
-  var barHeight = 30;
+  var barHeight = 20;
   var barGap = 5;
   var labelWidth = 85;
   var labelMargin = 6;
@@ -186,7 +186,7 @@ var renderBarChart = function(config) {
         }
       }
     })
-    .attr("dy", barHeight / 2 + 3);
+    .attr("dy", barHeight / 2 + 4);
 };
 
 module.exports = renderBarChart;

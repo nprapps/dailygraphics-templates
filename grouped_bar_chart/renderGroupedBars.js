@@ -210,7 +210,7 @@ module.exports = function(config) {
       return v + "%";
     })
     .attr("x", d => xScale(d[valueColumn]))
-    .attr("y", (d, i) => (i ? barHeight * i + barGapInner : 0))
+    .attr("y", (d, i) => (i ? barHeight * i + barGapInner * i : 0))
     .attr("dx", function(d) {
       var xStart = xScale(d[valueColumn]);
       var textWidth = this.getComputedTextLength();
@@ -237,5 +237,5 @@ module.exports = function(config) {
         }
       }
     })
-    .attr("dy", barHeight / 2 + 4);
+    .attr("dy", barHeight / 2 + 5);
 };
