@@ -58,29 +58,26 @@ module.exports = function(config) {
     .scaleTime()
     .domain(extent)
     .range([0, chartWidth]);
+  
+  var values = config.data[0].map(d => d.data.total_amount);
 
-  // var values = config.data.reduce(
-  //   (acc, d) => acc.concat(d.values.map(v => v[valueColumn])),
-  //   []
-  // );
+  var floors = values.map(
+    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
+  );
+  var min = Math.min.apply(null, floors);
 
-  // var floors = values.map(
-  //   v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  // );
-  // var min = Math.min.apply(null, floors);
+  if (min > 0) {
+    min = 0;
+  }
 
-  // if (min > 0) {
-  //   min = 0;
-  // }
+  var ceilings = values.map(
+    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
+  );
+  var max = Math.max.apply(null, ceilings);
 
-  // var ceilings = values.map(
-  //   v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  // );
-  // var max = Math.max.apply(null, ceilings);
-
-  var min = 0;
-  var max = 20;
-
+  if (min > 0) {
+    min = 0;
+  }
 
   var yScale = d3
     .scaleLinear()
@@ -219,17 +216,6 @@ module.exports = function(config) {
       return yScale(d[0]);
     })
     .y1(d => yScale(d[1]));
-
-  // chartElement
-  //   .append("g")
-  //   .attr("class", "lines")
-  //   .selectAll("path")
-  //   .data(config.data)
-  //   .enter()
-  //   .append("path")
-  //   .attr("class", d => "line " + classify(d.name))
-  //   .attr("stroke", d => colorScale(d.name))
-  //   .attr("d", d => line(d.values));
 
   chartElement
     .append("g")

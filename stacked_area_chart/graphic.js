@@ -23,16 +23,32 @@ var onWindowLoaded = function() {
 
 //Format graphic data for processing by D3.
 var formatData = function(data) {
-
   data.forEach(function(d) {
     if (d.date instanceof Date) return;
     var [m, day, y] = d.date.split("/").map(Number);
     y = y > 50 ? 1900 + y : 2000 + y;
     d.date = new Date(y, m - 1, day);
+    
+    let total_amount = 0;    
+    for (item in d) {
+      if (item != "date") {
+        total_amount += +d[item];  
+      }
+    }
+    d.total_amount = total_amount;
   });
 
   // Restructure tabular data for easier charting.
-  var dataKeys = Object.keys(data[0]).slice(1);
+  var dataKeys = Object.keys(data[0]);  
+  var removeItems = ["date","total_amount"];
+  for (var i = 0; i < removeItems.length; i++) {
+
+    let index = dataKeys.indexOf(removeItems[i]);
+    if (index > -1) {
+      dataKeys.splice(index,1)
+    }
+  }
+
   var stackedData = d3.stack().keys(dataKeys)(data);  
 
   return stackedData;
