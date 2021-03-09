@@ -1,3 +1,7 @@
+var d3 = {
+  ...require("d3-shape/dist/d3-shape.min")
+};
+
 var pym = require("./lib/pym");
 require("./lib/webfonts");
 
@@ -19,29 +23,35 @@ var onWindowLoaded = function() {
 
 //Format graphic data for processing by D3.
 var formatData = function(data) {
-  var series = [];
-
   data.forEach(function(d) {
     if (d.date instanceof Date) return;
     var [m, day, y] = d.date.split("/").map(Number);
     y = y > 50 ? 1900 + y : 2000 + y;
     d.date = new Date(y, m - 1, day);
+    
+    let total_amount = 0;    
+    for (item in d) {
+      if (item != "date") {
+        total_amount += +d[item];  
+      }
+    }
+    d.total_amount = total_amount;
   });
 
   // Restructure tabular data for easier charting.
-  for (var column in data[0]) {
-    if (column == "date") continue;
+  var dataKeys = Object.keys(data[0]);  
+  var removeItems = ["date","total_amount"];
+  for (var i = 0; i < removeItems.length; i++) {
 
-    series.push({
-      name: column,
-      values: data.map(d => ({
-        date: d.date,
-        amt: d[column]
-      }))
-    });
+    let index = dataKeys.indexOf(removeItems[i]);
+    if (index > -1) {
+      dataKeys.splice(index,1)
+    }
   }
 
-  return series;
+  var stackedData = d3.stack().keys(dataKeys)(data);  
+
+  return stackedData;
 };
 
 // Render the graphic(s). Called by pym with the container width.

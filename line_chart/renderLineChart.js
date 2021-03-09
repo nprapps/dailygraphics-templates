@@ -12,6 +12,7 @@ var { isMobile } = require("./lib/breakpoints");
 
 // Render a line chart.
 module.exports = function(config) {
+
   // Setup
   var { dateColumn, valueColumn } = config;
 
@@ -47,18 +48,18 @@ module.exports = function(config) {
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
-  var dates = config.data[0].values.map(d => d.date);
+  var dates = config.data[0].map(d => {
+    return d.data.date
+  })
+
   var extent = [dates[0], dates[dates.length - 1]];
 
   var xScale = d3
     .scaleTime()
     .domain(extent)
     .range([0, chartWidth]);
-
-  var values = config.data.reduce(
-    (acc, d) => acc.concat(d.values.map(v => v[valueColumn])),
-    []
-  );
+  
+  var values = config.data[0].map(d => d.data.total_amount);
 
   var floors = values.map(
     v => Math.floor(v / roundTicksFactor) * roundTicksFactor
@@ -73,6 +74,10 @@ module.exports = function(config) {
     v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
   );
   var max = Math.max.apply(null, ceilings);
+
+  if (min > 0) {
+    min = 0;
+  }
 
   var yScale = d3
     .scaleLinear()
@@ -105,11 +110,11 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("li")
-    .attr("class", d => "key-item " + classify(d.name));
+    .attr("class", d => "key-item " + classify(d.key));
 
-  legend.append("b").style("background-color", d => colorScale(d.name));
+  legend.append("b").style("background-color", d => colorScale(d.key));
 
-  legend.append("label").text(d => d.name);
+  legend.append("label").text(d => d.key);
 
   // Create the root SVG element.
 
@@ -203,37 +208,44 @@ module.exports = function(config) {
     .x(d => xScale(d[dateColumn]))
     .y(d => yScale(d[valueColumn]));
 
+  var areaGen = d3
+    .area()
+    // .curve(d3.curveStepBefore)
+    .x(d => xScale(d.data[dateColumn]))
+    .y0(function (d) {
+      return yScale(d[0]);
+    })
+    .y1(d => yScale(d[1]));
+
   chartElement
     .append("g")
-    .attr("class", "lines")
+    .attr("class","areas")
     .selectAll("path")
     .data(config.data)
-    .enter()
-    .append("path")
-    .attr("class", d => "line " + classify(d.name))
-    .attr("stroke", d => colorScale(d.name))
-    .attr("d", d => line(d.values));
+    .join("path")
+      .attr("fill", d => colorScale(d.key))
+      .attr("d", areaGen)
 
-  var lastItem = d => d.values[d.values.length - 1];
+  // var lastItem = d => d.values[d.values.length - 1];
 
-  chartElement
-    .append("g")
-    .attr("class", "value")
-    .selectAll("text")
-    .data(config.data)
-    .enter()
-    .append("text")
-    .attr("x", d => xScale(lastItem(d)[dateColumn]) + 5)
-    .attr("y", d => yScale(lastItem(d)[valueColumn]) + 3)
-    .text(function(d) {
-      var item = lastItem(d);
-      var value = item[valueColumn];
-      var label = value.toFixed(1);
+  // chartElement
+  //   .append("g")
+  //   .attr("class", "value")
+  //   .selectAll("text")
+  //   .data(config.data)
+  //   .enter()
+  //   .append("text")
+  //   .attr("x", d => xScale(lastItem(d)[dateColumn]) + 5)
+  //   .attr("y", d => yScale(lastItem(d)[valueColumn]) + 3)
+  //   .text(function(d) {
+  //     var item = lastItem(d);
+  //     var value = item[valueColumn];
+  //     var label = value.toFixed(1);
 
-      if (!isMobile.matches) {
-        label = d.name + ": " + label;
-      }
+  //     if (!isMobile.matches) {
+  //       label = d.name + ": " + label;
+  //     }
 
-      return label;
-    });
+  //     return label;
+  //   });
 };
