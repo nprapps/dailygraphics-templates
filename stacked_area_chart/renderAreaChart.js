@@ -10,7 +10,7 @@ var { COLORS, classify, makeTranslate } = require("./lib/helpers");
 var { yearFull, yearAbbrev } = require("./lib/helpers/formatDate");
 var { isMobile } = require("./lib/breakpoints");
 
-// Render a line chart.
+// Render a area chart.
 module.exports = function(config) {
 
   // Setup
@@ -202,11 +202,7 @@ module.exports = function(config) {
       .attr("y2", yScale(0));
   }
 
-  // Render lines to chart.
-  var line = d3
-    .line()
-    .x(d => xScale(d[dateColumn]))
-    .y(d => yScale(d[valueColumn]));
+  // Render areas to chart.
 
   var areaGen = d3
     .area()

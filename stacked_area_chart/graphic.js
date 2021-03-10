@@ -6,7 +6,7 @@ var pym = require("./lib/pym");
 require("./lib/webfonts");
 
 var pymChild;
-var renderLineChart = require("./renderLineChart");
+var renderAreaChart = require("./renderAreaChart");
 
 //Initialize graphic
 var onWindowLoaded = function() {
@@ -60,7 +60,7 @@ var render = function(data) {
   var container = "#line-chart";
   var element = document.querySelector(container);
   var width = element.offsetWidth;
-  renderLineChart({
+  renderAreaChart({
     container,
     width,
     data,
