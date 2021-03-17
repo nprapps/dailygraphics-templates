@@ -222,26 +222,4 @@ module.exports = function(config) {
       .attr("fill", d => colorScale(d.key))
       .attr("d", areaGen)
 
-  // var lastItem = d => d.values[d.values.length - 1];
-
-  // chartElement
-  //   .append("g")
-  //   .attr("class", "value")
-  //   .selectAll("text")
-  //   .data(config.data)
-  //   .enter()
-  //   .append("text")
-  //   .attr("x", d => xScale(lastItem(d)[dateColumn]) + 5)
-  //   .attr("y", d => yScale(lastItem(d)[valueColumn]) + 3)
-  //   .text(function(d) {
-  //     var item = lastItem(d);
-  //     var value = item[valueColumn];
-  //     var label = value.toFixed(1);
-
-  //     if (!isMobile.matches) {
-  //       label = d.name + ": " + label;
-  //     }
-
-  //     return label;
-  //   });
 };
