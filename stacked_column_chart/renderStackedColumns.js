@@ -24,6 +24,7 @@ module.exports = function(config) {
   };
 
   var ticksY = 5;
+  var ticksX = 5;
   var roundTicksFactor = 50;
 
   if (isMobile.matches) {
@@ -74,7 +75,7 @@ module.exports = function(config) {
   var colorScale = d3
     .scaleOrdinal()
     .domain(config.data[0].values.map(d => d[labelColumn]))
-    .range([COLORS.teal2, COLORS.teal5]);
+    .range([COLORS.teal2, COLORS.peach2, COLORS.purple2, COLORS.yellow2, COLORS.blue2, COLORS.gray1]);
 
   // Render the legend.
   var legend = containerElement
@@ -144,50 +145,53 @@ module.exports = function(config) {
     .attr("class", "bar")
     .attr("transform", d => makeTranslate(xScale(d[labelColumn]), 0));
 
-  bars
-    .selectAll("rect")
-    .data(d => d.values)
-    .enter()
-    .append("rect")
-    .attr("y", d => (d.y1 < d.y0 ? yScale(d.y0) : yScale(d.y1)))
-    .attr("width", xScale.bandwidth())
-    .attr("height", d => Math.abs(yScale(d.y0) - yScale(d.y1)))
-    .style("fill", d => colorScale(d[labelColumn]))
-    .attr("class", d => classify(d[labelColumn]));
+    bars
+      .selectAll("rect")
+      .data(d => d.values)
+      .enter()
+      .append("rect")
+      .attr("y", d => (d.y1 < d.y0 ? yScale(d.y0) : yScale(d.y1)))
+      .attr("width", xScale.bandwidth())
+      .attr("height", d => Math.abs(yScale(d.y0) - yScale(d.y1)))
+      .style("fill", d => colorScale(d[labelColumn]))
+      .style("stroke","white")
+      .attr("class", d => classify(d[labelColumn]))
+      .append("title")
+      .html(d => d.label + ": " + d.val);
 
-  // Render 0 value line.
-  if (min < 0) {
-    chartElement
-      .append("line")
-      .attr("class", "zero-line")
-      .attr("x1", 0)
-      .attr("x2", chartWidth)
-      .attr("y1", yScale(0))
-      .attr("y2", yScale(0));
-  }
+    // Render 0 value line.
+    if (min < 0) {
+      chartElement
+        .append("line")
+        .attr("class", "zero-line")
+        .attr("x1", 0)
+        .attr("x2", chartWidth)
+        .attr("y1", yScale(0))
+        .attr("y2", yScale(0));
+    }
 
-  // Render values to chart.
-  bars
-    .selectAll("text")
-    .data(function(d) {
-      return d.values;
-    })
-    .enter()
-    .append("text")
-    .text(d => d.val)
-    .attr("class", d => classify(d.name))
-    .attr("x", xScale.bandwidth() / 2)
-    .attr("y", function(d) {
-      var textHeight = this.getBBox().height;
-      var barHeight = Math.abs(yScale(d.y0) - yScale(d.y1));
-
-      if (textHeight + valueGap * 2 > barHeight) {
-        d3.select(this).classed("hidden", true);
-      }
-
-      var barCenter = yScale(d.y1) + (yScale(d.y0) - yScale(d.y1)) / 2;
-
-      return barCenter + textHeight / 2;
-    })
-    .attr("text-anchor", "middle");
+    // // Render values to chart.
+    // bars
+    //   .selectAll("text")
+    //   .data(function(d) {
+    //     return d.values;
+    //   })
+    //   .enter()
+    //   .append("text")
+    //   .text(d => d.val)
+    //   .attr("class", d => classify(d.name))
+    //   .attr("x", xScale.bandwidth() / 2)
+    //   .attr("y", function(d) {
+    //     var textHeight = this.getBBox().height;
+    //     var barHeight = Math.abs(yScale(d.y0) - yScale(d.y1));
+    //
+    //     if (textHeight + valueGap * 2 > barHeight) {
+    //       d3.select(this).classed("hidden", true);
+    //     }
+    //
+    //     var barCenter = yScale(d.y1) + (yScale(d.y0) - yScale(d.y1)) / 2;
+    //
+    //     return barCenter + textHeight / 2;
+    //   })
+    //   .attr("text-anchor", "middle");
 };
