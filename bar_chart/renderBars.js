@@ -5,29 +5,56 @@ var { COLORS, makeTranslate, classify, formatStyle } = require("./lib/helpers");
 var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
   ...require("d3-scale/dist/d3-scale.min"),
-  ...require("d3-selection/dist/d3-selection.min")
+  ...require("d3-selection/dist/d3-selection.min"),
+  ...require("d3-format/dist/d3-format.min")
 };
 
 // Render a bar chart.
 var renderBarChart = function(config) {
+
   // Setup
   var { labelColumn, valueColumn } = config;
 
   var barHeight = 20;
   var barGap = 5;
-  var labelWidth = 85;
-  var labelMargin = 6;
+  var labelMargin = 8;
   var valueGap = 6;
+
+  // Setting that can be adjusted in the google sheet
+  const labelWidth = config.options.find(element => element.option == "label_width").setting;
+  const axis = config.options.find(element => element.option == "axis").setting;
+  const f = config.options.find(element => element.option == "number_format").setting;
+  const roundTicksFactor = config.options.find(element => element.option == "round_ticks_factor").setting;
+  const ticksX = config.options.find(element => element.option == "ticks_x").setting;
+  const highlight = config.data.map(d => d.highlight).includes("highlight")
+
+  var valueFormat;
+
+  if (f == "regular") { valueFormat = d3.format(","); }
+  else if (f == "percent rounded") { valueFormat = d3.format(".0%"); }
+  else if (f == "percent decimal") { valueFormat = d3.format("~%"); }
+  else { valueFormat = d3.format("$,"); }
+
+  var floors = config.data.map(
+    d => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor
+  );
+
+  var min = Math.min.apply(null, floors);
+  if (min > 0) { min = 0; }
+
+  var ceilings = config.data.map(
+    d => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor
+  );
+
+  var max = Math.max.apply(null, ceilings);
+  if (max < 0) { max = 0; }
 
   var margins = {
     top: 0,
-    right: 15,
+    right: max == 0 ? labelWidth + labelMargin : 15,
     bottom: 20,
-    left: labelWidth + labelMargin
+    left: max == 0 ? 15 : labelWidth + labelMargin
   };
-
-  var ticksX = 4;
-  var roundTicksFactor = 5;
 
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
@@ -40,7 +67,7 @@ var renderBarChart = function(config) {
   // Create the root SVG element.
   var chartWrapper = containerElement
     .append("div")
-    .attr("class", "graphic-wrapper");
+    .attr("class", highlight == true ? "graphic-wrapper highlight" : "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -50,49 +77,35 @@ var renderBarChart = function(config) {
     .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
 
   // Create D3 scale objects.
-  var floors = config.data.map(
-    d => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
-
-  var min = Math.min.apply(null, floors);
-
-  if (min > 0) {
-    min = 0;
-  }
-
-  var ceilings = config.data.map(
-    d => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
-
-  var max = Math.max.apply(null, ceilings);
-
   var xScale = d3
     .scaleLinear()
     .domain([min, max])
     .range([0, chartWidth]);
 
-  // Create D3 axes.
-  var xAxis = d3
-    .axisBottom()
-    .scale(xScale)
-    .ticks(ticksX)
-    .tickFormat(function(d) {
-      return d.toFixed(0) + "%";
-    });
+  if (axis == "show") {
+    // Create D3 axes.
+    var xAxis = d3
+      .axisBottom()
+      .scale(xScale)
+      .ticks(ticksX)
+      .tickFormat(function(d) {
+        return valueFormat(d);
+      });
 
-  // Render axes to chart.
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+    // Render axes to chart.
+    chartElement
+      .append("g")
+      .attr("class", "x axis")
+      .attr("transform", makeTranslate(0, chartHeight))
+      .call(xAxis);
 
-  // Render grid to chart.
-  chartElement
-    .append("g")
-    .attr("class", "x grid")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis.tickSize(-chartHeight, 0, 0).tickFormat(""));
+    // Render grid to chart.
+    chartElement
+      .append("g")
+      .attr("class", "x grid")
+      .attr("transform", makeTranslate(0, chartHeight))
+      .call(xAxis.tickSize(-chartHeight, 0, 0).tickFormat(""));
+  }
 
   //Render bars to chart.
   chartElement
@@ -106,7 +119,7 @@ var renderBarChart = function(config) {
     .attr("width", d => Math.abs(xScale(0) - xScale(d[valueColumn])))
     .attr("y", (d, i) => i * (barHeight + barGap))
     .attr("height", barHeight)
-    .attr("class", (d, i) => `bar-${i} ${classify(d[labelColumn])}`);
+    .attr("class", (d, i) => d.highlight ? `bar-${i} ${classify(d[labelColumn])} highlight` : `bar-${i} ${classify(d[labelColumn])}`);
 
   // Render 0-line.
   if (min < 0) {
@@ -128,7 +141,7 @@ var renderBarChart = function(config) {
       formatStyle({
         width: labelWidth + "px",
         top: margins.top + "px",
-        left: "0"
+        left: max == 0 ? chartWidth + margins.left + labelMargin + "px" : "0"
       })
     )
     .selectAll("li")
@@ -144,7 +157,7 @@ var renderBarChart = function(config) {
       });
     })
     .attr("class", function(d) {
-      return classify(d[labelColumn]);
+      return max == 0 ? classify(d[labelColumn]) + " reverse" : classify(d[labelColumn]);
     })
     .append("span")
     .text(d => d[labelColumn]);
@@ -157,7 +170,8 @@ var renderBarChart = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .text(d => d[valueColumn].toFixed(0) + "%")
+    .attr("class", d => d.highlight ? "highlight" : "")
+    .text(d => valueFormat(d[valueColumn]))
     .attr("x", d => xScale(d[valueColumn]))
     .attr("y", (d, i) => i * (barHeight + barGap))
     .attr("dx", function(d) {
@@ -167,26 +181,15 @@ var renderBarChart = function(config) {
       // Negative case
       if (d[valueColumn] < 0) {
         var outsideOffset = -(valueGap + textWidth);
-
-        if (xStart + outsideOffset < 0) {
-          d3.select(this).classed("in", true);
-          return valueGap;
-        } else {
-          d3.select(this).classed("out", true);
-          return outsideOffset;
-        }
+        d3.select(this).classed("out", true);
+        return outsideOffset;
         // Positive case
       } else {
-        if (xStart + valueGap + textWidth > chartWidth) {
-          d3.select(this).classed("in", true);
-          return -(valueGap + textWidth);
-        } else {
-          d3.select(this).classed("out", true);
-          return valueGap;
-        }
+        d3.select(this).classed("out", true);
+        return valueGap;
       }
     })
-    .attr("dy", barHeight / 2 + 4);
+    .attr("dy", barHeight / 2 + 5);
 };
 
 module.exports = renderBarChart;
