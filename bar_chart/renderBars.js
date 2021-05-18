@@ -27,6 +27,11 @@ var renderBarChart = function(config) {
   const roundTicksFactor = config.options.find(element => element.option == "round_ticks_factor").setting;
   const ticksX = config.options.find(element => element.option == "ticks_x").setting;
   const highlight = config.data.map(d => d.highlight).includes("highlight")
+  const annotationLabel = config.options.find(element => element.option == "annotation_label").setting;
+  const annotationLabelAlign = config.options.find(element => element.option == "annotation_label_align").setting;
+  const annotationValue = config.options.find(element => element.option == "annotation_value").setting;
+  const annotationRangeMin = config.options.find(element => element.option == "annotation_range_min").setting;
+  const annotationRangeMax = config.options.find(element => element.option == "annotation_range_max").setting;
 
   var valueFormat;
 
@@ -50,8 +55,8 @@ var renderBarChart = function(config) {
   if (max < 0) { max = 0; }
 
   var margins = {
-    top: 0,
-    right: max == 0 ? labelWidth + labelMargin : 15,
+    top: annotationLabel ? 22 : 0,
+    right: max == 0 ? labelWidth + labelMargin : 24,
     bottom: 20,
     left: max == 0 ? 15 : labelWidth + labelMargin
   };
@@ -131,6 +136,53 @@ var renderBarChart = function(config) {
       .attr("y1", 0)
       .attr("y2", chartHeight);
   }
+
+  // Render annotation
+  if(annotationValue) {
+    chartElement
+      .append("line")
+      .attr("class","annotation-line")
+      .attr("x1", xScale(annotationValue))
+      .attr("x2", xScale(annotationValue))
+      .attr("y1", -20)
+      .attr("y2", chartHeight + 6)
+      .style("stroke", COLORS.gray1)
+      .style("stroke-width", 1)
+      .style("stroke-dasharray", 2);
+  }
+
+  if(annotationRangeMin) {
+    chartElement
+      .append("rect")
+      .attr("class","annotation-range")
+      .attr("x", xScale(annotationRangeMin))
+      .attr("width", Math.abs(xScale(annotationRangeMax) - xScale(annotationRangeMin)))
+      .attr("y", -20)
+      .attr("height", chartHeight + 26)
+      .style("fill", COLORS.gray3)
+      .style("opacity", 0.5);
+  }
+
+  if(annotationLabel !== undefined && annotationValue !== undefined) {
+    chartElement
+      .append("text")
+      .attr("class","annotation-label")
+      .text(annotationLabel + ": " + valueFormat(annotationValue))
+      .attr("x", annotationLabelAlign == "left" ? xScale(annotationValue) + 6 : xScale(annotationValue) - 6)
+      .attr("y", -6)
+      .style("text-anchor", annotationLabelAlign == "left" ? "start" : "end");
+  }
+
+  if(annotationLabel!== undefined && annotationRangeMin !== undefined) {
+    chartElement
+      .append("text")
+      .attr("class","annotation-label")
+      .text(annotationLabel + ": " + valueFormat(annotationRangeMin) + "-"  + valueFormat(annotationRangeMax))
+      .attr("x", annotationLabelAlign == "left" ? xScale(annotationRangeMax) + 6 : xScale(annotationRangeMin) - 6)
+      .attr("y", -6)
+      .style("text-anchor", annotationLabelAlign == "left" ? "start" : "end");
+  }
+
 
   // Render bar labels.
   chartWrapper
