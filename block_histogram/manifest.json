@@ -1,0 +1,17 @@
+{
+  "original_NPR_Sheet": "1QTLmFGjd2BCU3QQvvXb-8RN9YkztBFOaOeaZ40SEKjw",
+  "templateSheet": "16icTD9tsJljyd3rN8P6g4lptYUkNAgV29mHIsp0CoSQ",
+  "files": [
+    "*.html",
+    "!_*.html",
+    "graphic.js",
+    "graphic.less",
+    "*.png",
+    "*.jpg",
+    "*.gif",
+    "*.json",
+    "!manifest.json",
+    "*.geojson",
+    "*.csv"
+  ]
+}
