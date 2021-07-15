@@ -70,7 +70,7 @@ module.exports = function(config) {
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
-  var dates = config.data[0].values.map(d => d.date);
+  var dates = config.data[0].values.map(d => d[dateColumn]);
   var extent = [dates[0], dates[dates.length - 1]];
 
   /*
