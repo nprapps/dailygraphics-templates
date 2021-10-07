@@ -1,6 +1,7 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
-var pymChild;
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
+
+
 var skipLabels = ["Group", "key", "values"];
 var renderGroupedBarChart = require("./renderGroupedBars");
 
@@ -11,11 +12,6 @@ var onWindowLoaded = function() {
   render(data, options);
 
   window.addEventListener("resize", () => render(data, options));
-
-  pym.then(child => {
-    pymChild = child;
-    pymChild.sendHeight();
-  });
 };
 
 // Format graphic data for processing by D3.
@@ -43,7 +39,7 @@ var formatData = function(data) {
   return output;
 };
 
-// Render the graphic(s). Called by pym with the container width.
+// Render the graphic(s).
 var render = function(data, options) {
   // Render the chart!
   var container = "#grouped-bar-chart";
@@ -57,11 +53,6 @@ var render = function(data, options) {
     labelColumn: "label",
     valueColumn: "amt"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 /*

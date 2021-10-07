@@ -1,9 +1,5 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
-
-
-// Global vars
-var pymChild = null;
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
 var renderBlockHistogram = require("./renderBlockHistogram");
 
@@ -13,11 +9,6 @@ var onWindowLoaded = function() {
   render(binned);
 
   window.addEventListener("resize", () => render(binned));
-
-  pym.then(child => {
-    pymChild = child;
-    pymChild.sendHeight();
-  });
 };
 
 // Format graphic data for processing by D3.
@@ -62,11 +53,6 @@ var render = function(data) {
     labelColumn: "usps",
     valueColumn: "amt"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 // Initially load the graphic

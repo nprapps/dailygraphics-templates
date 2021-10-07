@@ -1,5 +1,6 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
+
 var comma = require("./lib/helpers/fmtComma");
 // If sortable:
 window.Tablesort = require("tablesort");
@@ -14,12 +15,6 @@ var onWindowLoaded = function() {
   render();
 
   window.addEventListener("resize", render);
-
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
-
 };
 
 
@@ -62,11 +57,6 @@ var render = function() {
   }
 
   Tablesort(document.querySelector("#table-graphic"));
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 
 }
 

@@ -1,9 +1,7 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
-var { isMobile } = require("./lib/breakpoints");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
-// Global vars
-var pymChild = null;
+var { isMobile } = require("./lib/breakpoints");
 
 var d3 = {
   ...require("d3-selection/dist/d3-selection.min"),
@@ -17,14 +15,9 @@ var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
 var onWindowLoaded = function() {
   render();
   window.addEventListener("resize", render);
-
-  pym.then(child => {
-    pymChild = child;
-    pymChild.sendHeight();
-  });
 };
 
-// Render the graphic(s). Called by pym with the container width.
+// Render the graphic(s).
 var render = function() {
   // Render the chart!
   var container = "#dot-chart";
@@ -35,11 +28,6 @@ var render = function() {
     width,
     data: DATA
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 // Render a bar chart

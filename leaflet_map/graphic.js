@@ -1,8 +1,8 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
+
 var { isMobile } = require("./lib/breakpoints");
 var L = require('leaflet/dist/leaflet.js');
-var pymChild;
 var COLORS = require("./lib/helpers/colors.js");
 // var d3 = {
 //   ...require("d3-selection/dist/d3-selection.min"),
@@ -15,14 +15,9 @@ var d3 = require("d3");
 // Initialize the graphic.
 var onWindowLoaded = function() {
   render();
-  window.addEventListener("resize", render);
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
 };
 
-// Render the graphic(s). Called by pym with the container width.
+// Render the graphic(s).
 var render = function() {
   // Render the chart!
   var container = "#map";
@@ -33,11 +28,6 @@ var render = function() {
     width,
     data: DATA
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 // Render map.

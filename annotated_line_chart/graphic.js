@@ -1,7 +1,6 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
-var pymChild;
 var skipLabels = ["date", "annotate", "x_offset", "y_offset"];
 
 var renderLineChart = require("./renderAnnotatedLine");
@@ -11,11 +10,6 @@ var onWindowLoaded = function() {
   var { annotations, series } = formatData(window.DATA);
   render(series, annotations);
   window.addEventListener("resize", () => render(series, annotations));
-
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
 };
 
 // Reformat data for renderAnnotatedLine()
@@ -87,11 +81,6 @@ var render = function(data, annotations) {
     dateColumn: "date",
     valueColumn: "amt"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 /*

@@ -1,8 +1,5 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
-
-// Global vars
-var pymChild = null;
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
 var renderColumnChart = require("./renderColumnChart");
 
@@ -11,11 +8,6 @@ var onWindowLoaded = function() {
   render(window.DATA);
 
   window.addEventListener("resize", () => render(window.DATA));
-
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
 };
 
 // Render the graphic(s)
@@ -31,11 +23,6 @@ var render = function(data) {
     labelColumn: "label",
     valueColumn: "amt"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 //Initially load the graphic

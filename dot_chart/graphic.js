@@ -1,19 +1,12 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
-// Global vars
-var pymChild = null;
 var renderDotChart = require("./renderDotChart");
 
 // Initialize the graphic.
 var onWindowLoaded = function() {
   render(window.DATA);
   window.addEventListener("resize", () => render(window.DATA));
-
-  pym.then(child => {
-    pymChild = child;
-    pymChild.sendHeight();
-  });
 };
 
 // Render the graphic(s). Called by pym with the container width.
@@ -31,11 +24,6 @@ var render = function(data) {
     minColumn: "min",
     maxColumn: "max"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 /*

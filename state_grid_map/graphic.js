@@ -1,5 +1,5 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
 // build our custom D3 object
 var d3 = {
@@ -12,7 +12,6 @@ var { isMobile } = require("./lib/breakpoints");
 var $ = require("./lib/qsa");
 
 // Global vars
-var pymChild = null;
 
 // Initialize the graphic.
 var onWindowLoaded = function() {
@@ -20,11 +19,6 @@ var onWindowLoaded = function() {
   render();
 
   window.addEventListener("resize", render);
-
-  pym.then(function(child) {
-    pymChild = child;
-    pymChild.sendHeight();
-  });
 };
 
 // Format graphic data.
@@ -42,7 +36,7 @@ var formatData = function() {
   }
 };
 
-// Render the graphic(s). Called by pym with the container width.
+// Render the graphic(s).
 var render = function() {
   isNumeric = LABELS.is_numeric;
 
@@ -57,11 +51,6 @@ var render = function() {
     // isNumeric will style the legend as a numeric scale
     isNumeric
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 // Render a state grid map.

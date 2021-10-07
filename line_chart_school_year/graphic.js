@@ -1,9 +1,9 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
+
 var { isMobile } = require("./lib/breakpoints");
 
 var dataSeries;
-var pymChild;
 
 var { COLORS, classify, makeTranslate } = require("./lib/helpers");
 var d3 = {
@@ -22,11 +22,6 @@ var onWindowLoaded = function() {
   render();
 
   window.addEventListener("resize", render);
-
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
 };
 
 //Format graphic data for processing by D3.
@@ -41,7 +36,7 @@ var formatData = function() {
 };
 
 
-// Render the graphic(s). Called by pym with the container width.
+// Render the graphic(s).
 
 var render = function() {
   // Render the chart!
@@ -53,11 +48,6 @@ var render = function() {
     width,
     data: dataSeries
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 

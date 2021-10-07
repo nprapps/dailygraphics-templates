@@ -1,8 +1,7 @@
-var pym = require("./lib/pym");
-require("./lib/webfonts");
+var { Sidechain } = require("@nprapps/sidechain");
+Sidechain.registerGuest();
 
 // Global vars
-var pymChild = null;
 var renderStackedColumnChart = require("./renderStackedColumns");
 var skipLabels = ["label", "values", "total"];
 console.clear();
@@ -13,11 +12,6 @@ var onWindowLoaded = function() {
   render(data);
 
   window.addEventListener("resize", () => render(data));
-
-  pym.then(child => {
-    pymChild = child;
-    child.sendHeight();
-  });
 };
 
 // Format graphic data for processing by D3.
@@ -66,11 +60,6 @@ var render = function(data) {
     data,
     labelColumn: "label"
   });
-
-  // Update iframe
-  if (pymChild) {
-    pymChild.sendHeight();
-  }
 };
 
 // Initially load the graphic
