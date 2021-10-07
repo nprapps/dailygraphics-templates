@@ -1,10 +1,8 @@
 <%
   if (typeof childPage == "undefined") var childPage = "";
+  var base = config.deployment.url ? 
+    `https://${config.deployment.url}` :
+    `https://${config.deployment.bucket}/${config.deployment.prefix}`;
+  var slugged = new URL(slug + "/", base);
 %>
-<p
-  data-pym-loader
-  data-child-src="https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/<%= childPage %>"
-  id="responsive-embed-<%= slug + (childPage ? "-" + childPage.replace(".html", "") : "") %>">
-    Loading...
-</p>
-<script src="https://pym.nprapps.org/npr-pym-loader.v2.min.js"></script>
+<%= new URL(childPage, slugged).href %>
