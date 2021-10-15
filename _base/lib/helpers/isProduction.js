@@ -5,7 +5,7 @@
  * - If no url is given checks window.location.href
  */
 
-module.exports = function(u = window.location.href) {
+module.exports = function (u = window.location.href) {
   var url = new URL(u);
   var parentURL = url.searchParams.get("parentUrl");
   if (parentURL) {

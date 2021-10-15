@@ -1,4 +1,4 @@
-module.exports = function(props) {
+module.exports = function (props) {
   var s = "";
 
   for (var key in props) {

@@ -4,7 +4,7 @@ Sidechain.registerGuest();
 var renderLineChart = require("./renderLineChart");
 
 //Initialize graphic
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var series = formatData(window.DATA);
   render(series);
 
@@ -12,10 +12,10 @@ var onWindowLoaded = function() {
 };
 
 //Format graphic data for processing by D3.
-var formatData = function(data) {
+var formatData = function (data) {
   var series = [];
 
-  data.forEach(function(d) {
+  data.forEach(function (d) {
     if (d.date instanceof Date) return;
     var [m, day, y] = d.date.split("/").map(Number);
     y = y > 50 ? 1900 + y : 2000 + y;
@@ -28,7 +28,7 @@ var formatData = function(data) {
 
     series.push({
       name: column,
-      values: data.map(d => ({
+      values: data.map((d) => ({
         date: d.date,
         amt: d[column]
       }))
@@ -39,7 +39,7 @@ var formatData = function(data) {
 };
 
 // Render the graphic(s). Called by pym with the container width.
-var render = function(data) {
+var render = function (data) {
   // Render the chart!
   var container = "#line-chart";
   var element = document.querySelector(container);

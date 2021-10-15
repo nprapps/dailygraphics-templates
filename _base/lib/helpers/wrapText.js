@@ -1,10 +1,9 @@
 /*
-* Wrap a block of SVG text to a given width
-* adapted from http://bl.ocks.org/mbostock/7555321
-*/
-module.exports = function(texts, width, lineHeight) {
-
-  var eachText = function(text) {
+ * Wrap a block of SVG text to a given width
+ * adapted from http://bl.ocks.org/mbostock/7555321
+ */
+module.exports = function (texts, width, lineHeight) {
+  var eachText = function (text) {
     // work with arrays as well
     var words = text.textContent.split(/\s+/).reverse();
 
@@ -29,7 +28,7 @@ module.exports = function(texts, width, lineHeight) {
       tspan.setAttribute(k, attrs[k]);
     }
 
-    while (word = words.pop()) {
+    while ((word = words.pop())) {
       line.push(word);
       tspan.textContent = line.join(" ");
 
@@ -43,7 +42,7 @@ module.exports = function(texts, width, lineHeight) {
         tspan = document.createElementNS(NS, "tspan");
         text.appendChild(tspan);
 
-        var attrs = { x, y, dx: dx + "px", dy: (lineNumber * lineHeight) + dy + "px" };
+        var attrs = { x, y, dx: dx + "px", dy: lineNumber * lineHeight + dy + "px" };
         for (var k in attrs) {
           tspan.setAttribute(k, attrs[k]);
         }
@@ -56,6 +55,6 @@ module.exports = function(texts, width, lineHeight) {
   if ("each" in texts) {
     // call D3-style
     texts = texts.nodes();
-  } 
+  }
   texts.forEach(eachText);
 };

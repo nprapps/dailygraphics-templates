@@ -3,17 +3,16 @@ Sidechain.registerGuest();
 var renderBarChart = require("./renderBars");
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var data = window.DATA;
   var options = window.OPTIONS;
   render(data, options);
 
   window.addEventListener("resize", () => render(data, options));
-
 };
 
 // Render the graphic(s). Called by pym with the container width.
-var render = function(data, options) {
+var render = function (data, options) {
   // Render the chart!
   var container = "#bar-chart";
   var element = document.querySelector(container);

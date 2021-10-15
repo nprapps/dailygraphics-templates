@@ -15,4 +15,4 @@ module.exports = {
   makeTranslate: require("./makeTranslate"),
   urlToLocation: require("./urlToLocation"),
   wrapText: require("./wrapText")
-}
+};

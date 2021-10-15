@@ -14,7 +14,7 @@ var $ = require("./lib/qsa");
 // Global vars
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   formatData();
   render();
 
@@ -22,22 +22,16 @@ var onWindowLoaded = function() {
 };
 
 // Format graphic data.
-var formatData = function() {
+var formatData = function () {
   if (!LABELS.show_territories) {
-    var territories = [
-      "Puerto Rico",
-      "U.S. Virgin Islands",
-      "Guam",
-      "Northern Mariana Islands",
-      "American Samoa"
-    ];
+    var territories = ["Puerto Rico", "U.S. Virgin Islands", "Guam", "Northern Mariana Islands", "American Samoa"];
 
-    DATA = DATA.filter(d => territories.indexOf(d.state_name) == -1);
+    DATA = DATA.filter((d) => territories.indexOf(d.state_name) == -1);
   }
 };
 
 // Render the graphic(s).
-var render = function() {
+var render = function () {
   isNumeric = LABELS.is_numeric;
 
   // Render the map!
@@ -54,7 +48,7 @@ var render = function() {
 };
 
 // Render a state grid map.
-var renderStateGridMap = function(config) {
+var renderStateGridMap = function (config) {
   var valueColumn = "category";
 
   // Clear existing graphic (for redraw)
@@ -70,16 +64,16 @@ var renderStateGridMap = function(config) {
 
   if (LABELS.legend_labels && LABELS.legend_labels !== "") {
     // If custom legend labels are specified
-    categories = LABELS.legend_labels.split("|").map(l => l.trim());
+    categories = LABELS.legend_labels.split("|").map((l) => l.trim());
 
     if (config.isNumeric) {
-      categories.forEach(function(d,i) {
+      categories.forEach(function (d, i) {
         categories[i] = Number(categories[i]);
       });
     }
   } else {
     // Default: Return sorted array of categories
-    config.data.forEach(function(state) {
+    config.data.forEach(function (state) {
       if (state[valueColumn] != null) {
         categories.push(state[valueColumn]);
       }
@@ -99,29 +93,16 @@ var renderStateGridMap = function(config) {
     var colorScale = d3
       .scaleThreshold()
       .domain(categories)
-      .range([
-        COLORS.teal6,
-        COLORS.teal5,
-        COLORS.teal4,
-        COLORS.teal3,
-        COLORS.teal2,
-        COLORS.teal1
-      ]);
+      .range([COLORS.teal6, COLORS.teal5, COLORS.teal4, COLORS.teal3, COLORS.teal2, COLORS.teal1]);
   } else {
     // Define color scale
     var colorScale = d3
       .scaleOrdinal()
       .domain(categories)
-      .range([
-        COLORS.red3,
-        COLORS.yellow3,
-        COLORS.blue3,
-        COLORS.orange3,
-        COLORS.teal3
-      ]);
+      .range([COLORS.red3, COLORS.yellow3, COLORS.blue3, COLORS.orange3, COLORS.teal3]);
   }
 
-  colorScale.domain().forEach(function(key, i) {
+  colorScale.domain().forEach(function (key, i) {
     var keyItem = legendElement.append("li").classed("key-item", true);
 
     keyItem.append("b").style("background", colorScale(key));
@@ -131,10 +112,7 @@ var renderStateGridMap = function(config) {
     // Add the optional upper bound label on numeric scale
     if (config.isNumeric && i == categories.length - 1) {
       if (LABELS.max_label && LABELS.max_label !== "") {
-        keyItem
-          .append("label")
-          .attr("class", "end-label")
-          .text(LABELS.max_label);
+        keyItem.append("label").attr("class", "end-label").text(LABELS.max_label);
       }
     }
   });
@@ -143,23 +121,21 @@ var renderStateGridMap = function(config) {
   var chartElement = containerElement.select("svg");
 
   // resize map (needs to be explicitly set for IE11)
-  chartElement.attr("width", config.width).attr("height", function() {
+  chartElement.attr("width", config.width).attr("height", function () {
     var s = d3.select(this);
     var viewBox = s.attr("viewBox").split(" ");
-    return Math.floor(
-      (config.width * parseInt(viewBox[3])) / parseInt(viewBox[2])
-    );
+    return Math.floor((config.width * parseInt(viewBox[3])) / parseInt(viewBox[2]));
   });
 
   // Set state colors
-  config.data.forEach(function(state) {
+  config.data.forEach(function (state) {
     if (state[valueColumn] !== null && state[valueColumn] !== undefined) {
       var stateClass = "state-" + classify(state.state_name);
       var categoryClass = "category-" + classify(state[valueColumn] + "");
 
       chartElement
         .select("." + stateClass)
-        .attr("class", `${ stateClass } ${ categoryClass } state-active`)
+        .attr("class", `${stateClass} ${categoryClass} state-active`)
         .attr("fill", colorScale(state[valueColumn]));
     }
   });
@@ -172,22 +148,22 @@ var renderStateGridMap = function(config) {
     .enter()
     .append("text")
     .attr("text-anchor", "middle")
-    .text(function(d) {
-      var state = STATES.filter(s => s.name == d.state_name).pop();
+    .text(function (d) {
+      var state = STATES.filter((s) => s.name == d.state_name).pop();
       return isMobile.matches ? state.usps : state.ap;
     })
-    .attr("class", d =>
-      (d[valueColumn] !== null && d[valueColumn] !== undefined)
+    .attr("class", (d) =>
+      d[valueColumn] !== null && d[valueColumn] !== undefined
         ? `category-${classify(d[valueColumn] + "")} label label-active`
         : "label"
     )
-    .attr("x", function(d) {
+    .attr("x", function (d) {
       var className = `.state-${classify(d.state_name)}`;
       var tileBox = $.one(className).getBBox();
 
       return tileBox.x + tileBox.width * 0.52;
     })
-    .attr("y", function(d) {
+    .attr("y", function (d) {
       var className = ".state-" + classify(d.state_name);
       var tileBox = $.one(className).getBBox();
       var textBox = this.getBBox();

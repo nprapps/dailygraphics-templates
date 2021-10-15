@@ -9,7 +9,7 @@ var { COLORS, classify, makeTranslate, formatStyle } = require("./lib/helpers");
 var { isMobile } = require("./lib/breakpoints");
 
 // Render a bar chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup chart container.
   var { labelColumn, valueColumn } = config;
 
@@ -17,13 +17,13 @@ module.exports = function(config) {
   var numGroupBars = config.data[0].values.length;
 
   // Setting that can be adjusted in the google sheet
-  const labelWidth = config.options.find(element => element.option == "label_width").setting;
-  const axis = config.options.find(element => element.option == "axis").setting;
-  const f = config.options.find(element => element.option == "number_format").setting;
-  const roundTicksFactor = config.options.find(element => element.option == "round_ticks_factor").setting;
-  const ticksX = config.options.find(element => element.option == "ticks_x").setting;
-  const barLabelPosition = config.options.find(element => element.option == "bar_label_position").setting;
-  const groupLabelPosition = config.options.find(element => element.option == "group_label_position").setting;
+  const labelWidth = config.options.find((element) => element.option == "label_width").setting;
+  const axis = config.options.find((element) => element.option == "axis").setting;
+  const f = config.options.find((element) => element.option == "number_format").setting;
+  const roundTicksFactor = config.options.find((element) => element.option == "round_ticks_factor").setting;
+  const ticksX = config.options.find((element) => element.option == "ticks_x").setting;
+  const barLabelPosition = config.options.find((element) => element.option == "bar_label_position").setting;
+  const groupLabelPosition = config.options.find((element) => element.option == "group_label_position").setting;
 
   var barHeight = 20;
   var barGapInner = 2;
@@ -34,40 +34,36 @@ module.exports = function(config) {
 
   var valueFormat;
 
-  if (f == "regular") { valueFormat = d3.format(","); }
-  else if (f == "percent rounded") { valueFormat = d3.format(".0%"); }
-  else if (f == "percent decimal") { valueFormat = d3.format("~%"); }
-  else { valueFormat = d3.format("$,"); }
+  if (f == "regular") {
+    valueFormat = d3.format(",");
+  } else if (f == "percent rounded") {
+    valueFormat = d3.format(".0%");
+  } else if (f == "percent decimal") {
+    valueFormat = d3.format("~%");
+  } else {
+    valueFormat = d3.format("$,");
+  }
 
   var margins = {
     top: groupLabelPosition == "above" ? 20 : 10,
     right: 15,
     bottom: 0,
-    left: groupLabelPosition == "above" & barLabelPosition == "key" ? 0 : labelWidth + labelMargin
+    left: (groupLabelPosition == "above") & (barLabelPosition == "key") ? 0 : labelWidth + labelMargin
   };
 
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
   var chartHeight =
-    ((barHeight + barGapInner) * numGroupBars - barGapInner + barGap) *
-      numGroups -
-    barGap +
-    barGapInner;
+    ((barHeight + barGapInner) * numGroupBars - barGapInner + barGap) * numGroups - barGap + barGapInner;
 
   // Clear existing graphic (for redraw)
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
   // Create D3 scale objects.
-  var values = config.data
-    .reduce((acc, d) => acc.concat(d.values), [])
-    .map(d => d[valueColumn]);
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
+  var values = config.data.reduce((acc, d) => acc.concat(d.values), []).map((d) => d[valueColumn]);
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
   var min = Math.min(...floors);
   var max = Math.max(...ceilings);
 
@@ -75,19 +71,13 @@ module.exports = function(config) {
     min = 0;
   }
 
-  var xScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([0, chartWidth]);
+  var xScale = d3.scaleLinear().domain([min, max]).range([0, chartWidth]);
 
   var yScale = d3.scaleLinear().range([chartHeight, 0]);
 
-  var labelList = config.data[0].values.map(d => d[labelColumn])
+  var labelList = config.data[0].values.map((d) => d[labelColumn]);
 
-  var colorScale = d3
-    .scaleOrdinal()
-    .domain(labelList)
-    .range([COLORS.teal2, COLORS.peach2]);
+  var colorScale = d3.scaleOrdinal().domain(labelList).range([COLORS.teal2, COLORS.peach2]);
 
   if (barLabelPosition == "key") {
     // Render a color legend.
@@ -98,12 +88,12 @@ module.exports = function(config) {
       .data(labelList)
       .enter()
       .append("li")
-      .attr("class", function(d, i) {
+      .attr("class", function (d, i) {
         return `key-item key-${i} ${classify(d)}`;
       });
 
-    legend.append("b").style("background-color", d => colorScale(d));
-    legend.append("label").text(d => d);
+    legend.append("b").style("background-color", (d) => colorScale(d));
+    legend.append("label").text((d) => d);
   }
 
   if (groupLabelPosition == "above") {
@@ -116,22 +106,20 @@ module.exports = function(config) {
       .data(config.data)
       .enter()
       .append("li")
-      .attr("class", function(d, i) {
+      .attr("class", function (d, i) {
         return `key-item key-${i} ${classify(d)}`;
       })
       .style("position", "absolute")
-      .style("top", (d,i) => (((groupHeight + barGap) * i) - 10 + margins.top) + "px")
+      .style("top", (d, i) => (groupHeight + barGap) * i - 10 + margins.top + "px")
       .style("font-size", "1.2em")
       .style("font-weight", 600)
       .style("font-family", "'Barlow Condensed', Helvetica, Arial, sans-serif");
 
-    legend.append("label").text(d => d.key);
+    legend.append("label").text((d) => d.key);
   }
 
   // Create the root SVG element.
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -146,14 +134,10 @@ module.exports = function(config) {
       .axisBottom()
       .scale(xScale)
       .ticks(ticksX)
-      .tickFormat(d => valueFormat(d));
+      .tickFormat((d) => valueFormat(d));
 
     // Render axes to chart.
-    chartElement
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", makeTranslate(0, chartHeight))
-      .call(xAxis);
+    chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
     // Render grid to chart.
     chartElement
@@ -170,21 +154,19 @@ module.exports = function(config) {
     .enter()
     .append("g")
     .attr("class", "g bars")
-    .attr("transform", (d, i) =>
-      makeTranslate(0, i ? (groupHeight + barGap) * i : 0)
-    );
+    .attr("transform", (d, i) => makeTranslate(0, i ? (groupHeight + barGap) * i : 0));
 
   barGroups
     .selectAll("rect")
-    .data(d => d.values)
+    .data((d) => d.values)
     .enter()
     .append("rect")
-    .attr("x", d => (d[valueColumn] >= 0 ? xScale(0) : xScale(d[valueColumn])))
+    .attr("x", (d) => (d[valueColumn] >= 0 ? xScale(0) : xScale(d[valueColumn])))
     .attr("y", (d, i) => (i ? barHeight * i + barGapInner * i : 0))
-    .attr("width", d => Math.abs(xScale(0) - xScale(d[valueColumn])))
+    .attr("width", (d) => Math.abs(xScale(0) - xScale(d[valueColumn])))
     .attr("height", barHeight)
-    .style("fill", d => colorScale(d[labelColumn]))
-    .attr("class", d => "y-" + d[labelColumn]);
+    .style("fill", (d) => colorScale(d[labelColumn]))
+    .attr("class", (d) => "y-" + d[labelColumn]);
 
   // Render 0-line.
   if (min < 0) {
@@ -214,9 +196,11 @@ module.exports = function(config) {
       .data(config.data)
       .enter()
       .append("li")
-      .attr("style", function(d, i) {
+      .attr("style", function (d, i) {
         var top = (groupHeight + barGap) * i;
-        if (i == 0) { top = 0; }
+        if (i == 0) {
+          top = 0;
+        }
         top = top + barHeight / 2;
 
         return formatStyle({
@@ -226,9 +210,9 @@ module.exports = function(config) {
           top: top + "px;"
         });
       })
-      .attr("class", d => classify(d.key))
+      .attr("class", (d) => classify(d.key))
       .append("span")
-      .text(d => d.key);
+      .text((d) => d.key);
   }
 
   if (barLabelPosition == "inline") {
@@ -240,7 +224,7 @@ module.exports = function(config) {
       .data(labelList)
       .enter()
       .append("text")
-      .text(d => d)
+      .text((d) => d)
       .attr("x", -labelWidth)
       .attr("y", (d, i) => (i ? barHeight * i + barGapInner * i : 0))
       // .style("text-anchor", "end")
@@ -254,13 +238,13 @@ module.exports = function(config) {
     .append("g")
     .attr("class", "value")
     .selectAll("text")
-    .data(d => d.values)
+    .data((d) => d.values)
     .enter()
     .append("text")
-    .text(d => valueFormat(d[valueColumn]))
-    .attr("x", d => xScale(d[valueColumn]))
+    .text((d) => valueFormat(d[valueColumn]))
+    .attr("x", (d) => xScale(d[valueColumn]))
     .attr("y", (d, i) => (i ? barHeight * i + barGapInner * i : 0))
-    .attr("dx", function(d) {
+    .attr("dx", function (d) {
       var xStart = xScale(d[valueColumn]);
       var textWidth = this.getComputedTextLength();
 
@@ -269,7 +253,7 @@ module.exports = function(config) {
         var outsideOffset = -(valueGap + textWidth);
         d3.select(this).classed("out", true);
         return outsideOffset;
-      // Positive case
+        // Positive case
       } else {
         d3.select(this).classed("out", true);
         return valueGap;

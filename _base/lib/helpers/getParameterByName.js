@@ -1,3 +1,3 @@
-module.exports = function(name) {
+module.exports = function (name) {
   return new URLSearchParams(window.location.search).get(name);
 };

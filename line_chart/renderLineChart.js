@@ -11,7 +11,7 @@ var { yearFull, yearAbbrev } = require("./lib/helpers/formatDate");
 var { isMobile } = require("./lib/breakpoints");
 
 // Render a line chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup
   var { dateColumn, valueColumn } = config;
 
@@ -38,61 +38,39 @@ module.exports = function(config) {
 
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
-  var chartHeight =
-    Math.ceil((config.width * aspectHeight) / aspectWidth) -
-    margins.top -
-    margins.bottom;
+  var chartHeight = Math.ceil((config.width * aspectHeight) / aspectWidth) - margins.top - margins.bottom;
 
   // Clear existing graphic (for redraw)
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
-  var dates = config.data[0].values.map(d => d.date);
+  var dates = config.data[0].values.map((d) => d.date);
   var extent = [dates[0], dates[dates.length - 1]];
 
-  var xScale = d3
-    .scaleTime()
-    .domain(extent)
-    .range([0, chartWidth]);
+  var xScale = d3.scaleTime().domain(extent).range([0, chartWidth]);
 
-  var values = config.data.reduce(
-    (acc, d) => acc.concat(d.values.map(v => v[valueColumn])),
-    []
-  );
+  var values = config.data.reduce((acc, d) => acc.concat(d.values.map((v) => v[valueColumn])), []);
 
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
   var min = Math.min.apply(null, floors);
 
   if (min > 0) {
     min = 0;
   }
 
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
   var max = Math.max.apply(null, ceilings);
 
-  var yScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([chartHeight, 0]);
+  var yScale = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   var colorScale = d3
     .scaleOrdinal()
     .domain(
-      config.data.map(function(d) {
+      config.data.map(function (d) {
         return d.name;
       })
     )
-    .range([
-      COLORS.teal2,
-      COLORS.purple2,
-      COLORS.peach2,
-      COLORS.blue2,
-      COLORS.gray2
-    ]);
+    .range([COLORS.teal2, COLORS.purple2, COLORS.peach2, COLORS.blue2, COLORS.gray2]);
 
   // Render the HTML legend.
 
@@ -105,17 +83,15 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("li")
-    .attr("class", d => "key-item " + classify(d.name));
+    .attr("class", (d) => "key-item " + classify(d.name));
 
-  legend.append("b").style("background-color", d => colorScale(d.name));
+  legend.append("b").style("background-color", (d) => colorScale(d.name));
 
-  legend.append("label").text(d => d.name);
+  legend.append("label").text((d) => d.name);
 
   // Create the root SVG element.
 
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -130,7 +106,7 @@ module.exports = function(config) {
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
-    .tickFormat(function(d, i) {
+    .tickFormat(function (d, i) {
       if (isMobile.matches) {
         return "\u2019" + yearAbbrev(d);
       } else {
@@ -138,31 +114,21 @@ module.exports = function(config) {
       }
     });
 
-  var yAxis = d3
-    .axisLeft()
-    .scale(yScale)
-    .ticks(ticksY);
+  var yAxis = d3.axisLeft().scale(yScale).ticks(ticksY);
 
   // Render axes to chart.
 
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
-  chartElement
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+  chartElement.append("g").attr("class", "y axis").call(yAxis);
 
   // Render grid to chart.
 
-  var xAxisGrid = function() {
+  var xAxisGrid = function () {
     return xAxis;
   };
 
-  var yAxisGrid = function() {
+  var yAxisGrid = function () {
     return yAxis;
   };
 
@@ -170,20 +136,9 @@ module.exports = function(config) {
     .append("g")
     .attr("class", "x grid")
     .attr("transform", makeTranslate(0, chartHeight))
-    .call(
-      xAxisGrid()
-        .tickSize(-chartHeight, 0, 0)
-        .tickFormat("")
-    );
+    .call(xAxisGrid().tickSize(-chartHeight, 0, 0).tickFormat(""));
 
-  chartElement
-    .append("g")
-    .attr("class", "y grid")
-    .call(
-      yAxisGrid()
-        .tickSize(-chartWidth, 0, 0)
-        .tickFormat("")
-    );
+  chartElement.append("g").attr("class", "y grid").call(yAxisGrid().tickSize(-chartWidth, 0, 0).tickFormat(""));
 
   // Render 0 value line.
 
@@ -200,8 +155,8 @@ module.exports = function(config) {
   // Render lines to chart.
   var line = d3
     .line()
-    .x(d => xScale(d[dateColumn]))
-    .y(d => yScale(d[valueColumn]));
+    .x((d) => xScale(d[dateColumn]))
+    .y((d) => yScale(d[valueColumn]));
 
   chartElement
     .append("g")
@@ -210,11 +165,11 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("path")
-    .attr("class", d => "line " + classify(d.name))
-    .attr("stroke", d => colorScale(d.name))
-    .attr("d", d => line(d.values));
+    .attr("class", (d) => "line " + classify(d.name))
+    .attr("stroke", (d) => colorScale(d.name))
+    .attr("d", (d) => line(d.values));
 
-  var lastItem = d => d.values[d.values.length - 1];
+  var lastItem = (d) => d.values[d.values.length - 1];
 
   chartElement
     .append("g")
@@ -223,9 +178,9 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .attr("x", d => xScale(lastItem(d)[dateColumn]) + 5)
-    .attr("y", d => yScale(lastItem(d)[valueColumn]) + 3)
-    .text(function(d) {
+    .attr("x", (d) => xScale(lastItem(d)[dateColumn]) + 5)
+    .attr("y", (d) => yScale(lastItem(d)[valueColumn]) + 3)
+    .text(function (d) {
       var item = lastItem(d);
       var value = item[valueColumn];
       var label = value.toFixed(1);

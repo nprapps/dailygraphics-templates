@@ -6,18 +6,18 @@ var skipLabels = ["date", "annotate", "x_offset", "y_offset"];
 var renderLineChart = require("./renderAnnotatedLine");
 
 // Initialize graphic
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var { annotations, series } = formatData(window.DATA);
   render(series, annotations);
   window.addEventListener("resize", () => render(series, annotations));
 };
 
 // Reformat data for renderAnnotatedLine()
-var formatData = function(data) {
+var formatData = function (data) {
   var annotations = [];
   var series = [];
 
-  data.forEach(function(d) {
+  data.forEach(function (d) {
     var [m, day, y] = d.date.split("/").map(Number);
     y = y > 50 ? 1900 + y : 2000 + y;
     d.date = new Date(y, m - 1, day);
@@ -50,7 +50,7 @@ var formatData = function(data) {
   for (var name in data[0]) {
     if (skipLabels.includes(name)) continue;
 
-    var values = data.map(function(d) {
+    var values = data.map(function (d) {
       return {
         date: d.date,
         amt: d[name]
@@ -67,7 +67,7 @@ var formatData = function(data) {
 /*
  * Render the graphic(s).
  */
-var render = function(data, annotations) {
+var render = function (data, annotations) {
   var container = "#annotated-line-chart";
   var element = document.querySelector(container);
   var width = element.offsetWidth;

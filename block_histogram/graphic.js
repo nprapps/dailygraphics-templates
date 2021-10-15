@@ -4,7 +4,7 @@ Sidechain.registerGuest();
 var renderBlockHistogram = require("./renderBlockHistogram");
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var binned = formatData(window.DATA);
   render(binned);
 
@@ -12,7 +12,7 @@ var onWindowLoaded = function() {
 };
 
 // Format graphic data for processing by D3.
-var formatData = function(data) {
+var formatData = function (data) {
   var numBins = COLOR_BINS.length - 1;
   var binnedData = [];
 
@@ -22,7 +22,7 @@ var formatData = function(data) {
   }
 
   // put states in bins
-  data.forEach(function(d) {
+  data.forEach(function (d) {
     if (d.amt != null) {
       var state = d.usps;
 
@@ -39,7 +39,7 @@ var formatData = function(data) {
 };
 
 // Render the graphic(s). Called by pym with the container width.
-var render = function(data) {
+var render = function (data) {
   // Render the chart!
   var container = "#block-histogram";
   var element = document.querySelector(container);

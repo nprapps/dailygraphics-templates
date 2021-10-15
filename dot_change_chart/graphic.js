@@ -12,13 +12,13 @@ var d3 = {
 var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
 
 // Initialize the graphic
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   render();
   window.addEventListener("resize", render);
 };
 
 // Render the graphic(s).
-var render = function() {
+var render = function () {
   // Render the chart!
   var container = "#dot-chart";
   var element = document.querySelector(container);
@@ -31,7 +31,7 @@ var render = function() {
 };
 
 // Render a bar chart
-var renderDotChart = function(config) {
+var renderDotChart = function (config) {
   // Setup
   var labelColumn = "label";
   var startColumn = "start";
@@ -68,9 +68,7 @@ var renderDotChart = function(config) {
   containerElement.html("");
 
   // Create the root SVG element
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -81,37 +79,26 @@ var renderDotChart = function(config) {
 
   // Create D3 scale objects
   var min = 0;
-  var values = config.data.map(d => d[endColumn]);
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
+  var values = config.data.map((d) => d[endColumn]);
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
   var max = Math.max(...ceilings);
   var min = 0;
 
-  var xScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([0, chartWidth]);
+  var xScale = d3.scaleLinear().domain([min, max]).range([0, chartWidth]);
 
   // Create D3 axes
   var xAxis = d3
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
-    .tickFormat(d => d + "%");
+    .tickFormat((d) => d + "%");
 
   // Render axes to chart
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
   // Render grid to chart
-  var xAxisGrid = function() {
+  var xAxisGrid = function () {
     return xAxis;
   };
 
@@ -119,11 +106,7 @@ var renderDotChart = function(config) {
     .append("g")
     .attr("class", "x grid")
     .attr("transform", makeTranslate(0, chartHeight))
-    .call(
-      xAxisGrid()
-        .tickSize(-chartHeight, 0, 0)
-        .tickFormat("")
-    );
+    .call(xAxisGrid().tickSize(-chartHeight, 0, 0).tickFormat(""));
 
   // Render range bars to chart
   chartElement
@@ -133,8 +116,8 @@ var renderDotChart = function(config) {
     .data(config.data)
     .enter()
     .append("line")
-    .attr("x1", d => xScale(d[startColumn]))
-    .attr("x2", d => xScale(d[endColumn]))
+    .attr("x1", (d) => xScale(d[startColumn]))
+    .attr("x2", (d) => xScale(d[endColumn]))
     .attr("y1", (d, i) => i * (barHeight + barGap) + barHeight / 2)
     .attr("y2", (d, i) => i * (barHeight + barGap) + barHeight / 2);
 
@@ -146,7 +129,7 @@ var renderDotChart = function(config) {
     .data(config.data)
     .enter()
     .append("circle")
-    .attr("cx", d => xScale(d[startColumn]))
+    .attr("cx", (d) => xScale(d[startColumn]))
     .attr("cy", (d, i) => i * (barHeight + barGap) + barHeight / 2)
     .attr("r", dotRadius);
 
@@ -158,13 +141,12 @@ var renderDotChart = function(config) {
     .data(config.data)
     .enter()
     .append("circle")
-    .attr("cx", d => xScale(d[endColumn]))
+    .attr("cx", (d) => xScale(d[endColumn]))
     .attr("cy", (d, i) => i * (barHeight + barGap) + barHeight / 2)
     .attr("r", dotRadius);
 
-
   // Render bar labels
-  ["shadow", "text-label"].forEach(function(cls) {
+  ["shadow", "text-label"].forEach(function (cls) {
     chartElement
       .append("g")
       .attr("class", cls)
@@ -172,9 +154,9 @@ var renderDotChart = function(config) {
       .data(config.data)
       .enter()
       .append("text")
-      .attr("x", d => xScale(d[startColumn]) - 8)
+      .attr("x", (d) => xScale(d[startColumn]) - 8)
       .attr("y", (d, i) => i * (barHeight + barGap) + barHeight / 2 + 4)
-      .text(d => d[labelColumn]);
+      .text((d) => d[labelColumn]);
   });
 };
 

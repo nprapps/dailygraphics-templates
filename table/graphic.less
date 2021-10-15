@@ -57,8 +57,9 @@ table {
     color: white;
   }
 
-
-  td { vertical-align: top; }
+  td {
+    vertical-align: top;
+  }
 }
 
 // Tablesorter styles
@@ -76,10 +77,10 @@ thead {
   }
 
   .sorter {
-   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-   -moz-user-select: none; /* Firefox */
-   -ms-user-select: none; /* Internet Explorer/Edge */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
     margin-left: 4px;
     color: white;
     font-size: 12px;
@@ -101,7 +102,6 @@ thead {
       }
     }
   }
-
 }
 
 /*
@@ -110,13 +110,13 @@ thead {
 * ~ writing extra mobile styles to undo them.
 */
 @media @screen-mobile-above {
-
   .mobile {
     display: none;
   }
 
   table {
-    th, td {
+    th,
+    td {
       padding: 8px 10px;
       &.number,
       &.percent,
@@ -129,7 +129,7 @@ thead {
       background-color: @teal1 !important;
     }
 
-    tbody tr:hover{
+    tbody tr:hover {
       background-color: @gray4;
     }
 
@@ -137,7 +137,9 @@ thead {
       padding: 6px 0;
       border-bottom: 1px solid @gray3;
 
-      &:last-child { border-bottom: none; }
+      &:last-child {
+        border-bottom: none;
+      }
     }
   }
 
@@ -181,7 +183,9 @@ thead {
       font-size: 16px;
     }
 
-    tr, th, td {
+    tr,
+    th,
+    td {
       display: block;
       padding: 0 10px;
       width: 100%;
@@ -190,9 +194,15 @@ thead {
 
     tr {
       border-bottom: 1px solid #eee;
-      td:first-child { padding-top: 6px; }
-      td:last-child { padding-bottom: 6px; }
-      &:last-child { border-bottom: none; }
+      td:first-child {
+        padding-top: 6px;
+      }
+      td:last-child {
+        padding-bottom: 6px;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
     }
 
     tr:nth-child(even) {
@@ -202,7 +212,9 @@ thead {
     td {
       margin-bottom: 6px;
 
-      &:empty { display: none; }
+      &:empty {
+        display: none;
+      }
     }
 
     thead[data-title]:before,

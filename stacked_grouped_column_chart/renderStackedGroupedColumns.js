@@ -8,7 +8,7 @@ var { isMobile } = require("./lib/breakpoints");
 var { COLORS, classify, makeTranslate, wrapText } = require("./lib/helpers");
 
 // Render a grouped stacked column chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup
   var { labelColumn } = config;
 
@@ -43,23 +43,19 @@ module.exports = function(config) {
   // Create D3 scale objects.
   var xScale = d3
     .scaleBand()
-    .domain(config.data.map(d => d.category))
+    .domain(config.data.map((d) => d.category))
     .range([0, chartWidth])
     .padding(0.1);
 
   var xScaleBars = d3
     .scaleBand()
-    .domain(config.data.map(d => d[labelColumn]))
+    .domain(config.data.map((d) => d[labelColumn]))
     .range([0, xScale.bandwidth()])
     .padding(0.1);
 
-  var values = config.data.map(d => d.total);
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
+  var values = config.data.map((d) => d.total);
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
 
   var min = Math.min(...floors);
   var max = Math.max(...ceilings);
@@ -68,14 +64,11 @@ module.exports = function(config) {
     min = 0;
   }
 
-  var yScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([chartHeight, 0]);
+  var yScale = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(config.data[0].values.map(d => d[labelColumn]))
+    .domain(config.data[0].values.map((d) => d[labelColumn]))
     .range(["#787878", COLORS.blue3, "#ccc"]);
 
   // Render the legend.
@@ -88,14 +81,12 @@ module.exports = function(config) {
     .append("li")
     .attr("class", (d, i) => `key-item key-${i} ${classify(d)}`);
 
-  legend.append("b").style("background-color", d => colorScale(d));
+  legend.append("b").style("background-color", (d) => colorScale(d));
 
-  legend.append("label").text(d => d);
+  legend.append("label").text((d) => d);
 
   // Create the root SVG element.
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -108,13 +99,13 @@ module.exports = function(config) {
   var xAxis = d3
     .axisBottom()
     .scale(xScale)
-    .tickFormat(d => d);
+    .tickFormat((d) => d);
 
   var yAxis = d3
     .axisLeft()
     .scale(yScale)
     .ticks(ticksY)
-    .tickFormat(d => d);
+    .tickFormat((d) => d);
 
   // Render axes to chart.
   chartElement
@@ -124,74 +115,60 @@ module.exports = function(config) {
     .call(xAxis);
 
   chartElement.selectAll(".x.axis.category .tick line").remove();
-  chartElement
-    .selectAll(".x.axis.category text")
-    .attr("y", 35)
-    .attr("dy", 0)
-    .call(wrapText, xScale.bandwidth(), 13);
+  chartElement.selectAll(".x.axis.category text").attr("y", 35).attr("dy", 0).call(wrapText, xScale.bandwidth(), 13);
 
-  chartElement
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+  chartElement.append("g").attr("class", "y axis").call(yAxis);
 
   // Render grid to chart.
 
-  chartElement
-    .append("g")
-    .attr("class", "y grid")
-    .call(yAxis.tickSize(-chartWidth, 0).tickFormat(""));
+  chartElement.append("g").attr("class", "y grid").call(yAxis.tickSize(-chartWidth, 0).tickFormat(""));
 
   // Render bars to chart.
-  xScale.domain().forEach(function(c, k) {
+  xScale.domain().forEach(function (c, k) {
     var categoryElement = chartElement.append("g").attr("class", classify(c));
 
     var columns = categoryElement
       .selectAll(".columns")
-      .data(config.data.filter(d => d.category == c))
+      .data(config.data.filter((d) => d.category == c))
       .enter()
       .append("g")
       .attr("class", "column")
-      .attr("transform", d => makeTranslate(xScale(d.category), 0));
+      .attr("transform", (d) => makeTranslate(xScale(d.category), 0));
 
     // axis labels
     var xAxisBars = d3
       .axisBottom()
       .scale(xScaleBars)
-      .tickFormat(d => d);
-    columns
-      .append("g")
-      .attr("class", "x axis bars")
-      .attr("transform", makeTranslate(0, chartHeight))
-      .call(xAxisBars);
+      .tickFormat((d) => d);
+    columns.append("g").attr("class", "x axis bars").attr("transform", makeTranslate(0, chartHeight)).call(xAxisBars);
 
     // column segments
     var bars = columns
       .append("g")
       .attr("class", "bar")
-      .attr("transform", d => makeTranslate(xScaleBars(d[labelColumn]), 0));
+      .attr("transform", (d) => makeTranslate(xScaleBars(d[labelColumn]), 0));
 
     bars
       .selectAll("rect")
-      .data(d => d.values)
+      .data((d) => d.values)
       .enter()
       .append("rect")
-      .attr("y", d => (d.y1 < d.y0 ? yScale(d.y0) : yScale(d.y1)))
+      .attr("y", (d) => (d.y1 < d.y0 ? yScale(d.y0) : yScale(d.y1)))
       .attr("width", xScaleBars.bandwidth())
-      .attr("height", d => Math.abs(yScale(d.y0) - yScale(d.y1)))
-      .style("fill", d => colorScale(d[labelColumn]))
-      .attr("class", d => classify(d[labelColumn]));
+      .attr("height", (d) => Math.abs(yScale(d.y0) - yScale(d.y1)))
+      .style("fill", (d) => colorScale(d[labelColumn]))
+      .attr("class", (d) => classify(d[labelColumn]));
 
     // Render values to chart.
     bars
       .selectAll("text")
-      .data(d => d.values)
+      .data((d) => d.values)
       .enter()
       .append("text")
-      .text(d => d.val)
-      .attr("class", d => classify(d[labelColumn]))
-      .attr("x", d => xScaleBars.bandwidth() / 2)
-      .attr("y", function(d) {
+      .text((d) => d.val)
+      .attr("class", (d) => classify(d[labelColumn]))
+      .attr("x", (d) => xScaleBars.bandwidth() / 2)
+      .attr("y", function (d) {
         var textHeight = this.getBBox().height;
         var barHeight = Math.abs(yScale(d.y0) - yScale(d.y1));
 

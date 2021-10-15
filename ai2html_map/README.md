@@ -1,12 +1,10 @@
-ai2html Graphic
-===============
+# ai2html Graphic
 
 The ai2html template uses an open-source script called [ai2html](http://ai2html.org/) to convert Illustrator graphics to HTML and CSS and display them in our responsive dailygraphics template.
 
 (This assumes you have already set up the dailygraphics-next rig and have it running on your computer. You can find more information about setting up the rig in the [dailygraphics-next documentation](https://github.com/nprapps/dailygraphics-next).)
 
-Installing ai2html
-------------------
+## Installing ai2html
 
 To use this template, you'll need to install ai2html as an Illustrator
 script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx)
@@ -16,8 +14,7 @@ For example, on Mac OS X running Adobe Illustrator CC 2019, the path would be:
 
 **You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html" command in File >> Scripts.
 
-Creating a new ai2html graphic
-------------------------------
+## Creating a new ai2html graphic
 
 To create a new ai2html graphic, click the "new()" button in the toolbar and select "Ai2html Graphic" from the list of templates. You'll also need to provide a slug for the graphic--this will have the current date in YYYYMMDD format appended to it, to prevent collisions.
 
@@ -34,10 +31,10 @@ documentation](http://ai2html.org/#how-to-use-ai2html) for help. When
 you're ready to export, run File >> Scripts >> ai2html. The resulting
 graphic will appear within the base template when you load the preview!
 
-Some tips for making a map
---------------------------
+## Some tips for making a map
 
 **Potential questions to ask that might be helpful:**
+
 - Does this story need a map?
 - Is the data location-based?
 - Could this data be shown better in another non-map format?
@@ -45,12 +42,14 @@ Some tips for making a map
 - What location markers might be important for people to orient themselves on the map? (ex. highways or buildings for city-level mapping; major cities or physical features for country-level mapping)
 
 **Common workflows for mapmaking:**
+
 - Usually the bulk of the work, like analyzing data or mapping it onto different elements, can be done in a GIS software. [QGIS](https://qgis.org/en/site/) is a good free option to use.
-- If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there. The `locator-template` is the most up-to-date template in the repo, and contains styles used in recent locator maps that can be adapted for other maps as well. 
+- If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there. The `locator-template` is the most up-to-date template in the repo, and contains styles used in recent locator maps that can be adapted for other maps as well.
 - Another more advanced option is using [command line tools](https://moriartynaps.org/command-carto-part-one/) and scripting as steps to join data and map files.
 - Then, if additional styling is needed, using or modifying the Illustrator styles in here.
 
 **Here are some good free GIS data sources to pull from:**
+
 - [Natural Earth](https://www.naturalearthdata.com/downloads/) for global cultural, physical and raster data
 - [USGS EarthExplorer](https://earthexplorer.usgs.gov/) for global satellite imagery
 - [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Downloading_data) for crowd-sourced street level data

@@ -7,7 +7,7 @@ var renderGroupedStackedColumnChart = require("./renderStackedGroupedColumns");
 console.clear();
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var data = formatData(window.DATA);
   render(data);
 
@@ -15,8 +15,8 @@ var onWindowLoaded = function() {
 };
 
 // Format graphic data for processing by D3.
-var formatData = function(input) {
-  var output = input.map(function(d) {
+var formatData = function (input) {
+  var output = input.map(function (d) {
     var y0 = 0;
     var y1 = 0;
     var total = 0;
@@ -49,7 +49,7 @@ var formatData = function(input) {
 };
 
 // Render the graphic(s). Called by pym with the container width.
-var render = function(data) {
+var render = function (data) {
   var container = "#stacked-grouped-column-chart";
   var element = document.querySelector(container);
   var width = element.offsetWidth;

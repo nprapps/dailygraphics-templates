@@ -1,4 +1,3 @@
-
 var { isMobile } = require("./lib/breakpoints");
 var { makeTranslate, classify } = require("./lib/helpers");
 
@@ -9,7 +8,7 @@ var d3 = {
 };
 
 // Render a bar chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup
   var labelColumn = "usps";
   var valueColumn = "amt";
@@ -32,7 +31,7 @@ module.exports = function(config) {
   // Determine largest bin
   var largestBin = Math.max.apply(
     null,
-    config.data.map(b => b.length)
+    config.data.map((b) => b.length)
   );
 
   // Calculate actual chart dimensions
@@ -44,9 +43,7 @@ module.exports = function(config) {
   containerElement.html("");
 
   // Create the root SVG element.
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -56,57 +53,34 @@ module.exports = function(config) {
     .attr("transform", makeTranslate(margins.left, margins.top));
 
   // Create D3 scale objects.
-  var xScale = d3
-    .scaleBand()
-    .domain(config.bins.slice(0, -1))
-    .range([0, chartWidth])
-    .padding(0.1);
+  var xScale = d3.scaleBand().domain(config.bins.slice(0, -1)).range([0, chartWidth]).padding(0.1);
 
-  var yScale = d3
-    .scaleLinear()
-    .domain([0, largestBin])
-    .range([chartHeight, 0]);
+  var yScale = d3.scaleLinear().domain([0, largestBin]).range([chartHeight, 0]);
 
   // Create D3 axes.
   var xAxis = d3
     .axisBottom()
     .scale(xScale)
-    .tickFormat(d => d > 0 ? "+" + d + "%" : d + "%");
+    .tickFormat((d) => (d > 0 ? "+" + d + "%" : d + "%"));
 
-  var yAxis = d3
-    .axisLeft()
-    .scale(yScale)
-    .ticks(ticksY);
+  var yAxis = d3.axisLeft().scale(yScale).ticks(ticksY);
 
   // Render axes to chart.
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
   d3.select(".x.axis .domain").remove();
 
   // Render grid to chart.
-  var yAxisGrid = function() {
+  var yAxisGrid = function () {
     return yAxis;
   };
 
-  chartElement
-    .append("g")
-    .attr("class", "y grid")
-    .call(
-      yAxisGrid()
-        .tickSize(-chartWidth, 0)
-        .tickFormat("")
-    );
+  chartElement.append("g").attr("class", "y grid").call(yAxisGrid().tickSize(-chartWidth, 0).tickFormat(""));
 
   var bandwidth = xScale.bandwidth();
   var shift = -(bandwidth / 2) - (bandwidth * 0.1) / 2;
-  var tickShift = function(d, i) {
-    var existing = this.getAttribute("transform").match(
-      /translate\(([^)]+)\)/
-    )[1];
+  var tickShift = function (d, i) {
+    var existing = this.getAttribute("transform").match(/translate\(([^)]+)\)/)[1];
     existing = existing.split(",").map(Number);
     existing[0] += shift;
     existing[1] += 3;
@@ -120,7 +94,7 @@ module.exports = function(config) {
     .select(".x.axis")
     .append("g")
     .attr("class", "tick")
-    .attr("transform", function() {
+    .attr("transform", function () {
       var lastBin = xScale.domain()[xScale.domain().length - 1];
 
       var x = xScale(lastBin) + bandwidth + (bandwidth * 0.1) / 2;
@@ -128,12 +102,7 @@ module.exports = function(config) {
       return makeTranslate(x, y);
     });
 
-  lastTick
-    .append("line")
-    .attr("x1", 0)
-    .attr("x2", 0)
-    .attr("y1", 0)
-    .attr("y2", 6);
+  lastTick.append("line").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", 6);
 
   lastTick
     .append("text")
@@ -142,7 +111,7 @@ module.exports = function(config) {
     .attr("y", 9)
     .attr("dy", "0.71em")
     .attr("fill", "currentColor")
-    .text(function() {
+    .text(function () {
       var t = config.bins[config.bins.length - 1];
       if (t > 0) {
         return "+" + t + "%";
@@ -162,10 +131,10 @@ module.exports = function(config) {
 
   bins
     .selectAll("rect")
-    .data(function(d, i) {
+    .data(function (d, i) {
       // add the bin index to each row of data so we can assign the right color
       var formattedData = [];
-      Object.keys(d).forEach(function(k) {
+      Object.keys(d).forEach(function (k) {
         var v = d[k];
         formattedData.push({ key: k, value: v, parentIndex: i });
       });
@@ -177,16 +146,16 @@ module.exports = function(config) {
     .attr("x", 0)
     .attr("y", (d, i) => chartHeight - (blockHeight + blockGap) * (i + 1))
     .attr("height", blockHeight)
-    .attr("fill", d => config.colors[d.parentIndex])
-    .attr("class", d => classify(d.value));
+    .attr("fill", (d) => config.colors[d.parentIndex])
+    .attr("class", (d) => classify(d.value));
 
   // Render bin values.
   bins
     .append("g")
     .attr("class", "value")
     .selectAll("text")
-    .data(function(d) {
-      return Object.keys(d).map(key => ({ key, value: d[key] }));
+    .data(function (d) {
+      return Object.keys(d).map((key) => ({ key, value: d[key] }));
     })
     .enter()
     .append("text")
@@ -194,7 +163,7 @@ module.exports = function(config) {
     .attr("x", xScale.bandwidth() / 2)
     .attr("y", (d, i) => chartHeight - (blockHeight + blockGap) * (i + 1))
     .attr("dy", blockHeight / 2 + 4)
-    .text(d => d.value);
+    .text((d) => d.value);
 
   // Render annotations
   var annotations = chartElement.append("g").attr("class", "annotations");

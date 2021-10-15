@@ -2,12 +2,7 @@
  * Render a line chart.
  */
 
-var {
-  COLORS,
-  classify,
-  makeTranslate,
-  wrapText
-} = require("./lib/helpers");
+var { COLORS, classify, makeTranslate, wrapText } = require("./lib/helpers");
 
 var { isMobile } = require("./lib/breakpoints");
 
@@ -21,7 +16,7 @@ var d3 = {
   ...require("d3-interpolate/dist/d3-interpolate.min")
 };
 
-module.exports = function(config) {
+module.exports = function (config) {
   /*
    * Setup
    */
@@ -61,67 +56,43 @@ module.exports = function(config) {
 
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
-  var chartHeight =
-    Math.ceil((config.width * aspectHeight) / aspectWidth) -
-    margins.top -
-    margins.bottom;
+  var chartHeight = Math.ceil((config.width * aspectHeight) / aspectWidth) - margins.top - margins.bottom;
 
   // Clear existing graphic (for redraw)
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
-  var dates = config.data[0].values.map(d => d.date);
+  var dates = config.data[0].values.map((d) => d.date);
   var extent = [dates[0], dates[dates.length - 1]];
 
   /*
    * Create D3 scale objects.
    */
-  var xScale = d3
-    .scaleTime()
-    .domain(extent)
-    .range([0, chartWidth]);
+  var xScale = d3.scaleTime().domain(extent).range([0, chartWidth]);
 
-  var values = config.data.reduce(
-    (acc, d) => acc.concat(d.values.map(v => v[valueColumn])),
-    []
-  );
+  var values = config.data.reduce((acc, d) => acc.concat(d.values.map((v) => v[valueColumn])), []);
 
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
   var min = Math.min.apply(null, floors);
 
   if (min > 0) {
     min = 0;
   }
 
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
   var max = Math.max.apply(null, ceilings);
 
-  var yScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([chartHeight, 0]);
+  var yScale = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(config.data.map(d => d.name))
-    .range([
-      COLORS.red3,
-      COLORS.yellow3,
-      COLORS.blue3,
-      COLORS.orange3,
-      COLORS.teal3
-    ]);
+    .domain(config.data.map((d) => d.name))
+    .range([COLORS.red3, COLORS.yellow3, COLORS.blue3, COLORS.orange3, COLORS.teal3]);
 
   /*
    * Create the root SVG element.
    */
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -137,7 +108,7 @@ module.exports = function(config) {
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
-    .tickFormat(function(d, i) {
+    .tickFormat(function (d, i) {
       if (isMobile.matches) {
         return "\u2019" + yearAbbrev(d);
       } else {
@@ -145,24 +116,14 @@ module.exports = function(config) {
       }
     });
 
-  var yAxis = d3
-    .axisLeft()
-    .scale(yScale)
-    .ticks(ticksY);
+  var yAxis = d3.axisLeft().scale(yScale).ticks(ticksY);
 
   /*
    * Render axes to chart.
    */
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
-  chartElement
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+  chartElement.append("g").attr("class", "y axis").call(yAxis);
 
   /*
    * Render grid to chart.
@@ -172,20 +133,9 @@ module.exports = function(config) {
     .append("g")
     .attr("class", "x grid")
     .attr("transform", makeTranslate(0, chartHeight))
-    .call(
-      xAxis
-        .tickSize(-chartHeight, 0, 0)
-        .tickFormat("")
-    );
+    .call(xAxis.tickSize(-chartHeight, 0, 0).tickFormat(""));
 
-  chartElement
-    .append("g")
-    .attr("class", "y grid")
-    .call(
-      yAxis
-        .tickSize(-chartWidth, 0, 0)
-        .tickFormat("")
-    );
+  chartElement.append("g").attr("class", "y grid").call(yAxis.tickSize(-chartWidth, 0, 0).tickFormat(""));
 
   /*
    * Render 0 value line.
@@ -205,8 +155,8 @@ module.exports = function(config) {
    */
   var line = d3
     .line()
-    .x(d => xScale(d[dateColumn]))
-    .y(d => yScale(d[valueColumn]));
+    .x((d) => xScale(d[dateColumn]))
+    .y((d) => yScale(d[valueColumn]));
 
   chartElement
     .append("g")
@@ -215,11 +165,11 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("path")
-    .attr("class", function(d, i) {
+    .attr("class", function (d, i) {
       return "line " + classify(d.name);
     })
-    .attr("stroke", d => colorScale(d.name))
-    .attr("d", d => line(d.values));
+    .attr("stroke", (d) => colorScale(d.name))
+    .attr("d", (d) => line(d.values));
 
   chartElement
     .append("g")
@@ -228,11 +178,11 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .attr("x", function(d, i) {
+    .attr("x", function (d, i) {
       var last = d.values[d.values.length - 1];
       return xScale(last[dateColumn]) + 5;
     })
-    .attr("y", function(d) {
+    .attr("y", function (d) {
       var last = d.values[d.values.length - 1];
       return yScale(last[valueColumn]) + 3;
     });
@@ -250,20 +200,20 @@ module.exports = function(config) {
   annotation
     .append("circle")
     .attr("class", "dots")
-    .attr("cx", d => xScale(d[dateColumn]))
-    .attr("cy", d => yScale(d[valueColumn]))
-    .attr("fill", d => colorScale(d.series))
+    .attr("cx", (d) => xScale(d[dateColumn]))
+    .attr("cy", (d) => yScale(d[valueColumn]))
+    .attr("fill", (d) => colorScale(d.series))
     .attr("r", 3);
 
   annotation
     .append("text")
-    .html(function(d) {
+    .html(function (d) {
       var hasCustomLabel = d.label != null && d.label.length > 0;
       var text = hasCustomLabel ? d.label : dateFull(d[dateColumn]);
       var value = d[valueColumn].toFixed(2);
       return text + " " + value;
     })
-    .attr("x", d => xScale(d[dateColumn]) + d.xOffset + annotationXOffset)
-    .attr("y", d => yScale(d[valueColumn]) + d.yOffset + annotationYOffset)
+    .attr("x", (d) => xScale(d[dateColumn]) + d.xOffset + annotationXOffset)
+    .attr("y", (d) => yScale(d[valueColumn]) + d.yOffset + annotationYOffset)
     .call(wrapText, annotationWidth, annotationLineHeight);
 };

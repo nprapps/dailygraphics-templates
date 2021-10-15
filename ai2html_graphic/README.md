@@ -1,12 +1,10 @@
-ai2html Graphic
-===============
+# ai2html Graphic
 
 The ai2html template uses an open-source script called [ai2html](http://ai2html.org/) to convert Illustrator graphics to HTML and CSS and display them in our responsive dailygraphics template.
 
 (This assumes you have already set up the dailygraphics-next rig and have it running on your computer. You can find more information about setting up the rig in the [dailygraphics-next documentation](https://github.com/nprapps/dailygraphics-next).)
 
-Installing ai2html
-------------------
+## Installing ai2html
 
 To use this template, you'll need to install ai2html as an Illustrator
 script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx)
@@ -16,8 +14,7 @@ For example, on Mac OS X running Adobe Illustrator CC 2019, the path would be:
 
 **You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html" command in File >> Scripts.
 
-Creating a new ai2html graphic
-------------------------------
+## Creating a new ai2html graphic
 
 To create a new ai2html graphic, click the "new()" button in the toolbar and select "Ai2html Graphic" from the list of templates. You'll also need to provide a slug for the graphic--this will have the current date in YYYYMMDD format appended to it, to prevent collisions.
 

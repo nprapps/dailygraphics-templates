@@ -1,1 +1,1 @@
-module.exports = s => s.toLocaleString("en-US").replace(/\.0+$/, "");
+module.exports = (s) => s.toLocaleString("en-US").replace(/\.0+$/, "");

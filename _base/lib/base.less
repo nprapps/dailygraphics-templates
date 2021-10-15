@@ -4,39 +4,39 @@
 @screen-mobile: ~"screen and (max-width: 500px)";
 
 // Colors
-@purple1    : #855279;
-@purple2    : #B575BB;
-@purple3    : #DABADD;
+@purple1: #855279;
+@purple2: #b575bb;
+@purple3: #dabadd;
 
-@yellow1    : #AC8E4C;
-@yellow2    : #FFD373;
-@yellow3    : #F0DFBC;
+@yellow1: #ac8e4c;
+@yellow2: #ffd373;
+@yellow3: #f0dfbc;
 
-@peach1     : #AE6E52;
-@peach2     : #F79C75;
-@peach3     : #F1CEBF;
+@peach1: #ae6e52;
+@peach2: #f79c75;
+@peach3: #f1cebf;
 
-@blue1      : #1B6383;
-@blue2      : #268CBA;
-@blue3      : #A1C8DA;
+@blue1: #1b6383;
+@blue2: #268cba;
+@blue3: #a1c8da;
 
-@teal1      : #178287;
-@teal2      : #19A4AB;
-@teal3      : #9CD1D4;
-@teal4      : #D1EDEE;
+@teal1: #178287;
+@teal2: #19a4ab;
+@teal3: #9cd1d4;
+@teal4: #d1edee;
 
-@gray1      : #393939;
-@gray2      : #828282;
-@gray3      : #DCDCDC;
-@gray4      : #ECECEC;
+@gray1: #393939;
+@gray2: #828282;
+@gray3: #dcdcdc;
+@gray4: #ececec;
 
 // Fonts
 .serif() {
-  font-family: 'IBM Plex Serif',Times,serif;
+  font-family: "IBM Plex Serif", Times, serif;
 }
 
 .sans-serif() {
-  font-family: 'Barlow Condensed',Helvetica, Arial, sans-serif;
+  font-family: "Barlow Condensed", Helvetica, Arial, sans-serif;
 }
 
 // Mixins
@@ -51,14 +51,14 @@
 
 // NPR multimedia-template
 .mmedia-constrained() {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 650px;
 }
 
 .mmedia-constrained-centered() {
-    .mmedia-constrained();
-    text-align: center;
+  .mmedia-constrained();
+  text-align: center;
 }
 
 // Base styles
@@ -71,7 +71,7 @@ html {
   -webkit-text-size-adjust: none;
   .serif();
   font-weight: 400;
- }
+}
 
 body {
   max-width: 740px;
@@ -82,7 +82,8 @@ body {
   touch-action: manipulation; //remove 300ms click delay in Safari, AKA still the worst
 }
 
-img, svg {
+img,
+svg {
   max-width: 100%;
 }
 
@@ -135,18 +136,21 @@ h3 {
   color: @gray2;
 }
 
+.footnotes p strong {
+  color: @gray2;
+}
 
-.footnotes p strong { color: @gray2; }
-
-a, a:link, a:visited {
+a,
+a:link,
+a:visited {
   color: @blue1;
   text-decoration: none;
 }
 
-a:hover, a:active { color: @teal1; }
-
-
-
+a:hover,
+a:active {
+  color: @teal1;
+}
 
 // Standard graphic styles
 .graphic-wrapper {
@@ -192,7 +196,9 @@ a:hover, a:active { color: @teal1; }
   }
 }
 
-svg { overflow: hidden; }
+svg {
+  overflow: hidden;
+}
 
 .axis {
   font-size: 0.8em;
@@ -207,13 +213,19 @@ svg { overflow: hidden; }
   }
 
   &.y {
-    path { display: none; }
-    .tick line { display: none; }
+    path {
+      display: none;
+    }
+    .tick line {
+      display: none;
+    }
   }
 }
 
 .grid {
-  path { display: none; }
+  path {
+    display: none;
+  }
 
   .tick {
     stroke: @gray3;
@@ -223,11 +235,13 @@ svg { overflow: hidden; }
   }
 
   &.y {
-    g:first-child line { display: none; }
+    g:first-child line {
+      display: none;
+    }
   }
 }
 
-.zero-line  {
+.zero-line {
   stroke: @gray1;
   stroke-width: 1px;
   shape-rendering: crispEdges;
@@ -238,9 +252,15 @@ rect {
   shape-rendering: crispEdges;
 }
 
-.bars rect { fill: @teal2; }
-.highlight .bars rect { fill: @gray3; }
-.highlight .bars .highlight { fill: @teal2; }
+.bars rect {
+  fill: @teal2;
+}
+.highlight .bars rect {
+  fill: @gray3;
+}
+.highlight .bars .highlight {
+  fill: @teal2;
+}
 
 .labels {
   .sans-serif();
@@ -273,9 +293,15 @@ rect {
   font-size: 0.9em;
   fill: @gray2;
 
-  &.in { fill: #fff; }
-  &.out { fill: @gray2; }
-  &.highlight { fill: @teal2; }
+  &.in {
+    fill: #fff;
+  }
+  &.out {
+    fill: @gray2;
+  }
+  &.highlight {
+    fill: @teal2;
+  }
 }
 
 .tick {
@@ -288,12 +314,9 @@ rect {
   }
 }
 
-.x text{
+.x text {
   .serif();
 }
-
-
-
 
 // HOMEPAGE
 // * styles for when a project is embedded on the homepage

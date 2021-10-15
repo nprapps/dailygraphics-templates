@@ -10,8 +10,7 @@ var d3 = {
 };
 
 // Render a bar chart.
-var renderBarChart = function(config) {
-
+var renderBarChart = function (config) {
   // Setup
   var { labelColumn, valueColumn } = config;
 
@@ -21,38 +20,43 @@ var renderBarChart = function(config) {
   var valueGap = 6;
 
   // Setting that can be adjusted in the google sheet
-  const labelWidth = config.options.find(element => element.option == "label_width").setting;
-  const axis = config.options.find(element => element.option == "axis").setting;
-  const f = config.options.find(element => element.option == "number_format").setting;
-  const roundTicksFactor = config.options.find(element => element.option == "round_ticks_factor").setting;
-  const ticksX = config.options.find(element => element.option == "ticks_x").setting;
-  const highlight = config.data.map(d => d.highlight).includes("highlight")
-  const annotationLabel = config.options.find(element => element.option == "annotation_label").setting;
-  const annotationLabelAlign = config.options.find(element => element.option == "annotation_label_align").setting;
-  const annotationValue = config.options.find(element => element.option == "annotation_value").setting;
-  const annotationRangeMin = config.options.find(element => element.option == "annotation_range_min").setting;
-  const annotationRangeMax = config.options.find(element => element.option == "annotation_range_max").setting;
+  const labelWidth = config.options.find((element) => element.option == "label_width").setting;
+  const axis = config.options.find((element) => element.option == "axis").setting;
+  const f = config.options.find((element) => element.option == "number_format").setting;
+  const roundTicksFactor = config.options.find((element) => element.option == "round_ticks_factor").setting;
+  const ticksX = config.options.find((element) => element.option == "ticks_x").setting;
+  const highlight = config.data.map((d) => d.highlight).includes("highlight");
+  const annotationLabel = config.options.find((element) => element.option == "annotation_label").setting;
+  const annotationLabelAlign = config.options.find((element) => element.option == "annotation_label_align").setting;
+  const annotationValue = config.options.find((element) => element.option == "annotation_value").setting;
+  const annotationRangeMin = config.options.find((element) => element.option == "annotation_range_min").setting;
+  const annotationRangeMax = config.options.find((element) => element.option == "annotation_range_max").setting;
 
   var valueFormat;
 
-  if (f == "regular") { valueFormat = d3.format(","); }
-  else if (f == "percent rounded") { valueFormat = d3.format(".0%"); }
-  else if (f == "percent decimal") { valueFormat = d3.format("~%"); }
-  else { valueFormat = d3.format("$,"); }
+  if (f == "regular") {
+    valueFormat = d3.format(",");
+  } else if (f == "percent rounded") {
+    valueFormat = d3.format(".0%");
+  } else if (f == "percent decimal") {
+    valueFormat = d3.format("~%");
+  } else {
+    valueFormat = d3.format("$,");
+  }
 
-  var floors = config.data.map(
-    d => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
+  var floors = config.data.map((d) => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor);
 
   var min = Math.min.apply(null, floors);
-  if (min > 0) { min = 0; }
+  if (min > 0) {
+    min = 0;
+  }
 
-  var ceilings = config.data.map(
-    d => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
+  var ceilings = config.data.map((d) => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor);
 
   var max = Math.max.apply(null, ceilings);
-  if (max < 0) { max = 0; }
+  if (max < 0) {
+    max = 0;
+  }
 
   var margins = {
     top: annotationLabel ? 22 : 0,
@@ -82,10 +86,7 @@ var renderBarChart = function(config) {
     .attr("transform", "translate(" + margins.left + "," + margins.top + ")");
 
   // Create D3 scale objects.
-  var xScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([0, chartWidth]);
+  var xScale = d3.scaleLinear().domain([min, max]).range([0, chartWidth]);
 
   if (axis == "show") {
     // Create D3 axes.
@@ -93,16 +94,12 @@ var renderBarChart = function(config) {
       .axisBottom()
       .scale(xScale)
       .ticks(ticksX)
-      .tickFormat(function(d) {
+      .tickFormat(function (d) {
         return valueFormat(d);
       });
 
     // Render axes to chart.
-    chartElement
-      .append("g")
-      .attr("class", "x axis")
-      .attr("transform", makeTranslate(0, chartHeight))
-      .call(xAxis);
+    chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
     // Render grid to chart.
     chartElement
@@ -120,11 +117,13 @@ var renderBarChart = function(config) {
     .data(config.data)
     .enter()
     .append("rect")
-    .attr("x", d => (d[valueColumn] >= 0 ? xScale(0) : xScale(d[valueColumn])))
-    .attr("width", d => Math.abs(xScale(0) - xScale(d[valueColumn])))
+    .attr("x", (d) => (d[valueColumn] >= 0 ? xScale(0) : xScale(d[valueColumn])))
+    .attr("width", (d) => Math.abs(xScale(0) - xScale(d[valueColumn])))
     .attr("y", (d, i) => i * (barHeight + barGap))
     .attr("height", barHeight)
-    .attr("class", (d, i) => d.highlight ? `bar-${i} ${classify(d[labelColumn])} highlight` : `bar-${i} ${classify(d[labelColumn])}`);
+    .attr("class", (d, i) =>
+      d.highlight ? `bar-${i} ${classify(d[labelColumn])} highlight` : `bar-${i} ${classify(d[labelColumn])}`
+    );
 
   // Render 0-line.
   if (min < 0) {
@@ -138,10 +137,10 @@ var renderBarChart = function(config) {
   }
 
   // Render annotation
-  if(annotationValue) {
+  if (annotationValue) {
     chartElement
       .append("line")
-      .attr("class","annotation-line")
+      .attr("class", "annotation-line")
       .attr("x1", xScale(annotationValue))
       .attr("x2", xScale(annotationValue))
       .attr("y1", -20)
@@ -151,10 +150,10 @@ var renderBarChart = function(config) {
       .style("stroke-dasharray", 2);
   }
 
-  if(annotationRangeMin) {
+  if (annotationRangeMin) {
     chartElement
       .append("rect")
-      .attr("class","annotation-range")
+      .attr("class", "annotation-range")
       .attr("x", xScale(annotationRangeMin))
       .attr("width", Math.abs(xScale(annotationRangeMax) - xScale(annotationRangeMin)))
       .attr("y", -20)
@@ -163,26 +162,25 @@ var renderBarChart = function(config) {
       .style("opacity", 0.5);
   }
 
-  if(annotationLabel !== undefined && annotationValue !== undefined) {
+  if (annotationLabel !== undefined && annotationValue !== undefined) {
     chartElement
       .append("text")
-      .attr("class","annotation-label")
+      .attr("class", "annotation-label")
       .text(annotationLabel + ": " + valueFormat(annotationValue))
       .attr("x", annotationLabelAlign == "left" ? xScale(annotationValue) + 6 : xScale(annotationValue) - 6)
       .attr("y", -6)
       .style("text-anchor", annotationLabelAlign == "left" ? "start" : "end");
   }
 
-  if(annotationLabel!== undefined && annotationRangeMin !== undefined) {
+  if (annotationLabel !== undefined && annotationRangeMin !== undefined) {
     chartElement
       .append("text")
-      .attr("class","annotation-label")
-      .text(annotationLabel + ": " + valueFormat(annotationRangeMin) + "-"  + valueFormat(annotationRangeMax))
+      .attr("class", "annotation-label")
+      .text(annotationLabel + ": " + valueFormat(annotationRangeMin) + "-" + valueFormat(annotationRangeMax))
       .attr("x", annotationLabelAlign == "left" ? xScale(annotationRangeMax) + 6 : xScale(annotationRangeMin) - 6)
       .attr("y", -6)
       .style("text-anchor", annotationLabelAlign == "left" ? "start" : "end");
   }
-
 
   // Render bar labels.
   chartWrapper
@@ -200,7 +198,7 @@ var renderBarChart = function(config) {
     .data(config.data)
     .enter()
     .append("li")
-    .attr("style", function(d, i) {
+    .attr("style", function (d, i) {
       return formatStyle({
         width: labelWidth + "px",
         height: barHeight + "px",
@@ -208,11 +206,11 @@ var renderBarChart = function(config) {
         top: i * (barHeight + barGap) + "px"
       });
     })
-    .attr("class", function(d) {
+    .attr("class", function (d) {
       return max == 0 ? classify(d[labelColumn]) + " reverse" : classify(d[labelColumn]);
     })
     .append("span")
-    .text(d => d[labelColumn]);
+    .text((d) => d[labelColumn]);
 
   // Render bar values.
   chartElement
@@ -222,11 +220,11 @@ var renderBarChart = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .attr("class", d => d.highlight ? "highlight" : "")
-    .text(d => valueFormat(d[valueColumn]))
-    .attr("x", d => xScale(d[valueColumn]))
+    .attr("class", (d) => (d.highlight ? "highlight" : ""))
+    .text((d) => valueFormat(d[valueColumn]))
+    .attr("x", (d) => xScale(d[valueColumn]))
     .attr("y", (d, i) => i * (barHeight + barGap))
-    .attr("dx", function(d) {
+    .attr("dx", function (d) {
       var xStart = xScale(d[valueColumn]);
       var textWidth = this.getComputedTextLength();
 

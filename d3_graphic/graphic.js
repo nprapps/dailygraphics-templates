@@ -8,7 +8,7 @@ var d3 = {
   ...require("d3-selection/dist/d3-selection.min")
 };
 
-var render = function() {
+var render = function () {
   var containerElement = document.querySelector(".graphic");
   //remove fallback
   containerElement.innerHTML = "";

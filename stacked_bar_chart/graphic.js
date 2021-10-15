@@ -6,7 +6,7 @@ var renderStackedBarChart = require("./renderStackedBars");
 var skipLabels = ["label", "values"];
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var data = formatData(window.DATA);
   render(data);
 
@@ -14,8 +14,8 @@ var onWindowLoaded = function() {
 };
 
 // Format graphic data for processing by D3.
-var formatData = function(input) {
-  var data = input.map(function(d) {
+var formatData = function (input) {
+  var data = input.map(function (d) {
     var x0 = 0;
 
     var { label } = d;
@@ -40,14 +40,13 @@ var formatData = function(input) {
     }
 
     return { label, values };
-
   });
 
   return data;
 };
 
 // Render the graphic(s). Called by pym with the container width.
-var render = function(data) {
+var render = function (data) {
   // Render the chart!
   var container = "#stacked-bar-chart";
   var element = document.querySelector(container);

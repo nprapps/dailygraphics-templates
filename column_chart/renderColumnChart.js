@@ -7,10 +7,10 @@ var d3 = {
   ...require("d3-selection/dist/d3-selection.min")
 };
 
-var fmtComma = s => s.toLocaleString().replace(/\.0+$/, "");
+var fmtComma = (s) => s.toLocaleString().replace(/\.0+$/, "");
 
 // Render a column chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup chart container
   var { labelColumn, valueColumn } = config;
 
@@ -30,19 +30,14 @@ module.exports = function(config) {
 
   // Calculate actual chart dimensions
   var chartWidth = config.width - margins.left - margins.right;
-  var chartHeight =
-    Math.ceil((config.width * aspectHeight) / aspectWidth) -
-    margins.top -
-    margins.bottom;
+  var chartHeight = Math.ceil((config.width * aspectHeight) / aspectWidth) - margins.top - margins.bottom;
 
   // Clear existing graphic (for redraw)
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
   // Create the root SVG element.
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -57,11 +52,9 @@ module.exports = function(config) {
     .range([0, chartWidth])
     .round(true)
     .padding(0.1)
-    .domain(config.data.map(d => d[labelColumn]));
+    .domain(config.data.map((d) => d[labelColumn]));
 
-  var floors = config.data.map(
-    d => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
+  var floors = config.data.map((d) => Math.floor(d[valueColumn] / roundTicksFactor) * roundTicksFactor);
 
   var min = Math.min(...floors);
 
@@ -69,22 +62,17 @@ module.exports = function(config) {
     min = 0;
   }
 
-  var ceilings = config.data.map(
-    d => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor
-  );
+  var ceilings = config.data.map((d) => Math.ceil(d[valueColumn] / roundTicksFactor) * roundTicksFactor);
 
   var max = Math.max(...ceilings);
 
-  var yScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .range([chartHeight, 0]);
+  var yScale = d3.scaleLinear().domain([min, max]).range([chartHeight, 0]);
 
   // Create D3 axes.
   var xAxis = d3
     .axisBottom()
     .scale(xScale)
-    .tickFormat(function(d, i) {
+    .tickFormat(function (d, i) {
       return d;
     });
 
@@ -92,30 +80,16 @@ module.exports = function(config) {
     .axisLeft()
     .scale(yScale)
     .ticks(ticksY)
-    .tickFormat(d => fmtComma(d));
+    .tickFormat((d) => fmtComma(d));
 
   // Render axes to chart.
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
-  chartElement
-    .append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+  chartElement.append("g").attr("class", "y axis").call(yAxis);
 
   // Render grid to chart.
 
-  chartElement
-    .append("g")
-    .attr("class", "y grid")
-    .call(
-      yAxis
-        .tickSize(-chartWidth, 0)
-        .tickFormat("")
-    );
+  chartElement.append("g").attr("class", "y grid").call(yAxis.tickSize(-chartWidth, 0).tickFormat(""));
 
   // Render bars to chart.
   chartElement
@@ -125,15 +99,13 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("rect")
-    .attr("x", d => xScale(d[labelColumn]))
-    .attr("y", d => (d[valueColumn] < 0 ? yScale(0) : yScale(d[valueColumn])))
+    .attr("x", (d) => xScale(d[labelColumn]))
+    .attr("y", (d) => (d[valueColumn] < 0 ? yScale(0) : yScale(d[valueColumn])))
     .attr("width", xScale.bandwidth())
-    .attr("height", d =>
-      d[valueColumn] < 0
-        ? yScale(d[valueColumn]) - yScale(0)
-        : yScale(0) - yScale(d[valueColumn])
+    .attr("height", (d) =>
+      d[valueColumn] < 0 ? yScale(d[valueColumn]) - yScale(0) : yScale(0) - yScale(d[valueColumn])
     )
-    .attr("class", function(d) {
+    .attr("class", function (d) {
       return "bar bar-" + d[labelColumn];
     });
 
@@ -156,10 +128,10 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("text")
-    .text(d => d[valueColumn].toFixed(0))
-    .attr("x", d => xScale(d[labelColumn]) + xScale.bandwidth() / 2)
-    .attr("y", d => yScale(d[valueColumn]))
-    .attr("dy", function(d) {
+    .text((d) => d[valueColumn].toFixed(0))
+    .attr("x", (d) => xScale(d[labelColumn]) + xScale.bandwidth() / 2)
+    .attr("y", (d) => yScale(d[valueColumn]))
+    .attr("dy", function (d) {
       var textHeight = this.getBBox().height;
       var $this = d3.select(this);
       var barHeight = 0;

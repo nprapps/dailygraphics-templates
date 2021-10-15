@@ -2,7 +2,7 @@ var { Sidechain } = require("@nprapps/sidechain");
 Sidechain.registerGuest();
 
 var { isMobile } = require("./lib/breakpoints");
-var L = require('leaflet/dist/leaflet.js');
+var L = require("leaflet/dist/leaflet.js");
 var COLORS = require("./lib/helpers/colors.js");
 // var d3 = {
 //   ...require("d3-selection/dist/d3-selection.min"),
@@ -10,15 +10,13 @@ var COLORS = require("./lib/helpers/colors.js");
 // };
 var d3 = require("d3");
 
-
-
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   render();
 };
 
 // Render the graphic(s).
-var render = function() {
+var render = function () {
   // Render the chart!
   var container = "#map";
   var element = document.querySelector(container);
@@ -31,18 +29,22 @@ var render = function() {
 };
 
 // Render map.
-var renderMap = function(config) {
-
+var renderMap = function (config) {
   var data = config.data;
 
   // Clear existing graphic (for redraw)
   var containerElement = d3.select("#key");
   containerElement.html("");
 
-  var labels = d3.map(data, function(d){return d.type;}).keys();
-  var color = d3.scaleOrdinal()
+  var labels = d3
+    .map(data, function (d) {
+      return d.type;
+    })
+    .keys();
+  var color = d3
+    .scaleOrdinal()
     .domain(labels)
-    .range([COLORS.blue1, COLORS.red1, /** if more than two, add additional colors here **/]);
+    .range([COLORS.blue1, COLORS.red1 /** if more than two, add additional colors here **/]);
 
   var legend = containerElement
     .append("ul")
@@ -51,25 +53,26 @@ var renderMap = function(config) {
     .data(labels)
     .enter()
     .append("li")
-    .attr('class','key-item');
+    .attr("class", "key-item");
 
-  legend.append("b").style("background-color", d => color(d));
-  legend.append("label").text(d => d);
+  legend.append("b").style("background-color", (d) => color(d));
+  legend.append("label").text((d) => d);
 
   // Basemap options
   var base = {
-    'Empty': L.tileLayer(''),
-    'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      'attribution': 'Map data &copy; OpenStreetMap contributors'}),
-    'Wikimedia': L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
-    	'attribution': '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'}),
-
-  }
+    Empty: L.tileLayer(""),
+    OpenStreetMap: L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "Map data &copy; OpenStreetMap contributors"
+    }),
+    Wikimedia: L.tileLayer("https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png", {
+      attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'
+    })
+  };
 
   // Set up the map
-  var map = L.map('map', {
-    'layers':[base.Wikimedia],
-    zoomControl:false
+  var map = L.map("map", {
+    layers: [base.Wikimedia],
+    zoomControl: false
   });
   map.setView([LATITUDE, LONGITUDE], ZOOM);
   // map.dragging.disable();
@@ -79,25 +82,28 @@ var renderMap = function(config) {
 
   // Add circle markers
   for (var i = 0; i < data.length; i++) {
-			circle = new L.circleMarker([data[i].latitude,data[i].longitude], {
-        fillColor: color(data[i].type),
-        fillOpacity: 1,
-        radius: 8,
-        stroke: true,
-        color: COLORS.gray1,
-        weight: 2
+    circle = new L.circleMarker([data[i].latitude, data[i].longitude], {
+      fillColor: color(data[i].type),
+      fillOpacity: 1,
+      radius: 8,
+      stroke: true,
+      color: COLORS.gray1,
+      weight: 2
+    })
+      .bindPopup(
+        "<strong>" +
+          data[i].name +
+          "</strong></br> [Insert label]: " +
+          data[i].value +
+          "</br> [Insert label]: " +
+          data[i].type
+      )
+      .on("mouseover", function (d) {
+        this.openPopup();
       })
-				.bindPopup('<strong>' + data[i].name + '</strong></br> [Insert label]: ' + data[i].value + '</br> [Insert label]: ' + data[i].type)
-        .on('mouseover',function(d) {
-          this.openPopup();
-        })
-        .addTo(map);
-		}
-
-
-}
-
-
+      .addTo(map);
+  }
+};
 
 /*
  * Initially load the graphic

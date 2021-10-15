@@ -8,7 +8,7 @@ var { COLORS, classify, makeTranslate, formatStyle } = require("./lib/helpers");
 var { isMobile } = require("./lib/breakpoints");
 
 // Render a stacked bar chart.
-module.exports = function(config) {
+module.exports = function (config) {
   // Setup
   var { labelColumn, nameColumn } = config;
 
@@ -40,13 +40,9 @@ module.exports = function(config) {
   var containerElement = d3.select(config.container);
   containerElement.html("");
 
-  var values = config.data.map(d => d.values[d.values.length - 1].x1);
-  var floors = values.map(
-    v => Math.floor(v / roundTicksFactor) * roundTicksFactor
-  );
-  var ceilings = values.map(
-    v => Math.ceil(v / roundTicksFactor) * roundTicksFactor
-  );
+  var values = config.data.map((d) => d.values[d.values.length - 1].x1);
+  var floors = values.map((v) => Math.floor(v / roundTicksFactor) * roundTicksFactor);
+  var ceilings = values.map((v) => Math.ceil(v / roundTicksFactor) * roundTicksFactor);
 
   var min = Math.min(...floors);
   var max = Math.max(...ceilings);
@@ -55,15 +51,12 @@ module.exports = function(config) {
     min = 0;
   }
 
-  var xScale = d3
-    .scaleLinear()
-    .domain([min, max])
-    .rangeRound([0, chartWidth]);
+  var xScale = d3.scaleLinear().domain([min, max]).rangeRound([0, chartWidth]);
 
   var colorScale = d3
     .scaleOrdinal()
-    .domain(config.data[0].values.map(d => d[nameColumn]))
-      .range([COLORS.teal3, COLORS.orange3, COLORS.blue3, "#ccc"]);
+    .domain(config.data[0].values.map((d) => d[nameColumn]))
+    .range([COLORS.teal3, COLORS.orange3, COLORS.blue3, "#ccc"]);
 
   // Render the legend.
   var legend = containerElement
@@ -77,12 +70,10 @@ module.exports = function(config) {
 
   legend.append("b").style("background-color", colorScale);
 
-  legend.append("label").text(d => d);
+  legend.append("label").text((d) => d);
 
   // Create the root SVG element.
-  var chartWrapper = containerElement
-    .append("div")
-    .attr("class", "graphic-wrapper");
+  var chartWrapper = containerElement.append("div").attr("class", "graphic-wrapper");
 
   var chartElement = chartWrapper
     .append("svg")
@@ -96,14 +87,10 @@ module.exports = function(config) {
     .axisBottom()
     .scale(xScale)
     .ticks(ticksX)
-    .tickFormat(d => d + "%");
+    .tickFormat((d) => d + "%");
 
   // Render axes to chart.
-  chartElement
-    .append("g")
-    .attr("class", "x axis")
-    .attr("transform", makeTranslate(0, chartHeight))
-    .call(xAxis);
+  chartElement.append("g").attr("class", "x axis").attr("transform", makeTranslate(0, chartHeight)).call(xAxis);
 
   // Render grid to chart.
 
@@ -111,11 +98,7 @@ module.exports = function(config) {
     .append("g")
     .attr("class", "x grid")
     .attr("transform", makeTranslate(0, chartHeight))
-    .call(
-      xAxis
-        .tickSize(-chartHeight, 0, 0)
-        .tickFormat("")
-    );
+    .call(xAxis.tickSize(-chartHeight, 0, 0).tickFormat(""));
 
   // Render bars to chart.
   var group = chartElement
@@ -123,35 +106,32 @@ module.exports = function(config) {
     .data(config.data)
     .enter()
     .append("g")
-    .attr("class", d => "group " + classify(d[labelColumn]))
-    .attr(
-      "transform",
-      (d, i) => "translate(0," + i * (barHeight + barGap) + ")"
-    );
+    .attr("class", (d) => "group " + classify(d[labelColumn]))
+    .attr("transform", (d, i) => "translate(0," + i * (barHeight + barGap) + ")");
 
   group
     .selectAll("rect")
-    .data(d => d.values)
+    .data((d) => d.values)
     .enter()
     .append("rect")
-    .attr("x", d => (d.x0 < d.x1 ? xScale(d.x0) : xScale(d.x1)))
-    .attr("width", d => Math.abs(xScale(d.x1) - xScale(d.x0)))
+    .attr("x", (d) => (d.x0 < d.x1 ? xScale(d.x0) : xScale(d.x1)))
+    .attr("width", (d) => Math.abs(xScale(d.x1) - xScale(d.x0)))
     .attr("height", barHeight)
-    .style("fill", d => colorScale(d[nameColumn]))
-    .attr("class", d => classify(d[nameColumn]));
+    .style("fill", (d) => colorScale(d[nameColumn]))
+    .attr("class", (d) => classify(d[nameColumn]));
 
   // Render bar values.
   group
     .append("g")
     .attr("class", "value")
     .selectAll("text")
-    .data(d => d.values)
+    .data((d) => d.values)
     .enter()
     .append("text")
-    .text(d => (d.val ? d.val + "%" : null))
-    .attr("class", d => classify(d.name))
-    .attr("x", d => xScale(d.x1))
-    .attr("dx", function(d) {
+    .text((d) => (d.val ? d.val + "%" : null))
+    .attr("class", (d) => classify(d.name))
+    .attr("x", (d) => xScale(d.x1))
+    .attr("dx", function (d) {
       var textWidth = this.getComputedTextLength();
       var barWidth = Math.abs(xScale(d.x1) - xScale(d.x0));
 
@@ -203,7 +183,7 @@ module.exports = function(config) {
         top: i * (barHeight + barGap) + "px;"
       })
     )
-    .attr("class", d => classify(d[labelColumn]))
+    .attr("class", (d) => classify(d[labelColumn]))
     .append("span")
-    .text(d => d[labelColumn]);
+    .text((d) => d[labelColumn]);
 };

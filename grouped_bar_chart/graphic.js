@@ -1,12 +1,11 @@
 var { Sidechain } = require("@nprapps/sidechain");
 Sidechain.registerGuest();
 
-
 var skipLabels = ["Group", "key", "values"];
 var renderGroupedBarChart = require("./renderGroupedBars");
 
 // Initialize the graphic.
-var onWindowLoaded = function() {
+var onWindowLoaded = function () {
   var data = formatData(window.DATA);
   var options = window.OPTIONS;
   render(data, options);
@@ -15,8 +14,8 @@ var onWindowLoaded = function() {
 };
 
 // Format graphic data for processing by D3.
-var formatData = function(data) {
-  var output = data.map(function(d) {
+var formatData = function (data) {
+  var output = data.map(function (d) {
     var series = {
       key: d.Group,
       values: []
@@ -40,7 +39,7 @@ var formatData = function(data) {
 };
 
 // Render the graphic(s).
-var render = function(data, options) {
+var render = function (data, options) {
   // Render the chart!
   var container = "#grouped-bar-chart";
   var element = document.querySelector(container);
