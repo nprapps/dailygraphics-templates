@@ -144,32 +144,34 @@ module.exports = function(config) {
 
   // Render bars to chart.
   xScale.domain().forEach(function(c, k) {
-    var categoryElement = chartElement.append("g").attr("class", classify(c));
+    var categoryElement = chartElement
+      .append("g")
+        .attr("class", "columns " + classify(c));
 
     var columns = categoryElement
-      .selectAll(".columns")
+      .selectAll(".columns." + classify(c))
       .data(config.data.filter(d => d.category == c))
       .enter()
       .append("g")
-      .attr("class", "column")
-      .attr("transform", d => makeTranslate(xScale(d.category), 0));
+        .attr("class", "column")
+        .attr("transform", d => makeTranslate(xScale(d.category), 0));
 
     // axis labels
     var xAxisBars = d3
       .axisBottom()
       .scale(xScaleBars)
       .tickFormat(d => d);
-    columns
+    categoryElement
       .append("g")
-      .attr("class", "x axis bars")
-      .attr("transform", makeTranslate(0, chartHeight))
-      .call(xAxisBars);
+        .attr("class", "x axis bars")
+        .attr("transform", makeTranslate(xScale(c), chartHeight))
+        .call(xAxisBars);
 
     // column segments
     var bars = columns
       .append("g")
-      .attr("class", "bar")
-      .attr("transform", d => makeTranslate(xScaleBars(d[labelColumn]), 0));
+        .attr("class", "bar")
+        .attr("transform", d => makeTranslate(xScaleBars(d[labelColumn]), 0));
 
     bars
       .selectAll("rect")
