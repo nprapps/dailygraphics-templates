@@ -20,17 +20,17 @@ var renderBarChart = function (config) {
   var valueGap = 6;
 
   // Setting that can be adjusted in the google sheet
-  const labelWidth = config.options.find((element) => element.option == "label_width").setting;
-  const axis = config.options.find((element) => element.option == "axis").setting;
-  const f = config.options.find((element) => element.option == "number_format").setting;
-  const roundTicksFactor = config.options.find((element) => element.option == "round_ticks_factor").setting;
-  const ticksX = config.options.find((element) => element.option == "ticks_x").setting;
+  const labelWidth = config.options.label_width;
+  const axis = config.options.axis;
+  const f = config.options.number_format;
+  const roundTicksFactor = config.options.round_ticks_factor;
+  const ticksX = config.options.ticks_x;
   const highlight = config.data.map((d) => d.highlight).includes("highlight");
-  const annotationLabel = config.options.find((element) => element.option == "annotation_label").setting;
-  const annotationLabelAlign = config.options.find((element) => element.option == "annotation_label_align").setting;
-  const annotationValue = config.options.find((element) => element.option == "annotation_value").setting;
-  const annotationRangeMin = config.options.find((element) => element.option == "annotation_range_min").setting;
-  const annotationRangeMax = config.options.find((element) => element.option == "annotation_range_max").setting;
+  const annotationLabel = config.options.annotation_label;
+  const annotationLabelAlign = config.options.annotation_label_align;
+  const annotationValue = config.options.annotation_value;
+  const annotationRangeMin = config.options.annotation_range_min;
+  const annotationRangeMax = config.options.annotation_range_max;
 
   var valueFormat;
 

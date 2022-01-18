@@ -1,5 +1,5 @@
 <%
-  if (typeof childPage == "undefined") var childPage = "";
+  if (typeof childPage == "undefined") var childPage = "index.html";
   var base = config.deployment.url ? 
     `https://${config.deployment.url}` :
     `https://${config.deployment.bucket}/${config.deployment.prefix}`;
