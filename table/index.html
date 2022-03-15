@@ -8,8 +8,39 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div class="graphic table-container">
-    <table id="table-graphic" class="<%='scroll-' + COPY.labels.scroll %>" cellspacing="0"></table>
+<div class="graphic" id="table-graphic">
+  <table id="state-table" role="table">
+    <thead role="rowgroup">
+      <tr role="row">
+        <th role="columnheader">
+          <div class="sorter"><div class="icon"></div></div>
+          <div class="header"><%= COPY.labels.hdr_state %></div>
+        </th>
+        <th role="columnheader">
+          <div class="sorter"><div class="icon"></div></div>
+          <div class="header"><%= COPY.labels.hdr_usps %></div>
+        </th>
+        <th role="columnheader">
+          <div class="sorter"><div class="icon"></div></div>
+          <div class="header"><%= COPY.labels.hdr_ap %></div>
+        </th>
+        <th class="amt sort-header" role="columnheader">
+          <div class="sorter"><div class="icon"></div></div>
+          <div class="header"><%= COPY.labels.hdr_value %></div>
+        </th>
+      </tr>
+    </thead>
+
+    <% COPY.data.forEach(function(row) { %>
+    <tr class="state-<%= t.classify(row.usps) %>" role="row">
+      <td role="cell" data-title="<%= COPY.labels.hdr_state %>"><%= row.name %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_usps %>"><%= row.usps %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_ap %>"><%= t.ap_state(row.usps) %></td>
+      <td role="cell" data-title="<%= COPY.labels.hdr_value %>" class="amt"><%= t.comma(row.value) %></td>
+    </tr>
+  <% }) %>
+
+  </table>
 </div>
 
 <% if (COPY.labels.footnote) { %>
@@ -29,7 +60,6 @@
   <% } %>
 </div>
 
-<script type="text/javascript">
-  var DATA_HEADERS = <%= JSON.stringify(COPY.columns) %>;
-  var DATA = <%= JSON.stringify(COPY.data) %>;
-</script>
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>
