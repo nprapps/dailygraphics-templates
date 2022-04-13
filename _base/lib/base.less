@@ -149,17 +149,8 @@ h3 {
   white-space: nowrap;
 }
 
-.footnotes {
-  margin-bottom: 20px;
-
-  h4 {
-    margin: 2px 0 7px 0;
-    color: #666;
-    font-size: 11px;
-  }
-}
-
 .footnotes p,
+.footnotes li,
 .footer p {
   margin: 2px 0 0 0;
   font-size: 11px;
@@ -170,6 +161,28 @@ h3 {
 .footer p { font-style: italic; }
 .footer p em { font-style: normal; }
 .footnotes p strong { color: #666; }
+
+.footnotes {
+  margin-bottom: 20px;
+
+  h4 {
+    margin: 2px 0 7px 0;
+    color: #666;
+    font-size: 11px;
+  }
+
+  ul {
+    margin: 2px 0 0 0.8em;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+
+    + li { margin-top: 2px; }
+  }
+}
 
 a, a:link, a:visited {
   color: #4774CC;

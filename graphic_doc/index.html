@@ -1,0 +1,36 @@
+<%= await t.include("lib/_head.html") %>
+
+<% /* example of showing a standalone element from the doc */ %>
+<h1><%= t.smarty(TEXT.parsed.intro.headline) %></h1>
+<h2><%= t.renderMarkdown(t.smarty(TEXT.parsed.intro.chatter)) %></h2>
+
+<div id="sequence" class="graphic">
+
+  <% /* example of looping through a sequence from the doc */ %>
+  <% TEXT.parsed.sequence.forEach(function(item) { %>
+    <div id="<%= item.id %>" style="border-top: 4px solid <%= item.color %>">
+      <p><%= t.renderMarkdown(t.smarty(item.text)) %></p>
+    </div>
+  <% }) %>
+
+</div>
+
+<% if (TEXT.parsed.footer.footnotes) { %>
+<div class="footnotes">
+    <h4>Notes</h4>
+    <%= t.renderMarkdown(t.smarty(TEXT.parsed.footer.footnotes)) %>
+</div>
+<% } %>
+
+<div class="footer">
+  <% if (TEXT.parsed.footer.source) { %>
+    <p>Source: <%= t.smarty(TEXT.parsed.footer.source) %></p>
+  <% } %>
+  <% if (TEXT.parsed.footer.credit) { %>
+    <p>Credit: <%= t.smarty(TEXT.parsed.footer.credit) %></p>
+  <% } %>
+</div>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>

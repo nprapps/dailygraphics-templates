@@ -1,0 +1,16 @@
+{
+  "templateDoc": "12jSyIim0uZwpLMkYJMVVrIjOzky3D9QXyxUxU2wfEZQ",
+  "files": [
+    "*.html",
+    "!_*.html",
+    "graphic.js",
+    "graphic.less",
+    "*.png",
+    "*.jpg",
+    "*.gif",
+    "*.json",
+    "!manifest.json",
+    "*.geojson",
+    "*.csv"
+  ]
+}
