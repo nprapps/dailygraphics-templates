@@ -1,0 +1,28 @@
+<% 
+  let tableHeaders = [];
+  let tableData = {};
+  if (data.data && data.data.length) {
+    tableData = data.data;
+    tableHeaders = Object.keys(data.data[0]);
+  }
+%> 
+<table id="results-table" role="table">
+  <thead role="rowgroup">
+    <tr role="row">
+      <% for (var i = 0; i < tableHeaders.length; i++) { %>
+        <th role="columnheader">
+          <%= tableHeaders[i] %>
+        </th>
+      <% } %>
+    </tr>
+  </thead>
+  <tbody role="rowgroup">
+    <% for (var i = 0; i < tableData.length; i++) { %>
+      <tr>
+        <% for (var j=0; j<tableHeaders.length; j++) { %>
+          <td><%= tableData[i][tableHeaders[j]] %></td>
+        <% } %>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
