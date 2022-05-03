@@ -139,9 +139,9 @@ var render = function (data) {
     }
   } else {
     // Default: Return sorted array of categories
-    data.forEach(function(county) {
-      if (county[valueColumn] != null) {
-        categories.push(county[valueColumn]);
+    data.counties.features.forEach(function(feature) {
+      if (feature.properties[valueColumn] != null) {
+        categories.push(feature.properties[valueColumn]);
       }
     });
     //dedupe
