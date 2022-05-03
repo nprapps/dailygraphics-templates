@@ -224,7 +224,7 @@ var renderCountyMap = function (config) {
     var keyItem = legendElement
       .append("li")
       .attr("class", `key-item ${classify(key)}`);
-    keyItem.append("b").style("background", colorScale(key.toString().toLowerCase()));
+    keyItem.append("b").style("background", colorScale(key.toString()));
     keyItem.append("label").text(`${capitalizeFirstLetter(key.toString())}`);
 
     // Add the optional upper bound label on numeric scale
