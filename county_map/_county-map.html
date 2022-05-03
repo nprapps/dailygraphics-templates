@@ -21,7 +21,9 @@ let dropdownCounties = COPY.county_lookup.map(row => {
 <div id="county-map">
 
   <!-- Key -->
-  <div id="key" class="key"></div>
+  <div class="key-wrapper">
+    <div id="key" class="key"></div>
+  </div>
 
   <!-- Map -->
   <div id="map" class="graphic" role="img"
@@ -33,15 +35,17 @@ let dropdownCounties = COPY.county_lookup.map(row => {
   </div>
 
   <!-- Search box -->
-  <div id="search" class="search">
-    <div id="search-hed" class="search-header">Search by <b>County</b></div>
-    <autocomplete-input id="search-input" list="counties" name="counties" type="text"></autocomplete-input>
-    <datalist id="counties">
-      <% for (let i=0; i<dropdownCounties.length; i++) { %>
-        <option value="<%= dropdownCounties[i].value %>"><%= dropdownCounties[i].label %></option>
-      <% } %>
-    </datalist>
-    <div class="no-data-msg">No data found.</div>
+  <div class="search-wrapper">
+    <div id="search" class="search">
+      <div id="search-hed" class="search-header">Search by <b>County</b></div>
+      <autocomplete-input id="search-input" list="counties" name="counties" type="text"></autocomplete-input>
+      <datalist id="counties">
+        <% for (let i=0; i<dropdownCounties.length; i++) { %>
+          <option value="<%= dropdownCounties[i].value %>"><%= dropdownCounties[i].label %></option>
+        <% } %>
+      </datalist>
+      <div class="no-data-msg is-hidden">No data found.</div>
+    </div>
   </div>
 
   <!-- Search results -->

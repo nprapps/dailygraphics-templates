@@ -20,7 +20,6 @@ var d3 = {
   ...require("d3-geo/dist/d3-geo.min"),
 };
 
-
 console.clear();
 
 // Global vars
@@ -40,10 +39,12 @@ var colorScheme = [
 ];
 
 // Format graphic data.
-var formatData = function(sheetData, countyGeo, stateGeo) {
-  
-  // Merge geojson and sheet data.
-  countyGeo.objects["counties-lakes"].geometries.forEach((feature) => {
+var formatData = function(sheetData, geoData) {
+  let countyGeo = geoData.objects["counties-lakes"];
+  let stateGeo = geoData.objects["states_filtered"];
+
+  // Merge county geometries and sheet data.
+  countyGeo.geometries.forEach((feature) => {
     // Get data from geojson
     let { GEOID } = feature.properties;
     
@@ -65,55 +66,53 @@ var formatData = function(sheetData, countyGeo, stateGeo) {
       county: county,
       fips: fips,
       state: state_abbreviation,
-
-      // TODO - Add any results
-      searchResults: [
+      
+      // Add rows to the search results for this county.
+      // Keys = column labels, values = column values
+      searchResults: value ? [
         {
-          key1: 'row1key1',
-          key2: 'row1key2',
-          key3: fips
-        },
-        {
-          key1: 'row2key1',
-          key2: 'row2key2',
-          key3: fips
+          'County': county,
+          'State': state_abbreviation,
+          'FIPS code': fips,
+          'Value': value,
         }
-      ],
+      ] : '',
     };
-    // This is just for testing
-    // if (feature.properties.state == 'VA') {
-    //   console.log(feature.properties)
-    // }
   })
 
-  // Assign formatted data to graphic data
+  // Turn geometries into feature collections
+  let counties = topojson.feature(geoData, countyGeo);
+  let states = topojson.feature(geoData, stateGeo);
+
   return {
-    counties: topojson.feature(countyGeo, countyGeo.objects["counties-lakes"]),
-    states: topojson.feature(stateGeo, stateGeo.objects.states_filtered)
+    counties,
+    states
   }
 };
 
 var onWindowLoaded = async function () {
 
   // Load geojson data
-  var getTopojson = async function (filename) {
-    var response = await fetch(`./topo/${filename}.json`);
-    return response.json();
+  var getGeodata = async function () {
+    var response = await fetch(`./topo/final.json`);
+    var geoData = await response.json();
+    return geoData;
   };
-  var requests = ["counties-lakes1", "states_topo"].map(getTopojson);
-  let [countyGeo, stateGeo] = await Promise.all(requests);
+  getGeodata().then(geoData => {
 
-  // Format sheet data, load search box, render graphic
-  let formattedData = formatData(window.DATA, countyGeo, stateGeo);
-  loadSearchBox(formattedData);
-  render(formattedData);
-
-  // Rerender if window is resized
-  var lastWidth = window.innerWidth;
-  window.addEventListener("resize", () => {
-    if (window.innerWidth != lastWidth) {
-      render(formattedData)
-    }
+    // Format sheet data, load search box, render graphic
+    let formattedData = formatData(window.DATA, geoData);
+    loadSearchBox(formattedData);
+    render(formattedData);
+  
+    // Rerender if window is resized
+    var lastWidth = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth != lastWidth) {
+        lastWidth = window.innerWidth;
+        render(formattedData)
+      }
+    });
   });
 
   // Update iframe
@@ -127,7 +126,28 @@ var render = function (data) {
   var container = "#county-map";
   var colorScheme = colorScheme;
   var valueColumn = "value";
-  var categories = [0,20,40,60,80];
+  var isNumeric = window.LABELS.is_numeric;
+  
+  var categories = [];
+  if (window.LABELS.legend_labels && window.LABELS.legend_labels !== "") {
+    // If custom legend labels are specified
+    categories = window.LABELS.legend_labels.split("|").map(l => l.trim());
+    if (isNumeric) {
+      categories.forEach(function(d,i) {
+        categories[i] = Number(categories[i]);
+      });
+    }
+  } else {
+    // Default: Return sorted array of categories
+    data.forEach(function(county) {
+      if (county[valueColumn] != null) {
+        categories.push(county[valueColumn]);
+      }
+    });
+    //dedupe
+    categories = Array.from(new Set(categories)).sort();
+  }
+
   renderCountyMap({
     data: {
       counties: data.counties,
@@ -137,6 +157,7 @@ var render = function (data) {
     container,
     colorScheme,
     valueColumn,
+    isNumeric,
   });
 
   // Update iframe
@@ -193,14 +214,28 @@ var renderCountyMap = function (config) {
     .attr("transform", `translate(${margins.left},${margins.top})`);
 
   // Legend
+  var legendWrapper = d3.select(".key-wrapper");
   var legendElement = d3.select(".key");
+  if (config.isNumeric) {
+    legendWrapper.classed("numeric-scale", true);
+  }
   legendElement.html("");
-  colorScale.domain().forEach(function (key) {
+  colorScale.domain().forEach(function (key, index) {
     var keyItem = legendElement
       .append("li")
       .attr("class", `key-item ${classify(key)}`);
     keyItem.append("b").style("background", colorScale(key.toString().toLowerCase()));
     keyItem.append("label").text(`${capitalizeFirstLetter(key.toString())}`);
+
+    // Add the optional upper bound label on numeric scale
+    if (config.isNumeric && index == categories.length - 1) {
+      if (window.LABELS.max_label && window.LABELS.max_label !== "") {
+        keyItem
+          .append("label")
+          .attr("class", "end-label")
+          .text(window.LABELS.max_label);
+      }
+    }
   });
 
   // Add in tooltip for individual state display.
@@ -229,11 +264,10 @@ var renderCountyMap = function (config) {
       var county = classify(d.properties.county);
       var state = classify(d.properties.state);
       var baseClass = `district ${county}-${state}`;
-      // var categoryClass = 
       return baseClass;
     })
     .attr("fill", function (d) {
-      return colorScale(d.properties[mainProperty]);
+      return colorScale(d.properties[mainProperty]) || '#ccc';
     })
     .attr("d", path)
     .attr("stroke-width", ".5px")
@@ -250,7 +284,7 @@ var renderCountyMap = function (config) {
       secondaryTooltipLabel.html(
         val.toString().toLowerCase() == "no data"
           ? val
-          : `${mainProperty}: <span class="${val}">${val}</span>`
+          : `${capitalizeFirstLetter(mainProperty)}: <span class="${val}">${val}</span>`
       );
       // Set tooltip positions. 
       var coordinates = d3.mouse(this);
@@ -283,7 +317,7 @@ var renderCountyMap = function (config) {
       }
       // Scroll to header
       if (pymChild) {
-        pymChild.scrollParentToChildEl("search-hed");
+        // pymChild.scrollParentToChildEl("search-hed");
       }
     });
 
@@ -347,9 +381,17 @@ async function populateSearchResults(fips, data) {
   if (countyData) {
     let searchResults = countyData.properties.searchResults
     let template = dot.compile(require("./_results-table.html"));
-    d3.select("#results").html(
-      template({ data: searchResults })
-    );
+    if (searchResults) {
+      d3.select(".no-data-msg").classed("is-hidden", true);
+      d3.select("#results").html(
+        template({ data: searchResults })
+      );
+    } else {
+      d3.select(".no-data-msg").classed("is-hidden", false);
+      d3.select("#results").html(
+        template({ data: null })
+      );
+    }
   }
 
   if (pymChild) {
