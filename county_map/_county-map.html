@@ -22,6 +22,9 @@ let dropdownCounties = COPY.county_lookup.map(row => {
 
   <!-- Key -->
   <div class="key-wrapper">
+    <% if (COPY.labels.legend_head) { %>
+      <h3><%= COPY.labels.legend_head %></h3>
+    <% } %>
     <div id="key" class="key"></div>
   </div>
 
