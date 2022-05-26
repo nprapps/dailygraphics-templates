@@ -48,42 +48,34 @@ var formatData = function(sheetData, geoData) {
 
   // Merge county geometries and sheet data.
   countyGeo.geometries.forEach((feature) => {
-    // Get data from geojson
-    let { GEOID } = feature.properties;
+    let fips = feature.properties.GEOID;
     
     // Get data from sheet
-    let matchedRow = sheetData.find(row => String(row.fips) == GEOID)    
+    let matchedRow = sheetData.find(row => String(row.fips) == fips) || {}
     
-    // Bail early if there's no matching row in the sheet
-    if (!matchedRow) {
-      return;
-    }
-
-    // let value = '';
-
-    // Get data from lookups
-    let fips = GEOID;
-    let county = window.COUNTY_LOOKUP.find(item => String(item.fips) == fips)
-    let countyName = county.county
-    let state = window.STATE_LOOKUP.find(item => String(item.GEOID) == fips.slice(0,2));
-    let stateAbbreviation = state.Abbrv; 
+    // Get county and state metadata from lookups
+    let countyData = window.COUNTY_LOOKUP.find(row => String(row.fips) == fips)
+    let stateData = window.STATE_LOOKUP.find(row => String(row.GEOID) == fips.slice(0,2));
+    let countyName = countyData.county
+    let stateAbbreviation = stateData.Abbrv; 
 
     // Merge geojson, sheet, lookup data
     feature.properties = {
-      // Add data from geojson
+      // Add properties from geojson
       ...feature.properties,
 
-      // Add data from sheet
+      // Add properties from sheet
       ...matchedRow,
 
-      // Add data from sheet and lookup
-      county: countyName,
+      // Add data from lookup
       fips: fips,
+      county: countyName,
       state: stateAbbreviation,
       
       // Add rows to the search results for this county.
       // Keys = column labels, values = column values
-      searchResults: matchedRow.value ? [
+      searchResults: matchedRow && matchedRow.value !== undefined 
+        ? [
         {
           'County': countyName,
           'State': stateAbbreviation,
