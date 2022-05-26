@@ -8,7 +8,7 @@ var ANALYTICS = require("./lib/analytics");
 var { isMobile } = require("./lib/breakpoints");
 var $ = require("./lib/qsa");
 var dot = require("./lib/dot");
-var { geoAlbersUsaPr, capitalizeFirstLetter } = require("./util");
+var { geoAlbersUsaPr, capitalizeFirstLetter, getCenter } = require("./util");
 var { COLORS, classify } = require("./lib/helpers");
 
 var d3 = {
@@ -20,11 +20,14 @@ var d3 = {
   ...require("d3-geo/dist/d3-geo.min"),
 };
 
+import { event as currentEvent } from "d3-selection/dist/d3-selection.min";
+
 console.clear();
 
 // Global vars
 var colorScale;
 var pymChild;
+var currentlySelectedFips;
 
 // Graphic config
 var showTooltips = true;
@@ -50,34 +53,55 @@ var formatData = function(sheetData, geoData) {
     
     // Get data from sheet
     let matchedRow = sheetData.find(row => String(row.fips) == GEOID)    
-    let { value, county, fips } = matchedRow;
+    
+    // Bail early if there's no matching row in the sheet
+    if (!matchedRow) {
+      return;
+    }
 
-    // Get data from lookup
-    let state = window.STATE_LOOKUP.find(item => String(item.GEOID) == String(matchedRow.fips).slice(0,2));
-    let state_abbreviation = state.Abbrv; 
+    // let value = '';
+
+    // Get data from lookups
+    let fips = GEOID;
+    let county = window.COUNTY_LOOKUP.find(item => String(item.fips) == fips)
+    let countyName = county.county
+    let state = window.STATE_LOOKUP.find(item => String(item.GEOID) == fips.slice(0,2));
+    let stateAbbreviation = state.Abbrv; 
 
     // Merge geojson, sheet, lookup data
     feature.properties = {
       // Add data from geojson
       ...feature.properties,
 
+      // Add data from sheet
+      ...matchedRow,
+
       // Add data from sheet and lookup
-      value: value,
-      county: county,
+      county: countyName,
       fips: fips,
-      state: state_abbreviation,
+      state: stateAbbreviation,
       
       // Add rows to the search results for this county.
       // Keys = column labels, values = column values
-      searchResults: value ? [
+      searchResults: matchedRow.value ? [
         {
-          'County': county,
-          'State': state_abbreviation,
+          'County': countyName,
+          'State': stateAbbreviation,
           'FIPS code': fips,
-          'Value': value,
+          'Value': matchedRow.value,
         }
       ] : '',
     };
+  })
+
+  // Filter any states from the map here
+  let statesToFilter = [
+    // "HI",
+    // "AK",
+    // "PR",
+  ]
+  countyGeo.geometries = countyGeo.geometries.filter(feature => {
+    return (!statesToFilter.includes(feature.properties.state))
   })
 
   // Turn geometries into feature collections
@@ -275,16 +299,36 @@ var renderCountyMap = function (config) {
       // Don't do tooltips on mobile, or if showTooltips has been set to false.
       if (isMobile.matches || !showTooltips) { return; }
 
-      var val = d.properties[mainProperty] || "No data";
+      // Remove previous highlight
+      let highlighted = document.querySelector('.highlight');
+      if (highlighted) {
+        highlighted.classList.remove("highlight");
+      }
+
+      // Add current highlight
+      this.classList.add("highlight");
 
       // Set tooltip labels.
       mainTooltipLabel.text(
         d.properties.county + ", " + d.properties.state
       );
       secondaryTooltipLabel.html(
-        val.toString().toLowerCase() == "no data"
-          ? val
-          : `${capitalizeFirstLetter(mainProperty)}: <span class="${val}">${val}</span>`
+        () => {
+          let value = d.properties[mainProperty];
+          let secondaryTooltipLabel = '';
+          if (value == undefined) {
+            secondaryTooltipLabel = "no data"
+          } else {
+            secondaryTooltipLabel += `${capitalizeFirstLetter(mainProperty)}: `
+            secondaryTooltipLabel += `<span `
+            // Add the category class if not numeric
+            if (!config.isNumeric) {
+              secondaryTooltipLabel += `class="${value}"`
+            }
+            secondaryTooltipLabel += `>${value}</span>`
+          }
+          return secondaryTooltipLabel;
+        }
       );
       // Set tooltip positions. 
       var coordinates = d3.mouse(this);
@@ -305,6 +349,7 @@ var renderCountyMap = function (config) {
       return tooltip.style("visibility", "visible");
     })
     .on("mouseout", function () {
+      this.classList.remove("highlight");
       return tooltip.style("visibility", "hidden");
     })
     .on("click", function (d) {
@@ -317,8 +362,63 @@ var renderCountyMap = function (config) {
       }
       // Scroll to header
       if (pymChild) {
-        // pymChild.scrollParentToChildEl("search-hed");
+        pymChild.scrollParentToChildEl("search-hed");
       }
+    })
+    .on("deselect", function(d) {
+      this.classList.remove("highlight")
+    })
+    .on("select", function(d) {
+      var params = currentEvent.detail;
+      let previous = params.previous;
+      if (previous) {
+        previous.dispatch("deselect");
+      }
+      this.classList.add("highlight")
+      var val = d.properties[mainProperty] || "null";
+      // Set tooltip labels.
+      mainTooltipLabel.text(
+        d.properties.county + ", " + d.properties.state
+      );
+      secondaryTooltipLabel.html(
+        () => {
+          let value = d.properties[mainProperty];
+          let secondaryTooltipLabel = '';
+          if (value == undefined) {
+            secondaryTooltipLabel = "no data"
+          } else {
+            secondaryTooltipLabel += `${capitalizeFirstLetter(mainProperty)}: `
+            secondaryTooltipLabel += `<span `
+            // Add the category class if not numeric
+            if (!config.isNumeric) {
+              secondaryTooltipLabel += `class="${value}"`
+            }
+            secondaryTooltipLabel += `>${value}</span>`
+          }
+          return secondaryTooltipLabel;
+        }
+      );
+      // Set tooltip positions. 
+      var coordinates = getCenter(d, projection);
+      if (!coordinates) {
+        return
+      }
+      var x = coordinates[0];
+      var y = coordinates[1];
+      tooltip.style("top", y + 5 + "px");
+      
+      // If tooltip too far to the right, 
+      // move to lefthand side of state.
+      var tooltipEl = tooltip.node();
+      var tooltipWidth = tooltipEl.getBoundingClientRect().width;
+      var offset = x + 10;
+      if (offset >= chartWidth - maxTooltipWidth) {
+        offset = x - 10 - tooltipWidth;
+      }
+      tooltip.style("left", offset + "px");
+
+      tooltip.style("visibility", "visible");
+      populateSearchResults(currentlySelectedFips, config.data);
     });
 
   // Add state outlines
@@ -334,7 +434,6 @@ var renderCountyMap = function (config) {
 };
 
 var loadSearchBox = (data) => {
-  let currentlySelectedFips;
   var searchBox = $.one("#search-input");
 
   // Helper: get county class
@@ -351,21 +450,21 @@ var loadSearchBox = (data) => {
 
   searchBox.addEventListener("change", function (e) {
     // Reset county highlight on map
+    let oldCountyClass, oldCounty;
     if (currentlySelectedFips) {
-      let oldCountyClass = getCountyClass(currentlySelectedFips);
-      d3.selectAll("." + oldCountyClass).classed("highlight", false);
+      oldCountyClass = getCountyClass(currentlySelectedFips);
+      oldCounty = d3.selectAll(".district." + oldCountyClass) 
+      oldCounty.dispatch('deselect')
     }
 
     // Set selected county and highlight on map
     currentlySelectedFips = e.target.entries[e.target.selectedIndex].value || null;
-    if (currentlySelectedFips) {
-      let countyClass = getCountyClass(currentlySelectedFips);
-      d3.selectAll("." + countyClass).classed("highlight", true);
-    } 
     
     // Populate results below map
     if (currentlySelectedFips) {
-      populateSearchResults(currentlySelectedFips, data);
+      let newCountyClass = getCountyClass(currentlySelectedFips);
+      let newCounty = d3.selectAll(".district." + newCountyClass) 
+      newCounty.dispatch('select', {detail: {previous: oldCounty}})
     }
 
     // Update pym
