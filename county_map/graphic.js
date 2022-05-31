@@ -342,7 +342,8 @@ var renderCountyMap = function (config) {
       tooltip.style("visibility", "hidden");
     })
     .on("click", function (d) {
-      this.dispatchEvent(new Event('select'));
+      if (isMobile.matches) { return; }
+      this.dispatchEvent(new Event("selectcounty"));
     })
     // Custom event called on click and from dropdown
     .on("selectcounty", function(d) {
