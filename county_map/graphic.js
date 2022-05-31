@@ -121,7 +121,7 @@ var onWindowLoaded = async function () {
       let fips = e.target.entries[e.target.selectedIndex].value || null;
       let countyClass = getCountyClass(fips, formattedData);
       let countyEl = $.one(".district." + countyClass);
-      countyEl.dispatchEvent(new Event('select'));
+      countyEl.dispatchEvent(new Event("selectcounty"));
     });
 
     // Render graphic
@@ -281,7 +281,7 @@ var renderCountyMap = function (config) {
     if (!showTooltips) { return; }
     
     let d = config.data.counties.features.find(row => row.properties.fips == fips)
-    
+
     // Set tooltip labels.
     let mainTooltipLabelHtml = `${d.properties.county}, ${d.properties.state}`
     let secondaryTooltipLabelHtml = '';
@@ -341,8 +341,11 @@ var renderCountyMap = function (config) {
       this.classList.remove("highlight");
       tooltip.style("visibility", "hidden");
     })
-    // Custom 'select' event called when selected from dropdown
-    .on("select", function(d) {
+    .on("click", function (d) {
+      this.dispatchEvent(new Event('select'));
+    })
+    // Custom event called on click and from dropdown
+    .on("selectcounty", function(d) {
       let highlighted = $(".highlight");
       let searchBox = $.one('#search-input');
       let fips = d.properties.fips;
