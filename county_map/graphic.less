@@ -1,10 +1,49 @@
 @import "./lib/base";
 
-/* Key
-========================================*/
+.is-hidden {
+    display: none !important;
+}
+
+.is-hidden-desktop {
+    @media @screen-mobile-above {
+        display: none !important;
+    } 
+}
+
+/*=============*/
+// Map
+/*=============*/
+
+#county-map {
+    padding-bottom: 15px;
+
+    .district.highlight {
+        stroke: #000;
+        stroke-width: 2px;
+        cursor: pointer;
+    }
+}
+
+
+/*=============*/
+// Key
+/*=============*/
+
 .key-wrapper {
     .legend-header {
         margin-bottom: 20px;
+    }
+}
+
+@media @screen-mobile {
+    .key {
+        .key-item {
+            width: 35px;
+            .end-label {
+                right: -50% !important;
+                left: auto !important;
+            }
+        }
     }
 }
 
@@ -20,6 +59,14 @@
         .key-item {
             margin: 0 1px 0 0;
             position: relative;
+            &.separate {
+                margin-right: 40px;
+                label {
+                    width: 80px;
+                    left: calc(50% - 40px);
+                    white-space: normal;
+                }
+            }
         }
 
         .key-item b {
@@ -30,7 +77,7 @@
 
         .key-item label {
             position: absolute;
-            bottom: -20px;
+            top: 15px;
             left: -15%;
 
             &.end-label {
@@ -41,17 +88,9 @@
     }
 }
 
-#county-map {
-    padding-bottom: 15px;
-}
-
-.district.highlight {
-    fill: #FFDF00 !important;
-}
-
-.is-hidden {
-    display: none !important;
-}
+/*=============*/
+// Tooltip
+/*=============*/
 
 #tooltip {
     padding: 5px;
@@ -69,11 +108,9 @@
     }
 }
 
-.no-data-msg {
-    .knockout();
-    text-align: center;
-    padding: 20px 5px 0px 5px;
-}
+/*=============*/
+// Search results
+/*=============*/
 
 .search-wrapper {
     width: 100%;
@@ -103,6 +140,12 @@
     input[type="text"] {
         height: 30px;
         width: 200px;
+    }
+
+    .no-data-msg {
+        .knockout();
+        text-align: center;
+        padding: 20px 5px 0px 5px;
     }
 }
 
@@ -139,3 +182,36 @@ table {
         word-wrap: break-word;
     }
 }
+
+// mobile table stacks
+@media @screen-mobile {
+    table, tbody, th, td, tr {
+        display: block;
+    }
+
+    table {
+        thead {
+            .sr-only();
+        }
+
+        td {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        tr {
+            margin-bottom: 10px;
+        }
+
+        .inline-header {
+            display: inline;
+            font-weight: normal;
+
+            &::after {
+                content: ":";
+            }
+        }
+    }
+}
+  

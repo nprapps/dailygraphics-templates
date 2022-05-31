@@ -21,7 +21,10 @@
       <% for (var i = 0; i < tableData.length; i++) { %>
         <tr>
           <% for (var j=0; j<tableHeaders.length; j++) { %>
-            <td><%= tableData[i][tableHeaders[j]] %></td>
+            <td>
+              <span class="is-hidden-desktop inline-header" aria-hidden="true"><%= tableHeaders[j] %></span>
+              <span><%= tableData[i][tableHeaders[j]] %></span>
+            </td>
           <% } %>
         </tr>
       <% } %>

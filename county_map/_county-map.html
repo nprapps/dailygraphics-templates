@@ -1,9 +1,10 @@
 <%
 let dropdownCounties = COPY.county_lookup.map(row => {
-  let state = COPY.state_lookup.find(x => x.State == row.state)
-  let stateAbbreviation = state.Abbrv || ''
+  let stateData = COPY.state_lookup.find((x) => {
+    return String(x.fips) == String(row.fips).slice(0,2)
+  });
   return {
-    label: row.county + ", " + stateAbbreviation,
+    label: row.county_name + ", " + stateData.state_abbreviation,
     value: row.fips
   }
 })

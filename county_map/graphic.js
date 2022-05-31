@@ -25,7 +25,6 @@ console.clear();
 // Global vars
 var colorScale;
 var pymChild;
-var currentlySelectedFips;
 
 // Graphic config
 var showTooltips = true;
@@ -42,7 +41,7 @@ var colorScheme = [
 // Format graphic data.
 var formatData = function(sheetData, geoData) {
   let countyGeoData = geoData.objects["counties-lakes"];
-  let stateGeoData = geoData.objects["states_filtered"];
+  let stateGeoData = geoData.objects["states"];
 
   // Merge county geometries and sheet data
   countyGeoData.geometries.forEach((feature) => {
@@ -53,9 +52,7 @@ var formatData = function(sheetData, geoData) {
     
     // Get county and state metadata from lookups
     let countyData = window.COUNTY_LOOKUP.find(row => String(row.fips) == fips);
-    let stateData = window.STATE_LOOKUP.find(row => String(row.GEOID) == fips.slice(0,2));
-    let countyName = countyData.county;
-    let stateAbbreviation = stateData.Abbrv; 
+    let stateData = window.STATE_LOOKUP.find(row => String(row.fips) == fips.slice(0,2));
 
     // Merge geojson, sheet, lookup data
     feature.properties = {
@@ -67,16 +64,17 @@ var formatData = function(sheetData, geoData) {
 
       // Add data from lookup
       fips: fips,
-      county: countyName,
-      state: stateAbbreviation,
+      county: countyData.county_name,
+      state: stateData.state_abbreviation,
       
       // Add rows to the search results for this county.
+      // (These will appear below the search box.)
       // Keys = table column labels, values = column values
-      searchResults: matchedRow && matchedRow.value !== undefined 
+      searchResults: matchedRow && matchedRow.value != null 
         ? [
         {
-          'County': countyName,
-          'State': stateAbbreviation,
+          'County': countyData.county_name,
+          'State':  stateData.state_abbreviation,
           'FIPS code': fips,
           'Value': matchedRow.value,
         }
@@ -94,7 +92,7 @@ var formatData = function(sheetData, geoData) {
     return (!statesToFilter.includes(feature.properties.state))
   })
 
-  // Turn geometries into feature collections
+  // Turn geometries into feature collections.
   let counties = topojson.feature(geoData, countyGeoData);
   let states = topojson.feature(geoData, stateGeoData);
 
@@ -108,15 +106,25 @@ var onWindowLoaded = async function () {
 
   // Load geojson data
   var getGeodata = async function () {
-    var response = await fetch(`./topo/final.json`);
+    var response = await fetch(`./topo/counties-lakes-states.json`);
     var geoData = await response.json();
     return geoData;
   };
   getGeodata().then(geoData => {
 
-    // Format sheet data, load search box, render graphic
+    // Format sheet data
     let formattedData = formatData(window.DATA, geoData);
-    loadSearchBox(formattedData);
+    
+    // Setup search box listeners
+    var searchBox = $.one("#search-input");
+    searchBox.addEventListener("change", function (e) {
+      let fips = e.target.entries[e.target.selectedIndex].value || null;
+      let countyClass = getCountyClass(fips, formattedData);
+      let countyEl = $.one(".district." + countyClass);
+      countyEl.dispatchEvent(new Event('select'));
+    });
+
+    // Render graphic
     render(formattedData);
   
     // Rerender if window is resized
@@ -252,7 +260,7 @@ var renderCountyMap = function (config) {
     }
   });
 
-  // Add in tooltip for individual state display.
+  // Tooltip
   var tooltip = containerElement
     .append("div")
     .attr("id", "tooltip")
@@ -267,14 +275,17 @@ var renderCountyMap = function (config) {
   var secondaryTooltipLabel = tooltip
     .append("div")
     .attr("class", "label secondary");
-      
-  // Helper function: render the tooltip for a given path
-  var renderTooltip = (d) => {
+
+  //  Helper: render a tooltip for a given FIPS code
+  var renderTooltip = (fips) => {
+    if (!showTooltips) { return; }
+    
+    let d = config.data.counties.features.find(row => row.properties.fips == fips)
     
     // Set tooltip labels.
     let mainTooltipLabelHtml = `${d.properties.county}, ${d.properties.state}`
     let secondaryTooltipLabelHtml = '';
-    if (d.properties[mainProperty] !== undefined) {
+    if (d.properties[mainProperty] != null) {
       secondaryTooltipLabelHtml += `${capitalizeFirstLetter(mainProperty)}: <span class="${config.isNumeric ? '' : d.properties[mainProperty]}">${d.properties[mainProperty]}</span>`;
     } else {
       secondaryTooltipLabelHtml = "No data";
@@ -304,7 +315,6 @@ var renderCountyMap = function (config) {
     // Set tooltip visibility.
     tooltip.style("visibility", "visible");
   }
-  
 
   // Render Map!
   chartElement
@@ -313,62 +323,77 @@ var renderCountyMap = function (config) {
     .enter()
     .append("path")
     .attr("class", function (d) {
-      var county = classify(d.properties.county);
-      var state = classify(d.properties.state);
-      var baseClass = `district ${county}-${state}`;
-      return baseClass;
+      let countyClass = getCountyClass(d.properties.fips, config.data);
+      return `district ${countyClass}`
     })
     .attr("fill", function (d) {
-      return colorScale(d.properties[mainProperty]) || '#ccc';
+      return colorScale(d.properties[mainProperty]) || '#e8e8e8';
     })
     .attr("d", path)
     .attr("stroke-width", ".5px")
     .on("mousemove", function (d) {
-      // Don't do tooltips on mobile, or if showTooltips has been set to false.
-      if (isMobile.matches || !showTooltips) { return; }
-
-      // Remove previous highlight
-      let highlighted = document.querySelector('.highlight');
-      if (highlighted) {
-        highlighted.classList.remove("highlight");
-      }
-
-      // Add current highlight
+      if (isMobile.matches) { return; } 
       this.classList.add("highlight");
-      renderTooltip(d)
+      renderTooltip(d.properties.fips);
     })
-    .on("mouseout", function () {
+    .on("mouseout", function (d) {
+      if (isMobile.matches) { return; } 
       this.classList.remove("highlight");
-      return tooltip.style("visibility", "hidden");
+      tooltip.style("visibility", "hidden");
     })
-    .on("click", function (d) {
-      // Set the selected county
-      var searchBox = $.one("#search-input");
-      let match = searchBox.entries.find(entry => entry.value == d.properties.fips)
+    // Custom 'select' event called when selected from dropdown
+    .on("select", function(d) {
+      let highlighted = $(".highlight");
+      let searchBox = $.one('#search-input');
+      let fips = d.properties.fips;
+
+      // Clear all existing highlighted counties.
+      highlighted.forEach((el) => {
+        el.classList.remove("highlight");
+      })
+
+      // Highlight this county.
+      this.classList.add("highlight")
+
+      // Set selected county in the search box.
+      let match = searchBox.entries.find(entry => entry.value == fips)
       if (match) {
         searchBox.selectedIndex = match.index
         searchBox.value = match.label
       }
+
+      // Populate results table.
+      let countyData = config.data.counties.features.find(row => row.properties.fips == fips)
+      if (countyData) {
+        let searchResults = countyData.properties.searchResults
+        let template = dot.compile(require("./_results-table.html"));
+        if (searchResults) {
+          d3.select(".no-data-msg").classed("is-hidden", true);
+          d3.select("#results").html(
+            template({ data: searchResults })
+          );
+        } else {
+          d3.select(".no-data-msg").classed("is-hidden", false);
+          d3.select("#results").html(
+            template({ data: null })
+          );
+        }
+      }
+
       // Scroll to header
       if (pymChild) {
         pymChild.scrollParentToChildEl("search-hed");
       }
-    })
-    .on("select", function(d) {
-      renderTooltip(d)
-      populateSearchResults(currentlySelectedFips, config.data);
-    });
 
-  // Add custom select/deselect events
-  let districts = document.querySelectorAll('.district');
-  districts.forEach(districtEl => {
-    districtEl.addEventListener('select', (e) => {
-      e.target.classList.add("highlight")
+      // Resize pym
+      if (pymChild) {
+        pymChild.sendHeight();
+      }
+
+      // Render the tooltip.
+      renderTooltip(fips);
     })
-    districtEl.addEventListener('deselect', (e) => {
-      e.target.classList.remove("highlight")
-    })
-  })
+    ;
 
   // Add state outlines
   chartElement
@@ -382,68 +407,15 @@ var renderCountyMap = function (config) {
     .attr("fill", "none");
 };
 
-var loadSearchBox = (data) => {
-  var searchBox = $.one("#search-input");
-
-  // Helper: get county class
-  var getCountyClass = (fips) => {
-    let countyData = data.counties.features.find(row => row.properties.fips == fips)
-    if (countyData) {
-      var county = classify(countyData.properties.county);
-      var state = classify(countyData.properties.state);
-      return `${county}-${state}`;
-    } else {
-      return ''
-    }
-  }
-
-  searchBox.addEventListener("change", function (e) {
-    // Reset county highlight on map
-    let oldCountyClass, oldCounty;
-    if (currentlySelectedFips) {
-      oldCountyClass = getCountyClass(currentlySelectedFips);
-      oldCounty = d3.selectAll(".district." + oldCountyClass) 
-      oldCounty.dispatch('deselect')
-    }
-
-    // Set selected county and highlight on map
-    currentlySelectedFips = e.target.entries[e.target.selectedIndex].value || null;
-    
-    // Populate results below map
-    if (currentlySelectedFips) {
-      let newCountyClass = getCountyClass(currentlySelectedFips);
-      let newCounty = d3.selectAll(".district." + newCountyClass) 
-      newCounty.dispatch('select')
-    }
-
-    // Update pym
-    if (pymChild) {
-      pymChild.sendHeight();
-    }
-  });
-}
-
-// Helper: populate the results table.
-async function populateSearchResults(fips, data) {
+// Helper: get county class
+var getCountyClass = (fips, data) => {
   let countyData = data.counties.features.find(row => row.properties.fips == fips)
   if (countyData) {
-    let searchResults = countyData.properties.searchResults
-    let template = dot.compile(require("./_results-table.html"));
-    if (searchResults) {
-      d3.select(".no-data-msg").classed("is-hidden", true);
-      d3.select("#results").html(
-        template({ data: searchResults })
-      );
-    } else {
-      d3.select(".no-data-msg").classed("is-hidden", false);
-      d3.select("#results").html(
-        template({ data: null })
-      );
-    }
-  }
-
-  if (pymChild) {
-    pymChild.sendHeight();
+    var county = classify(countyData.properties.county);
+    var state = classify(countyData.properties.state);
+    return `${county}-${state}`;
+  } else {
+    return ''
   }
 }
 
