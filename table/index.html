@@ -12,31 +12,21 @@
   <table id="state-table" role="table">
     <thead role="rowgroup">
       <tr role="row">
+        <% for (var c of COPY.columns) { %>
         <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
-          <div class="header"><%= COPY.labels.hdr_state %></div>
+          <div class="header <%= c.className %>"><%= c.label %></div>
         </th>
-        <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
-          <div class="header"><%= COPY.labels.hdr_usps %></div>
-        </th>
-        <th role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
-          <div class="header"><%= COPY.labels.hdr_ap %></div>
-        </th>
-        <th class="amt sort-header" role="columnheader">
-          <div class="sorter"><div class="icon"></div></div>
-          <div class="header"><%= COPY.labels.hdr_value %></div>
-        </th>
+        <% } %>
       </tr>
     </thead>
 
     <% COPY.data.forEach(function(row) { %>
     <tr class="state-<%= t.classify(row.usps) %>" role="row">
-      <td role="cell" data-title="<%= COPY.labels.hdr_state %>"><%= row.name %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_usps %>"><%= row.usps %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_ap %>"><%= t.ap_state(row.usps) %></td>
-      <td role="cell" data-title="<%= COPY.labels.hdr_value %>" class="amt"><%= t.comma(row.value) %></td>
+      <% for (var c of COPY.columns) { %>
+      <td role="cell" class="<%= c.className %>" data-title="<%= c.label %>">
+        <%= c.templateFunction ? t[c.templateFunction](row[c.column]) : row[c.column] %>  
+      </td>
+      <% } %>
     </tr>
   <% }) %>
 
