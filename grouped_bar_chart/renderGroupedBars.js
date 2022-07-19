@@ -16,15 +16,13 @@ module.exports = function (config) {
   var numGroups = config.data.length;
   var numGroupBars = config.data[0].values.length;
 
-  // Setting that can be adjusted in the google sheet
-  const labelWidth = config.options.find((element) => element.option == "label_width").setting;
-  const axis = config.options.find((element) => element.option == "axis").setting;
-  const f = config.options.find((element) => element.option == "number_format").setting;
-  const roundTicksFactor = config.options.find((element) => element.option == "round_ticks_factor").setting;
-  const ticksX = config.options.find((element) => element.option == "ticks_x").setting;
-  const barLabelPosition = config.options.find((element) => element.option == "bar_label_position").setting;
-  const groupLabelPosition = config.options.find((element) => element.option == "group_label_position").setting;
-
+  // Settings that can be adjusted in the google sheet
+  const {
+    labelWidth, axis, numberFormat,
+    roundTicksFactor, ticksX,
+    barLabelPosition, groupLabelPosition
+  } = config.options;
+  
   var barHeight = 20;
   var barGapInner = 2;
   var barGap = groupLabelPosition == "above" ? 36 : 10;
@@ -32,17 +30,14 @@ module.exports = function (config) {
   var labelMargin = 0;
   var valueGap = 6;
 
-  var valueFormat;
+  var formats = {
+    regular: d3.format(","),
+    "percent rounded": d3.format(".0%"),
+    "percent decimal": d3.format("~%"),
+    dollar: d3.format("$,")
+  };
 
-  if (f == "regular") {
-    valueFormat = d3.format(",");
-  } else if (f == "percent rounded") {
-    valueFormat = d3.format(".0%");
-  } else if (f == "percent decimal") {
-    valueFormat = d3.format("~%");
-  } else {
-    valueFormat = d3.format("$,");
-  }
+  var valueFormat = formats[numberFormat] || formats.dollar;
 
   var margins = {
     top: groupLabelPosition == "above" ? 20 : 10,
