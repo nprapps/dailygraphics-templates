@@ -1,9 +1,9 @@
 <% COPY.data.forEach(function(portrait, i) { %>
-<div class="portrait-block <%= portrait.alignment || "" %>">
+<div class="portrait-block <%= portrait.layout || "" %>">
   <% if (i == 0 && COPY.data.length > 1) { %>
     <hr>
   <% } %>
-  <div class="row <%= portrait.full ? "full-width" : "side-by-side" %>">
+  <div class="row <% if (portrait.layout == 'wide' || portrait.layout == 'center') { %>full-width<% } else { %>side-by-side<% } %>">
     <div class="image-container">
       <img src="./synced/<%= portrait.image %>" alt="">
       <% if (portrait.photo_credit) { %>
