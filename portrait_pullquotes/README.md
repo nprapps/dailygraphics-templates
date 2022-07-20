@@ -7,16 +7,15 @@ This template allows you to display large images paired with a pullquote.
 
 Columns in the spreadsheet:
 
-* *key* — A one-word descriptor for this image (such as the subject's name). This is used as the filename for the standalone photo embed.
-* *image* - The image filename. We assume that it will live in the `synced/` folder inside the graphic.
-* *full* — Boolean. Defines whether the image stretches to the full-width of the embed.
-* *alignment* — If the `full` parameter is `FALSE` or empty, this can align the image either to the left or right of the quote, or centered above the quote.
-* *quote* — The quote itself. Do not include quote marks at the beginning/end. These are added in CSS.
-* *name* — The subject's name
-* *age* — The subject's age (optional). It appears inline after the subject's name.
-* *description* — A short bit of additional description (optional). For example, the subject's city/state, or names of other people in the image.
-* *caption* — A longer caption for the image (optional).
-* *photo_credit* — Photo credit for the image.
+* `key` — A one-word descriptor for this image (such as the subject's name). This is used as the filename for the standalone photo embed.
+* `image` - The image filename. We assume that it will live in the `synced/` folder inside the graphic.
+* `layout` — Should this be played **wide**? **Center** above the quote but constrained in width? Or aligned to the **left** or **right**?
+* `quote` — The quote itself. Do not include quote marks at the beginning/end. These are added in CSS.
+* `name` — The subject's name
+* `age` — The subject's age _(optional)_. It appears inline after the subject's name.
+* `description` — A short bit of additional description _(optional)_. For example, the subject's city/state, or names of other people in the image.
+* `caption` — A longer caption for the image _(optional)_.
+* `photo_credit` — Photo credit for the image.
 
 Key files:
 
