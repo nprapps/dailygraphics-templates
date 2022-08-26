@@ -51,7 +51,36 @@ var render = function (data) {
     dateColumn: "date",
     valueColumn: "amt"
   });
+
+  // replace the above code with the following lines for small multiples
+  
+  // var outer = document.querySelector("#line-chart");
+  // outer.classList.add("small-multiple");
+  // for (var series of data) {
+  //   var container = document.querySelector(`[data-series="${series.name}"]`);
+  //   if (!container) {
+  //     container = document.createElement("div");
+  //     container.dataset.series = series.name;
+  //     var inner = document.createElement("div");
+  //     inner.className = "chart";
+  //     var head = document.createElement("h3");
+  //     head.append(series.name);
+  //     inner.append(head, container);
+  //     outer.append(inner);
+  //   }
+  //   var width = container.offsetWidth;
+  //   renderLineChart({
+  //     container,
+  //     width,
+  //     data: [series],
+  //     dateColumn: "date",
+  //     valueColumn: "amt"
+  //   });
+  // }
+
 };
+
+document.querySelector(".fallback").remove();
 
 //Initially load the graphic
 // (NB: Use window.load to ensure all images have loaded)

@@ -17,3 +17,27 @@
     display: none;
   }
 }
+
+.small-multiple {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 4px;
+}
+
+/* sample small multiple styles */
+
+[data-series="One"] .lines path {
+  stroke: red;
+}
+
+[data-series="Two"] .lines path {
+  stroke: green;
+}
+
+[data-series="Three"] .lines path {
+  stroke: blue;
+}
+
+[data-series="Four"] .lines path {
+  stroke: orange;
+}
