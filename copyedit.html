@@ -1,5 +1,8 @@
 <%
 var m = s => COPY.metadata[s] || `__${s.toUpperCase()}__`;
+var deployBase = config.deployment.url ?
+  `https://${config.deployment.url}` :
+  `https://${config.deployment.bucket}/${config.deployment.prefix}/`;
 %>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
 
 <% if (COPY.metadata.chorus) { %>
