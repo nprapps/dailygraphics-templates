@@ -30,8 +30,8 @@ var formatData = function (data) {
       name: column,
       values: data.map((d) => ({
         date: d.date,
-        amt: d[column]
-      }))
+        amt: d[column],
+      })),
     });
   }
 
@@ -49,11 +49,11 @@ var render = function (data) {
     width,
     data,
     dateColumn: "date",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 
   // replace the above code with the following lines for small multiples
-  
+
   // var outer = document.querySelector("#line-chart");
   // outer.classList.add("small-multiple");
   // for (var series of data) {
@@ -77,7 +77,6 @@ var render = function (data) {
   //     valueColumn: "amt"
   //   });
   // }
-
 };
 
 document.querySelector(".fallback").remove();

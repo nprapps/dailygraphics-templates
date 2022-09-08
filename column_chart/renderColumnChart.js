@@ -4,7 +4,7 @@ var { COLORS, makeTranslate } = require("./lib/helpers");
 var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
   ...require("d3-scale/dist/d3-scale.min"),
-  ...require("d3-selection/dist/d3-selection.min")
+  ...require("d3-selection/dist/d3-selection.min"),
 };
 
 var fmtComma = (s) => s.toLocaleString().replace(/\.0+$/, "");
@@ -22,7 +22,7 @@ module.exports = function (config) {
     top: 5,
     right: 5,
     bottom: 20,
-    left: 30
+    left: 30,
   };
 
   var ticksY = 4;

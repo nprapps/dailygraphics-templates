@@ -2,7 +2,7 @@ var d3 = {
   ...require("d3-array"),
   ...require("d3-axis"),
   ...require("d3-scale"),
-  ...require("d3-selection")
+  ...require("d3-selection"),
 };
 var { isMobile } = require("./lib/breakpoints");
 var { COLORS, classify, makeTranslate, wrapText } = require("./lib/helpers");
@@ -20,7 +20,7 @@ module.exports = function (config) {
     top: 5,
     right: 1,
     bottom: 50,
-    left: 30
+    left: 30,
   };
 
   var ticksY = 5;

@@ -1,7 +1,7 @@
 var d3 = {
   ...require("d3-selection/dist/d3-selection.min"),
   ...require("d3-axis/dist/d3-axis.min"),
-  ...require("d3-scale/dist/d3-scale.min")
+  ...require("d3-scale/dist/d3-scale.min"),
 };
 
 var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
@@ -24,7 +24,7 @@ module.exports = function (config) {
     top: 0,
     right: 20,
     bottom: 20,
-    left: labelWidth + labelMargin
+    left: labelWidth + labelMargin,
   };
 
   var ticksX = 4;
@@ -115,7 +115,7 @@ module.exports = function (config) {
       formatStyle({
         width: labelWidth + "px",
         top: margins.top + "px",
-        left: "0"
+        left: "0",
       })
     )
     .selectAll("li")
@@ -127,7 +127,7 @@ module.exports = function (config) {
         width: labelWidth + "px",
         height: barHeight + "px",
         left: "0px",
-        top: i * (barHeight + barGap) + "px;"
+        top: i * (barHeight + barGap) + "px;",
       })
     )
     .attr("class", (d) => classify(d[labelColumn]))

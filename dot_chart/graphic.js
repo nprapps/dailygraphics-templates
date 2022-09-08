@@ -22,7 +22,7 @@ var render = function (data) {
     labelColumn: "label",
     valueColumn: "amt",
     minColumn: "min",
-    maxColumn: "max"
+    maxColumn: "max",
   });
 };
 

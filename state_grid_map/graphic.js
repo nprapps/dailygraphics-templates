@@ -4,7 +4,7 @@ Sidechain.registerGuest();
 // build our custom D3 object
 var d3 = {
   ...require("d3-scale/dist/d3-scale.min"),
-  ...require("d3-selection/dist/d3-selection.min")
+  ...require("d3-selection/dist/d3-selection.min"),
 };
 
 var { COLORS, classify } = require("./lib/helpers");
@@ -43,7 +43,7 @@ var render = function () {
     width,
     data: DATA,
     // isNumeric will style the legend as a numeric scale
-    isNumeric
+    isNumeric,
   });
 };
 

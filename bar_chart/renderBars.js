@@ -6,7 +6,7 @@ var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
   ...require("d3-scale/dist/d3-scale.min"),
   ...require("d3-selection/dist/d3-selection.min"),
-  ...require("d3-format/dist/d3-format.min")
+  ...require("d3-format/dist/d3-format.min"),
 };
 
 // Render a bar chart.
@@ -62,7 +62,7 @@ var renderBarChart = function (config) {
     top: annotationLabel ? 22 : 0,
     right: max == 0 ? labelWidth + labelMargin : 24,
     bottom: 20,
-    left: max == 0 ? 15 : labelWidth + labelMargin
+    left: max == 0 ? 15 : labelWidth + labelMargin,
   };
 
   // Calculate actual chart dimensions
@@ -191,7 +191,7 @@ var renderBarChart = function (config) {
       formatStyle({
         width: labelWidth + "px",
         top: margins.top + "px",
-        left: max == 0 ? chartWidth + margins.left + labelMargin + "px" : "0"
+        left: max == 0 ? chartWidth + margins.left + labelMargin + "px" : "0",
       })
     )
     .selectAll("li")
@@ -203,7 +203,7 @@ var renderBarChart = function (config) {
         width: labelWidth + "px",
         height: barHeight + "px",
         left: "0px",
-        top: i * (barHeight + barGap) + "px"
+        top: i * (barHeight + barGap) + "px",
       });
     })
     .attr("class", function (d) {

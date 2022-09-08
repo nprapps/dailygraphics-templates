@@ -6,7 +6,7 @@ var { isMobile } = require("./lib/breakpoints");
 var d3 = {
   ...require("d3-selection/dist/d3-selection.min"),
   ...require("d3-axis/dist/d3-axis.min"),
-  ...require("d3-scale/dist/d3-scale.min")
+  ...require("d3-scale/dist/d3-scale.min"),
 };
 
 var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
@@ -26,7 +26,7 @@ var render = function () {
   renderDotChart({
     container,
     width,
-    data: DATA
+    data: DATA,
   });
 };
 
@@ -48,7 +48,7 @@ var renderDotChart = function (config) {
     top: 0,
     right: 20,
     bottom: 20,
-    left: labelWidth + labelMargin
+    left: labelWidth + labelMargin,
   };
 
   var ticksX = 4;

@@ -23,7 +23,7 @@ var render = function (data, options) {
     data,
     options,
     labelColumn: "label",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 };
 

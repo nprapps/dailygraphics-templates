@@ -21,7 +21,7 @@ var render = function (data) {
     width,
     data,
     labelColumn: "label",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 
   // in case of small multiples:

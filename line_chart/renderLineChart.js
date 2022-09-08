@@ -3,7 +3,7 @@ var d3 = {
   ...require("d3-scale/dist/d3-scale.min"),
   ...require("d3-selection/dist/d3-selection.min"),
   ...require("d3-shape/dist/d3-shape.min"),
-  ...require("d3-interpolate/dist/d3-interpolate.min")
+  ...require("d3-interpolate/dist/d3-interpolate.min"),
 };
 
 var { COLORS, classify, makeTranslate } = require("./lib/helpers");
@@ -22,7 +22,7 @@ module.exports = function (config) {
     top: 5,
     right: 75,
     bottom: 20,
-    left: 30
+    left: 30,
   };
 
   var ticksX = 10;

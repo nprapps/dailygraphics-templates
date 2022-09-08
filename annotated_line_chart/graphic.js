@@ -40,7 +40,7 @@ var formatData = function (data) {
           series,
           xOffset,
           yOffset,
-          label
+          label,
         });
       }
     }
@@ -53,7 +53,7 @@ var formatData = function (data) {
     var values = data.map(function (d) {
       return {
         date: d.date,
-        amt: d[name]
+        amt: d[name],
       };
     });
     // filter out empty data, if your set is inconsistent
@@ -79,7 +79,7 @@ var render = function (data, annotations) {
     data,
     annotations,
     dateColumn: "date",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 };
 

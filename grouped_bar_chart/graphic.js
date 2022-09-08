@@ -18,7 +18,7 @@ var formatData = function (data) {
   var output = data.map(function (d) {
     var series = {
       key: d.Group,
-      values: []
+      values: [],
     };
 
     for (var [k, v] of Object.entries(d)) {
@@ -28,7 +28,7 @@ var formatData = function (data) {
 
       series.values.push({
         label: k,
-        amt: Number(v)
+        amt: Number(v),
       });
     }
 
@@ -50,7 +50,7 @@ var render = function (data, options) {
     data,
     options,
     labelColumn: "label",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 };
 

@@ -33,7 +33,7 @@ var formatData = function (input) {
         name,
         x0,
         x1,
-        val
+        val,
       });
 
       x0 = x1;
@@ -56,7 +56,7 @@ var render = function (data) {
     width,
     data,
     labelColumn: "label",
-    nameColumn: "name"
+    nameColumn: "name",
   });
 };
 

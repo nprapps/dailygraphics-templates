@@ -51,7 +51,7 @@ var render = function (data) {
     bins: COLOR_BINS,
     colors: COLOR_RANGE,
     labelColumn: "usps",
-    valueColumn: "amt"
+    valueColumn: "amt",
   });
 };
 

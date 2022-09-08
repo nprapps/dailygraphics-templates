@@ -36,7 +36,7 @@ var formatData = function (data) {
         label: name,
         y0,
         y1,
-        val
+        val,
       });
 
       y0 = y1;
@@ -58,7 +58,7 @@ var render = function (data) {
     container,
     width,
     data,
-    labelColumn: "label"
+    labelColumn: "label",
   });
 };
 

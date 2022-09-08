@@ -2,7 +2,7 @@ var d3 = {
   ...require("d3-axis/dist/d3-axis.min"),
   ...require("d3-scale/dist/d3-scale.min"),
   ...require("d3-selection/dist/d3-selection.min"),
-  ...require("d3-format/dist/d3-format.min")
+  ...require("d3-format/dist/d3-format.min"),
 };
 
 var { COLORS, classify, makeTranslate, formatStyle } = require("./lib/helpers");
@@ -17,12 +17,9 @@ module.exports = function (config) {
   var numGroupBars = config.data[0].values.length;
 
   // Settings that can be adjusted in the google sheet
-  const {
-    labelWidth, axis, numberFormat,
-    roundTicksFactor, ticksX,
-    barLabelPosition, groupLabelPosition
-  } = config.options;
-  
+  const { labelWidth, axis, numberFormat, roundTicksFactor, ticksX, barLabelPosition, groupLabelPosition } =
+    config.options;
+
   var barHeight = 20;
   var barGapInner = 2;
   var barGap = groupLabelPosition == "above" ? 36 : 10;
@@ -34,7 +31,7 @@ module.exports = function (config) {
     regular: d3.format(","),
     "percent rounded": d3.format(".0%"),
     "percent decimal": d3.format("~%"),
-    dollar: d3.format("$,")
+    dollar: d3.format("$,"),
   };
 
   var valueFormat = formats[numberFormat] || formats.dollar;
@@ -43,7 +40,7 @@ module.exports = function (config) {
     top: groupLabelPosition == "above" ? 20 : 10,
     right: 15,
     bottom: 0,
-    left: (groupLabelPosition == "above") & (barLabelPosition == "key") ? 0 : labelWidth + labelMargin
+    left: (groupLabelPosition == "above") & (barLabelPosition == "key") ? 0 : labelWidth + labelMargin,
   };
 
   // Calculate actual chart dimensions
@@ -184,7 +181,7 @@ module.exports = function (config) {
         formatStyle({
           width: labelWidth + "px",
           top: margins.top + "px",
-          left: "0"
+          left: "0",
         })
       )
       .selectAll("li")
@@ -202,7 +199,7 @@ module.exports = function (config) {
           width: labelWidth - 10 + "px",
           height: barHeight + "px",
           left: "0px",
-          top: top + "px;"
+          top: top + "px;",
         });
       })
       .attr("class", (d) => classify(d.key))
