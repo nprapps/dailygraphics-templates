@@ -1,23 +1,17 @@
 <%
-var m = s => COPY.metadata[s] || `__${s.toUpperCase()}__`;
 var deployBase = config.deployment.url ?
   `https://${config.deployment.url}` :
   `https://${config.deployment.bucket}/${config.deployment.prefix}/`;
-%>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
-
-<% if (COPY.metadata.chorus) { %>
-Chorus URL: <%= m("chorus") %>
-<% } %>
-
-Expected run date: <%= m("time") %>
-
-Primary graphics contact: <%= "user" in config ? config.user.displayName : "__GRAPHICS_CONTACT__" %>
-Primary editorial contact: <%= m("editorial_contact") %>
-
----- GRAPHIC <%= slug %> ----
-<% if (typeof children != "undefined" && children) { %>
-NOTE: This graphic contains multiple sections that will be embedded as separate graphics. On the preview page, use the dropdown box above the graphic to preview each section.
-<% } %>
-Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
-Preview URL: <%= new URL(slug + "/preview.html", deployBase).toString() %>
-<% Object.keys(COPY.labels).filter(k => COPY.labels[k]).forEach(key => print(`\n${key}: ${COPY.labels[key]}\n`)); %>
+var graphics = ["index.html"];
+if (typeof children != "undefined") {
+  graphics = graphics.concat(children.filter(c => c != "index.html"));
+}
+for (var g of graphics) {
+  var url = new URL(slug + "/" + g, deployBase).toString();
+%>
+--- <%= g %> ---
+<side-chain src="<%= url %>"></side-chain>
+<script src="https://projects.chalkbeat.org/sidechain/loader.js"></script>
+<%
+}
+%>
