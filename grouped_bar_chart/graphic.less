@@ -1,0 +1,40 @@
+@import "./lib/base";
+
+.bar-group {
+  margin-bottom: 20px;
+}
+
+.row {
+  .sans-serif;
+  font-size: 15px;
+  display: flex;
+  margin-bottom: 4px;
+  padding-right: 10px;
+
+  .label {
+    flex: 0 0 120px;
+    text-align: right;
+    padding-right: 10px;
+  }
+
+  .bar-container {
+    flex: 1;
+  }
+
+  .bar {
+    background: @teal2;
+    color: white;
+
+    &[data-series*="Openings"] {
+      background: @peach2;
+    }
+
+    &[data-series*="Closings"] {
+      background: @purple2;
+    }
+  }
+
+  .value {
+    padding-left: 10px;
+  }
+}

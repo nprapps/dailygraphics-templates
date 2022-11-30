@@ -8,12 +8,37 @@
 <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
+<% 
+    var values = COPY.data.map(v => v.value);
+    var groupNames = new Set(COPY.data.map(v => v.group));
+    var groups = Object.fromEntries([...groupNames].map(n => [n, COPY.data.filter(v => v.group == n)]));
+    var max = Math.max(...values);
+%> 
+
 <div id="grouped-bar-chart" class="graphic" role="img"
   <% if (COPY.labels.screenreader) { %>
   aria-label="<%- COPY.labels.screenreader %>"
   <% } %>
 >
-  <img src="fallback.png" alt="" class="fallback" />
+  <% for (var g of groupNames) { %>
+  <div class="bar-group">
+    <h3><%= g %></h3>
+    <div class="bars">
+    <% groups[g].forEach((d, i) => { %>
+    <div class="row">
+      <div class="label"><%= d.label %></div>
+      <div class="bar-container">
+        <div class="bar" style="width: <%= d.value / max * 100 %>%" data-series="<%= d.label %>">
+          <span class="value">
+            <%= d.value.toFixed(0) + (i ? "" : "") %>
+          </span>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+    </div>
+  </div>
+  <% } %>
 </div>
 
 <div class="footer">
@@ -24,7 +49,6 @@
 
 <script type="text/javascript">
   var DATA = <%= JSON.stringify(COPY.data) %>;
-  var OPTIONS = <%= JSON.stringify(COPY.options) %>;
 </script>
 
 <script src="./graphic.js"></script>
