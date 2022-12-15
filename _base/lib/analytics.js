@@ -3,8 +3,11 @@
  */
 
 var { getParameterByName, urlToLocation } = require("./helpers");
+var DataConsent = require('./dataConsent');
 
 var ANALYTICS = (function () {
+    var googleAnalyticsAlreadyInitialized = false;
+
     /*
      * Google Analytics
      */
@@ -13,6 +16,9 @@ var ANALYTICS = (function () {
     var DIMENSION_PARENT_INITIAL_WIDTH = 'dimension3';
 
     var setupGoogle = function() {
+        // Bail early if opted out of Performance and Analytics consent groups
+        if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
+
         (function(i,s,o,g,r,a,m) {
             i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -46,12 +52,16 @@ var ANALYTICS = (function () {
 
         // Track pageview
         ga('send', 'pageview', customData);
+        googleAnalyticsAlreadyInitialized = true;
      }
 
     /*
      * Event tracking.
      */
     var trackEvent = function(eventName, label, value) {
+        // Bail early if opted out of Performance and Analytics consent groups
+        if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
+
         var eventData = {
             'hitType': 'event',
             'eventCategory': document.title,
@@ -79,6 +89,17 @@ var ANALYTICS = (function () {
     }
 
     setupGoogle();
+
+    // Listen for DataConsentChanged event
+    document.addEventListener('npr:DataConsentChanged', () => {
+        // Bail early if GA's already been set up
+        if (googleAnalyticsAlreadyInitialized) return;
+
+        // When a user opts into performance and analytics cookies, initialize GA
+        if (DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) {
+            setupGoogle();
+        }
+    });
 
     return {
         'trackEvent': trackEvent
