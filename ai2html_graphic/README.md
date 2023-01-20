@@ -9,12 +9,12 @@ Installing ai2html
 ------------------
 
 To use this template, you'll need to install ai2html as an Illustrator
-script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx)
+script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics-templates/blob/master/_etc/ai2html_v115.jsx)
 into the Illustrator folder on your machine where scripts are located.
-For example, on Mac OS X running Adobe Illustrator CC 2019, the path would be:
-`/Applications/Adobe Illustrator CC 2019/Presets.localized/en_US/Scripts/ai2html.jsx`
+For example, on Mac OS X running Adobe Illustrator CC 2023, the path would be:
+`/Applications/Adobe Illustrator CC 2023/Presets.localized/en_US/Scripts/`
 
-**You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html" command in File >> Scripts.
+**You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html_v115" command in File >> Scripts.
 
 Creating a new ai2html graphic
 ------------------------------
