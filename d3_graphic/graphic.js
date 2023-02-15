@@ -1,35 +1,41 @@
 var pym = require("./lib/pym");
-var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
-var { isMobile } = require("./lib/breakpoints");
 
-var d3 = {
-  ...require("d3-array/dist/d3-array.min"),
-  ...require("d3-axis/dist/d3-axis.min"),
-  ...require("d3-scale/dist/d3-scale.min"),
-  ...require("d3-selection/dist/d3-selection.min")
+var pymChild;
+var renderD3Graphic = require("./renderD3Graphic");
+
+// Initialize the graphic.
+var onWindowLoaded = function() {
+  // you would format data here if you needed to
+  // var data = formatData(window.DATA);
+  render();
+
+  window.addEventListener("resize", () => render());
+
+  pym.then(child => {
+    pymChild = child;
+    child.sendHeight();
+  });
 };
-
-var pymChild = null;
-pym.then(function(child) {
-  pymChild = child;
-  child.sendHeight();
-  window.addEventListener("resize", render);
-});
 
 var render = function() {
-  var containerElement = document.querySelector(".graphic");
-  //remove fallback
-  containerElement.innerHTML = "";
-  var containerWidth = containerElement.offsetWidth;
+  // Render the chart!
+  var container = "#d3-graphic";
+  var element = document.querySelector(container);
+  var width = element.offsetWidth;
+  renderD3Graphic({
+    container,
+    width
+  });
 
-  var container = d3.select(containerSelector);
-  var svg = container.append("svg");
-
-  //run your D3 functions here
-
-  pymChild.sendHeight();
+  // Update iframe
+  if (pymChild) {
+    pymChild.sendHeight();
+  }
 };
 
-//first render
-render();
+/*
+ * Initially load the graphic
+ * (NB: Use window.load to ensure all images have loaded)
+ */
+window.onload = onWindowLoaded;
