@@ -2,8 +2,7 @@ var pym = require("./lib/pym");
 require("./lib/webfonts");
 
 // If sortable:
-// window.Tablesort = require("tablesort");
-// require("tablesort/dist/sorts/tablesort.number");
+// window.Tablesort = require('./lib/tablesort');
 // Tablesort(document.querySelector("#state-table"))
 
 var onWindowLoaded = function () {
