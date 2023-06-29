@@ -9,10 +9,6 @@ var pymChild = null;
 var isMobile = isMobile.matches;
 var toggleTimeout;
 
-var d3 = {
-  ...require("d3-selection/dist/d3-selection.min")
-};
-``
 /*
  * Initialize the graphic.
  */
@@ -39,27 +35,30 @@ var render = function() {
 var initUI = function() {
   autoToggle();
 
-  d3.selectAll('.toggle-btn').on('click', onToggleClicked);
+  document.querySelectorAll('.toggle-btn').forEach((element) => element.addEventListener('click', onToggleClicked));
 };
 
 var onToggleClicked = function() {
-  d3.select('#image-toggle').classed('clicked', true);
+  document.querySelector('#image-toggle').classList.add('clicked');
   window.clearTimeout(toggleTimeout);
 
-  if (d3.select(this).attr('id') == 'toggle-1') {
-    d3.select('.image-1').classed('hidden', false);
+  if (this.getAttribute('id') == 'toggle-1') {
+    document.querySelector('.image-1').classList.remove('hidden');
   } else {
-    d3.select('.image-1').classed('hidden', true);
+    document.querySelector('.image-1').classList.add('hidden');
   }
-
-  if (!d3.select(this).classed('active')) {
-    d3.select('.toggle-btn.active').classed('active', false);
-    d3.select(this).classed('active', true);
+  
+  if (!this.classList.contains('active')) {
+    let activeToggleBtn = document.querySelector('.toggle-btn.active');
+    if (activeToggleBtn) {
+      activeToggleBtn.classList.remove('active');
+    }
+    this.classList.add('active');
   }
 }
 
 var autoToggle = function() {
-  var toggleWrap = d3.select('#image-toggle');
+  var toggleWrap = document.querySelector('#image-toggle');
 
   var stepList = [2, 1, 2, 1, 2];
   toggleStep(0);
@@ -69,16 +68,20 @@ var autoToggle = function() {
       var step = stepList[step_i];
 
       // Don't auto-toggle if someone has clicked
-      if (!toggleWrap.classed('clicked')) {
+      if (!toggleWrap.classList.contains('clicked')) {
         if (step == 1) {
-          d3.select('.image-1').classed('hidden', false);
+            document.querySelector('.image-1').classList.remove('hidden');
         } else {
-          d3.select('.image-1').classed('hidden', true);
+            document.querySelector('.image-1').classList.add('hidden');
         }
-
-        d3.select('.toggle-btn.active').classed('active', false);
-        d3.select('#toggle-' + step).classed('active', true);
-
+    
+        let activeToggleBtn = document.querySelector('.toggle-btn.active');
+        if (activeToggleBtn) {
+            activeToggleBtn.classList.remove('active');
+        }
+        
+        document.querySelector('#toggle-' + step).classList.add('active');
+        
         toggleTimeout = window.setTimeout(toggleStep, 2000, step_i + 1);
       }
     }
