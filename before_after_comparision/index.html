@@ -8,7 +8,11 @@
     <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<%= await t.include("partials/_beforeafter.html", { COPY: { ...COPY, data: [ COPY.data.imgKey ]}}) %> 
+<div>
+    <% for (let key of Object.keys(COPY.data)) { %>
+        <%= await t.include("partials/_beforeafter.html", { COPY: { ...COPY, data: [ COPY.data[key] ]}}) %>
+    <% } %>
+</div>
 
 <% if (COPY.labels.footnote) { %>
 <div class="footnotes">

@@ -1,13 +1,10 @@
 var pym = require("./lib/pym");
 var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
-var {
-  isMobile
-} = require("./lib/breakpoints");
+var { isMobile } = require("./lib/breakpoints");
 
 var pymChild = null;
 var isMobile = isMobile.matches;
-var toggleTimeout;
 
 /*
  * Initialize the graphic.
@@ -33,61 +30,70 @@ var render = function() {
 }
 
 var initUI = function() {
-  autoToggle();
+  document.querySelectorAll('.graphic').forEach(function(wrapper) {
+    var toggleTimeout;
+    var toggleButtons = wrapper.querySelectorAll('.toggle-btn');
+    var splitId = toggleButtons[0].getAttribute('id').split('-');
 
-  document.querySelectorAll('.toggle-btn').forEach((element) => element.addEventListener('click', onToggleClicked));
-};
+    toggleButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var parentToggleWrap = button.parentElement;
+        parentToggleWrap.classList.add('clicked');
+        window.clearTimeout(toggleTimeout);
 
-var onToggleClicked = function() {
-  document.querySelector('#image-toggle').classList.add('clicked');
-  window.clearTimeout(toggleTimeout);
+        splitId = button.getAttribute('id').split('-');
 
-  if (this.getAttribute('id') == 'toggle-1') {
-    document.querySelector('.image-1').classList.remove('hidden');
-  } else {
-    document.querySelector('.image-1').classList.add('hidden');
-  }
-  
-  if (!this.classList.contains('active')) {
-    let activeToggleBtn = document.querySelector('.toggle-btn.active');
-    if (activeToggleBtn) {
-      activeToggleBtn.classList.remove('active');
-    }
-    this.classList.add('active');
-  }
-}
-
-var autoToggle = function() {
-  var toggleWrap = document.querySelector('#image-toggle');
-
-  var stepList = [2, 1, 2, 1, 2];
-  toggleStep(0);
-
-  function toggleStep(step_i) {
-    if (step_i < stepList.length) {
-      var step = stepList[step_i];
-
-      // Don't auto-toggle if someone has clicked
-      if (!toggleWrap.classList.contains('clicked')) {
-        if (step == 1) {
-            document.querySelector('.image-1').classList.remove('hidden');
+        var beforeImage = wrapper.querySelector('#image-' + splitId[1] + '-1');
+        
+        if (splitId[2] == '1') {
+          beforeImage.classList.remove('hidden');
         } else {
-            document.querySelector('.image-1').classList.add('hidden');
+          beforeImage.classList.add('hidden');
         }
-    
-        let activeToggleBtn = document.querySelector('.toggle-btn.active');
-        if (activeToggleBtn) {
+        
+        if (!button.classList.contains('active')) {
+          let activeToggleBtn = parentToggleWrap.querySelector('.toggle-btn.active');
+          if (activeToggleBtn) {
             activeToggleBtn.classList.remove('active');
+          }
+          button.classList.add('active');
         }
-        
-        document.querySelector('#toggle-' + step).classList.add('active');
-        
-        toggleTimeout = window.setTimeout(toggleStep, 2000, step_i + 1);
-      }
-    }
-  }
-};
+      });
+    });
 
+    var autoToggle = function() {
+      var stepList = [2, 1, 2, 1, 2];
+      toggleStep(0);
+
+      function toggleStep(step_i) {
+        if (step_i < stepList.length) {
+          var step = stepList[step_i];
+
+          if (!wrapper.querySelector('.image-toggle').classList.contains('clicked')) {
+            var beforeImage = wrapper.querySelector('#image-' + splitId[1] + '-1');
+
+            if (step == 1) {
+              beforeImage.classList.remove('hidden');
+            } else {
+              beforeImage.classList.add('hidden');
+            }
+
+            let activeToggleBtn = wrapper.querySelector('.toggle-btn.active');
+            if (activeToggleBtn) {
+                activeToggleBtn.classList.remove('active');
+            }
+            
+            wrapper.querySelector('#toggle-' + splitId[1] + '-' + step).classList.add('active');
+            
+            toggleTimeout = window.setTimeout(toggleStep, 2000, step_i + 1);
+          }
+        }
+      }
+    };
+
+    autoToggle();
+  });
+};
 /*
  * Initially load the graphic
  * (NB: Use window.load to ensure all images have loaded)
