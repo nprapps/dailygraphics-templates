@@ -43,6 +43,7 @@ var initUI = function() {
 
         splitId = button.getAttribute('id').split('-');
 
+        // select before image by its unique id
         var beforeImage = wrapper.querySelector('#image-' + splitId[1] + '-1');
         
         if (splitId[2] == '1') {
@@ -70,6 +71,7 @@ var initUI = function() {
           var step = stepList[step_i];
 
           if (!wrapper.querySelector('.image-toggle').classList.contains('clicked')) {
+            // select before image by its unique id
             var beforeImage = wrapper.querySelector('#image-' + splitId[1] + '-1');
 
             if (step == 1) {
