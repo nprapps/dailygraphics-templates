@@ -11,13 +11,25 @@ h2 {
   .mmedia-constrained-centered();
 }
 
-h1 {
-  margin-bottom: 22px;
+.beforeafter + .beforeafter {
+  margin-top: 33px;
+}
+
+.graphic h4 {
+  .mmedia-constrained-centered();
+  .lato();
+  font-size: 18px;
+  margin-bottom: 11px;
+  color: #666;
 }
 
 .footer,
 .footnotes {
   .mmedia-constrained();
+}
+
+.graphic + .footer {
+  margin-top: -11px;
 }
 
 .top-wrapper {
@@ -143,7 +155,7 @@ h1 {
 }
 
 .hp {
-  h1 {
+  h1, h2, h4 {
     display: none;
   }
 

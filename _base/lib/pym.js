@@ -28,7 +28,7 @@ switch (getParameterByName("mode")) {
   // on the NPR homepage." checkbox when pulling the embed code.)
   case "hp":
   document.body.classList.add("hp");
-  isHomepage = true;
+  // isHomepage = true;
   break;
   // Direct links to the child page (iOS app workaround link)
   case "childlink":

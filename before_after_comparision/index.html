@@ -8,7 +8,7 @@
     <h2><%= t.smarty(COPY.labels.subhed) %></h2>
 <% } %>
 
-<div>
+<div class="graphic">
     <% for (let key of Object.keys(COPY.data)) { %>
         <%= await t.include("partials/_beforeafter.html", { COPY: { ...COPY, data: [ COPY.data[key] ]}}) %>
     <% } %>
