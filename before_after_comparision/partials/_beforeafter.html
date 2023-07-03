@@ -17,8 +17,16 @@
       </div>
   </div>
   <div class="img-wrapper">
-    <img class="flip-image image-1" id="image-<%= COPY.data[0].key %>-1" src="synced/<%= COPY.data[0].image1 %>" alt="<% if (COPY.data[0].caption1) { %><%= COPY.data[0].caption1 %><% } %>">
-    <img class="flip-image image-2" id="image-<%= COPY.data[0].key %>-2" src="synced/<%= COPY.data[0].image2 %>" alt="<% if (COPY.data[0].caption2) { %><%= COPY.data[0].caption2 %><% } %>">
+    <img class="flip-image image-1" 
+         id="image-<%= COPY.data[0].key %>-1" 
+         src="synced/<%= COPY.data[0].image1 %>" 
+         alt="<% if (COPY.data[0].image1_alt) { %><%= COPY.data[0].image1_alt %><% } 
+              else { %> Image for <%= COPY.data[0].label_hed1 %>, <%= COPY.data[0].label_dek1 %><% } %> %>">
+    <img class="flip-image image-2" 
+         id="image-<%= COPY.data[0].key %>-2" 
+         src="synced/<%= COPY.data[0].image2 %>" 
+         alt="<% if (COPY.data[0].image2_alt) { %><%= COPY.data[0].image2_alt %><% } 
+              else { %> Image for <%= COPY.data[0].label_hed2 %>, <%= COPY.data[0].label_dek2 %><% } %> %>">
   </div>
 
   <% if (COPY.data[0].credit) { %>
