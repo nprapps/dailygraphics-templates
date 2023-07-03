@@ -15,7 +15,7 @@ Columns in the spreadsheet:
 * `image2` - The after image filename. We assume that it will live in the `synced/` folder inside the graphic.
 * `label_hed2` — The primary label for the second button. When user clicks the button, `image2` will be displayed. The text for the label is typically "After."
 * `label_dek2` — The secondary label for the second button, typically displays the date when the `image2` was taken.
-* `photo_credit` — Photo credit for the image.
+* `photo_credit` — Photo credit for `image1` and `image2`.
 
 Key files:
 
