@@ -1,0 +1,38 @@
+<%
+  var togglePrompt = COPY.labels.toggle_prompt;
+%>
+
+<% COPY.data.forEach(function(promo, i) { %>
+
+  <div id="video" class="video-wrapper <%= promo.key %>">
+    <% if (mode == "hp" && promo.link) { %>
+      <a href="<%= promo.link %>">
+    <% } %>
+    <video autoplay muted playsinline loop class="player" <% if (promo.poster) { %>poster="<%= COPY.labels.media_base_path %><%= promo.poster %>"<% } %>>
+    </video>
+    <% if (mode == "hp" && promo.link) { %>
+      </a>
+    <% } %>
+  </div>
+
+  <div class="caption">
+      <% if (promo.caption) { %>
+        <p><%= promo.caption %><% if (mode != "hp") { %> <em>(<%= togglePrompt %>)</em><% } %></p>
+      <% } %>
+      <% if (promo.credit) { %>
+        <p class="credit">
+          Credit: <%= promo.credit %>
+          <% if (mode != "hp" && !promo.caption) { %>
+            (<%= togglePrompt %>)
+          <% } %>
+        </p>
+      <% } %>
+  </div>
+
+  <script type="text/javascript">
+    var VIDEO_SOURCE = "<%= promo.video_url %>";
+    var VIDEO_SOURCE_MOBILE = "<%= promo.video_mobile_url %>";
+    var MEDIA_BASE_PATH = "<%= COPY.labels.media_base_path %>";
+  </script>
+
+<% }) %>
