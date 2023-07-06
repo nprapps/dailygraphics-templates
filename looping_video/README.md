@@ -72,8 +72,6 @@ synced/video-mobile.mp4
 
 Note: If you get a `height not divisible by 2` error, adjust the `-vf scale=1002:-1 \` value until you no longer get that error.
 
-The sample video included with this template comes from an "[Earth from Space](https://images.nasa.gov/details/jsc2022m000172_Earth_in_4K_Expedition_65_Edition)" video produced by NASA.
-
 ### Poster image
 
 `ffmpeg` can also generate a static poster image for the video.
@@ -103,9 +101,15 @@ Use the `media_base_path` paramter in the `labels` sheet of the spreadsheet to s
 
 -----
 
+## Sources/credits
 
-Future development
--------------------------
+The sample video included with this template comes from an "[Earth from Space](https://images.nasa.gov/details/jsc2022m000172_Earth_in_4K_Expedition_65_Edition)" video produced by NASA.
+
+Video player icons: [Google Material Design icon library](https://fonts.google.com/icons?selected=Material+Icons&icon.category=av&icon.style=Filled)
+
+-----
+
+## Future development
+
 * Use interaction observer to only autoplay the video when it's visible onscreen?
-* Show play/pause button on mouse hover
 * Accessibility test
