@@ -40,7 +40,7 @@ var d3 = {
     if (isMobile.matches) {
       barHeight = 45;
       barOffset = 5;
-      labelMargin = 20;
+      labelMargin = 10;
       labelWidth = 0;
       margins['left'] = (labelWidth + labelMargin);
     }
