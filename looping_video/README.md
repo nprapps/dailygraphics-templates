@@ -105,7 +105,7 @@ Use the `media_base_path` paramter in the `labels` sheet of the spreadsheet to s
 
 The sample video included with this template comes from an "[Earth from Space](https://images.nasa.gov/details/jsc2022m000172_Earth_in_4K_Expedition_65_Edition)" video produced by NASA.
 
-Video player icons: [Google Material Design icon library](https://fonts.google.com/icons?selected=Material+Icons&icon.category=av&icon.style=Filled)
+Video player icons come in part from the [Google Material Design icon library](https://fonts.google.com/icons?selected=Material+Icons&icon.category=av&icon.style=Filled)
 
 -----
 

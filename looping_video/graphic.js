@@ -7,7 +7,6 @@ var { isMobile, isDesktop } = require("./lib/breakpoints");
 var videoElement = null;
 var btnPause = document.querySelector('button.pause');
 var progressElement = document.querySelector(".progress");
-var progressInterval = null;
 
 // check if this user has set "prefers reduced motion" in their browser
 // https://since1979.dev/respecting-prefers-reduced-motion-with-javascript-and-react/
@@ -15,11 +14,12 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 pym.then(child => {
   videoElement = document.querySelector('.player');
+
   if (btnPause) {
     btnPause.addEventListener('click', playPauseVideo);
   }
   if (progressElement) {
-    progressInterval = setInterval(progressLoop);
+    videoElement.addEventListener('timeupdate', progressLoop);
   }
 
   var videoSource = VIDEO_SOURCE;
@@ -52,11 +52,9 @@ var playPauseVideo = function(evt) {
   }
 }
 
-var progressLoop = function() {
+var progressLoop = function(evt) {
   if (videoElement.duration) {
-    progressElement.value = Math.round(
-      (videoElement.currentTime / videoElement.duration) * 100
-    );
+    progressElement.value = (videoElement.currentTime / videoElement.duration) * 100;
     // progressElement.innerHTML = Math.round(video.currentTime) + " seconds";
   }
 }
