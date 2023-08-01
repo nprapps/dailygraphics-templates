@@ -7,7 +7,7 @@ var d3 = {
 var { makeTranslate, classify, formatStyle } = require("./lib/helpers");
 var { isMobile } = require("./lib/breakpoints");
 
-// Render a bar chart.
+// Render a multi-dot chart.
 module.exports = function (config) {
   // Setup
 
@@ -222,20 +222,7 @@ module.exports = function (config) {
   dotValues.selectAll('text')
     .data(d => config.data.map(o => o[d]))
     .enter().append('text')
-    .attr('x', function (d, i) {
-      if (d == 80) {
-        return xScale(d) - 5;
-      }
-
-      if (d == 92) {
-        return xScale(d) + 10;
-      }
-
-      if (d == 72) {
-        return xScale(d) - 10;
-      }
-      return xScale(d);
-    })
+    .attr('x', d => xScale(d))
     .attr('y', function (d, i) {
       var offset = 20;
       var yPos = i * (barHeight + barGap) + (barHeight / 2) + barOffset;
@@ -245,6 +232,7 @@ module.exports = function (config) {
       return d + '%';
     });
 
+  // shift "overall" label above the bar
   chartElement.selectAll('.value .overall text')
     .attr('dy', -35)
     .text(function () {
@@ -253,7 +241,7 @@ module.exports = function (config) {
     });
 
   // adjust label placement for some questions
-  // if (isMobile) {
+  // if (isMobile.matches) {
   //   if (config['idx'] == 0) {
   //     chartElement.select('.value .democrats text')
   //       .attr('dx', 17);

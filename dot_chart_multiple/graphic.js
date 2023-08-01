@@ -4,7 +4,7 @@ require("./lib/webfonts");
 
 // Global vars
 var pymChild = null;
-var renderDotChart = require("./renderDotChart");
+var renderDotChartMultiple = require("./renderDotChartMultiple");
 
 // Initialize the graphic.
 var onWindowLoaded = function () {
@@ -24,7 +24,7 @@ var onWindowLoaded = function () {
 // Render the graphic(s). Called by pym with the container width.
 var render = function (data) {
   // Render the chart!
-  var container = "#dot-chart";
+  var container = "#dot-chart-multiple";
   var element = document.querySelector(container);
   element.innerHTML = "";
   var width = element.offsetWidth;
@@ -37,7 +37,7 @@ var render = function (data) {
       element.appendChild(chartDiv);
 
       // Render the chart!
-      renderDotChart({
+      renderDotChartMultiple({
         container: container + ' .chart-' + i,
         width,
         data: [data[i]],
@@ -49,7 +49,7 @@ var render = function (data) {
     }
   } else {
     // Render the chart!
-    renderDotChart({
+    renderDotChartMultiple({
       container,
       width,
       data,
