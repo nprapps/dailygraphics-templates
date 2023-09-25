@@ -57,6 +57,3 @@ For this project, images are synced to S3 rather than stored in the repo. Run th
 ```
 node cli sync $PROJECT_SLUG
 ```
-### Further development
-
-* Bash script to create separate pages?
