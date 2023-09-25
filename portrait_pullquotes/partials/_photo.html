@@ -1,4 +1,10 @@
-<% COPY.data.forEach(function(portrait, i) { %>
+<% 
+  console.log("Take the following array and paste it into the keyList variable in generator/app.js")
+  console.log(COPY.data.map(d => {
+    return {"key":d.key};
+  }))
+
+  COPY.data.forEach(function(portrait, i) { %>
 <div class="portrait-block <%= portrait.layout || "" %>">
   <% if (i == 0 && COPY.data.length > 1) { %>
     <hr>

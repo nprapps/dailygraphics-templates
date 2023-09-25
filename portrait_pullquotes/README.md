@@ -26,11 +26,17 @@ Key files:
 
 ### Creating standalone pages for each photo
 
-For each page you want to create, duplicate `tmpl-photo.html`.
+First, get the list of keys you will use to generate all files. 
+1. Ensure that your data is added to your google sheet, and that the `key` field contains a unique key for each row.
+1. Load `index.html` in the browser. Navigate to your dg-next log and copy the array you see there.
+1. Paste this array into the `keyList` variable at the top of `app.js`.
 
-Name it using the `key` for that image in the spreadsheet.
-
-Then, on line 15, where the `data` object is defined, change the last parameter in `COPY.data.nipper` to the spreadsheet `key` value for this row.
+Next run `app.js` to generate individual .html files and copy over to root.
+1. Make sure you have your node modules up to date by running `npm i` in your `graphics-js` directory.
+1. Navigate to the `generator` directory and run `node app.js` in terminal
+1. If should create files in the `generated` subdirectory. 
+1. Copy all files inside `generated` to the root of the graphic (next to index.html). 
+1. Check that they look correct. 
 
 ### Optimizing images
 

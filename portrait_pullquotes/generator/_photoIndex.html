@@ -1,6 +1,6 @@
 <%= await t.include("lib/_head.html") %>
 
-<%= await t.include("partials/_photo.html", { COPY: { ...COPY, data: [ COPY.data.nipper ]}}) %>
+<%= await t.include("partials/_photo.html", { COPY: { ...COPY, data: [ COPY.data["%%key%%"] ]}}) %>
 
 <script src="./graphic.js"></script>
 
