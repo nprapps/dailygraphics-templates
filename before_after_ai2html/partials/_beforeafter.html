@@ -1,0 +1,29 @@
+<div class="beforeafter">
+
+  <% if (COPY.data[0].headline) { %>
+  <h4><%= t.smarty(COPY.data[0].headline) %></h4>
+  <% } %>
+
+  <div class="top-wrapper">
+      <div class="image-toggle">
+          <button id="toggle-<%= COPY.data[0].key %>-1" class="toggle-btn active">
+              <span class="btn-hed"><%= COPY.data[0].label_hed1 %></span>
+              <span class="btn-dek"><%= COPY.data[0].label_dek1 %></span>
+          </button>
+          <button id="toggle-<%= COPY.data[0].key %>-2" class="toggle-btn">
+              <span class="btn-hed"><%= COPY.data[0].label_hed2 %></span>
+              <span class="btn-dek"><%= COPY.data[0].label_dek2 %></span>
+          </button>
+      </div>
+  </div>
+  <div class="img-wrapper">
+    <%= await t.include("../_ai2html-map.html") %>
+  </div>
+
+  <% if (COPY.data[0].credit) { %>
+  <div class="footer">
+    <p>Source: <%= COPY.data[0].credit %></p>
+  </div>
+  <% } %>
+
+</div>
