@@ -106,7 +106,6 @@ var initUI = function() {
           //only start animation once
           if(hasStarted) return;
 
-          console.log('here!~~!~')
           autoToggle();
           hasStarted = true;
         }
