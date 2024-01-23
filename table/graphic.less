@@ -1,12 +1,13 @@
 @import "./lib/base";
 
+#table-graphic { margin-bottom: 22px; }
+
 // Base table styles
 table {
   border-collapse: collapse;
   padding: 0;
   width: 100%;
-  font-size: 12px;
-  color: #666;
+  font-size: 13px;
 
   tr.shadedrow {
     background-color: #f1f1f1;
@@ -19,6 +20,7 @@ table {
     line-height: 1.2;
     text-align: left;
     vertical-align: bottom;
+    color: #333;
   }
 
   td { vertical-align: top; }
@@ -128,7 +130,7 @@ table {
     tr td:first-child {
       .sans-header();
       color: #333;
-      font-size: 14px;
+      font-size: 15px;
       margin-bottom: 6px;
 
       &:before {
