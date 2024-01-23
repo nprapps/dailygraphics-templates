@@ -40,54 +40,79 @@
 @blue6      : #D3EAF7;
 
 // Fonts
-@lato: 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-@sourceSansPro: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-@gotham: @lato;
-@knockout: @sourceSansPro;
-@sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-@serif: Georgia, "Times New Roman", Times, serif;
+@sans: 'NPRSans', @sans-base;
+@serif: 'NPRSerif', @serif-base;
+@condensed: 'Source Sans Pro', @sans-base;
 
-.lato() {
-  font-family: @lato;
+@sans-base: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@serif-base: Georgia, "Times New Roman", Times, serif;
+
+.sans() {
+  font-family: @sans;
   font-weight: normal;
-  letter-spacing: 0.025em;
-}
-.gotham() {
-  .lato();
+  letter-spacing: 0.01em;
 }
 
+.serif() {
+  font-family: @serif;
+  font-weight: normal;
+  font-kerning: normal;
+  letter-spacing: 0.02em;
+}
 
-// Normal Knockout
-.sourceSansPro() {
-  font-family: @sourceSansPro;
+.condensed() {
+  font-family: @condensed;
   font-weight: 600;
   letter-spacing: 0.01em;
 }
-.knockout() {
-  .sourceSansPro();
-}
 
-// Knockout, uppercased
-.sourceSansPro-upper() {
-  .sourceSansPro();
+// small headings
+.sans-header() {
+  .sans();
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
 }
-.knockout-upper() {
-  .sourceSansPro-upper();
-}
-
-// Knockout for headings
-.sourceSansPro-header() {
-  .sourceSansPro-upper();
+.condensed-header() {
+  .condensed();
+  text-transform: uppercase;
   letter-spacing: 0.05em;
   -webkit-font-smoothing: antialiased;
 }
-.knockout-header() {
-  .sourceSansPro-header();
-}
 
+// shims for old fonts
+@lato: @sans;
+@sourceSansPro: @sans;
+@gotham: @sans;
+@knockout: @sans;
+
+.gotham() {
+  .sans();
+}
+.lato() {
+  .sans();
+}
+.knockout() {
+  .sans();
+}
+.sourceSansPro() {
+  .sans();
+}
+.sourceSansPro-header() {
+  .sans-header();
+}
+.sourceSansPro-upper() {
+  .sans-header();
+}
+.knockout-upper() {
+  .sans-header();
+}
+.knockout-header() {
+  .sans-header();
+}
 .sans-serif() {
-  font-family: @sans;
+  .sans();
 }
 
 // Mixins
