@@ -119,11 +119,6 @@ h2 {
     max-width: 100%;
     display: block;
 
-    // @media screen and (max-width: 500px) {
-    //     max-width: 130%;
-    //     margin-left: -15%;
-    // }
-
     &.image-1 {
       position: absolute;
       top: 0;
@@ -201,18 +196,13 @@ h2 {
 
 // ai2html artboard sizes
 @media screen and (min-width: 500px) {
-    #g-_ai2html-map-small-before, #g-_ai2html-map-medium-before { display: none; }
-    #g-_ai2html-map-small-after, #g-_ai2html-map-medium-after { display: none; }
+    #g-_ai2html-map-small-before { display: none; }
+    #g-_ai2html-map-small-after { display: none; }
 }
 
-// @media screen and (max-width: 729px) and (min-width: 500px) {
-//     #g-_ai2html-map-small-before, #g-_ai2html-map-wide-before { display: none; }
-//     #g-_ai2html-map-small-after, #g-_ai2html-map-wide-after { display: none; }
-// }
-
 @media screen and (max-width: 499px) {
-    #g-_ai2html-map-medium-before, #g-_ai2html-map-wide-before { display: none; }
-    #g-_ai2html-map-medium-after, #g-_ai2html-map-wide-after { display: none; }
+    #g-_ai2html-map-wide-before { display: none; }
+    #g-_ai2html-map-wide-after { display: none; }
 }
 
 #g-_ai2html-map-box .g-artboard {
@@ -225,65 +215,19 @@ h2 {
   }
 }
 
-#g-_ai2html-map-small-after, #g-_ai2html-map-medium-after, #g-_ai2html-map-wide-after {
+// Make the "after" sit below the "before"
+#g-_ai2html-map-small-after, #g-_ai2html-map-wide-after {
     position: absolute !important;
     top: 0;
     left: 0;  
     z-index: -10;
-  }
-
-// held territory style
-#g-_ai2html-map-small-after .g-pstyle0, #g-_ai2html-map-wide-after .g-pstyle0 {
-  text-shadow: 0px 0px 10px #000;
-}
-
-#g-_ai2html-map-box .g-aiPointText p, #g-_ai2html-map-small-before .g-pstyle1 {
-  font-weight: 400;
-}
-
-// water style
-#g-_ai2html-map-wide-before .g-pstyle0, #g-_ai2html-map-wide-after .g-pstyle1, #g-_ai2html-map-small-before p.g-pstyle0, #g-_ai2html-map-small-after .g-pstyle1 {
-      font-family: 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-   // text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;  
-   text-shadow: 0px 0px 10px #000;
-   color: #fff !important;
-   // letter-spacing: 3px;
 }
 
 .g-artboard {
   min-width: unset !important;
 }
 
-@media screen and (max-width: 950px) {
-  // #g-_ai2html-map-wide-after .g-pstyle1
-  #g-_ai2html-map-wide-before .g-pstyle0, #g-_ai2html-map-wide-after .g-pstyle1, #g-_ai2html-map-small-before p.g-pstyle0, #g-_ai2html-map-small-after .g-pstyle1 {
-    font-size: 14px;
-    line-height: 16px !important;
-  }
-
-  #g-_ai2html-map-box .g-aiPointText p {
-    font-size: 13px;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  #g-_ai2html-map-wide-after .g-pstyle0 {
-    font-size: 16px;    
-  }
-}
-
-// @media screen and (min-width: 1000px) {
-//   #g-_ai2html-map-wide-before .g-pstyle0, #g-_ai2html-map-wide-after .g-pstyle1, #g-_ai2html-map-small-before p.g-pstyle0, #g-_ai2html-map-small-after .g-pstyle1 {
-//     font-size: 14px;
-//     // line-height: 16px;
-//   }
-
-//   #g-_ai2html-map-box .g-aiPointText p {
-//     font-size: 13px;
-//   }
-// }
-
-
+// Optional "insta" class for body to create a looping vid for insta
 body.insta {
   #g-_ai2html-map-box {
     // padding-bottom: 100%;
