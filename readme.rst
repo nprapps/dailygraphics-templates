@@ -47,6 +47,16 @@ Setting up local depencies for a template is a relatively short process:
 
 That's it! Once the template is updated to the newest version of the library, you can delete the ``node_modules`` folder--graphics created with it will still have their own copies, and will continue to work.
 
+A note on fonts (for NPR users)
+-------------------------------
+
+These templates reference the NPR-owned custom fonts NPR Sans and NPR Serif.
+
+By default, for most templates, only NPR Sans is loaded in. (The ai2html templates are exceptions to this rule.) If your project would benefit from use of NPR Serif, you can un-comment the lines calling for it in ``lib/webfonts.js``.
+
+More: `Additional font options <https://apps.npr.org/dailygraphics/graphics/fonts/>`_ 
+
+
 Migrating from the original dailygraphics rig
 ---------------------------------------------
 

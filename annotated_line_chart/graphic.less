@@ -9,32 +9,29 @@
 .value text {
   font-size: 12px;
   font-weight: bold;
-  fill: #999;
+  fill: #636363;
 }
 
-.annotations .dots {
+.annotations {
+  .dots {
     stroke: #fff;
     stroke-width: 1px;
-}
-
-.annotations text {
+  }
+  text {
     font-size: 12px;
-    fill: #999;
+    fill: #636363;
+  }
 }
 
-
-@media screen and (max-width: 500px) {
-  .value text {
-    font-size: 10px;
-  }
+@media @screen-mobile {
+  .value text,
   .annotations text { 
-    font-size: 10px; 
+    font-size: 11px; 
   }
 }
 
-@media screen and (min-width: 500px) {
+@media @screen-mobile-above {
   .key {
     display: none;
   }
 }
-

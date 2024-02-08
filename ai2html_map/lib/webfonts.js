@@ -6,11 +6,11 @@ script.onload = function () {
   WebFont.load({
     custom: {
       families: [
-        // 'NPRSerif:n4,n7,i4,i7',
+        'NPRSerif:n4,n7,i4,i7',
         'NPRSans:n4,n9,i4,i9'
       ],
       urls: [
-        // 'https://s.npr.org/templates/css/fonts/NPRSerif.css',
+        'https://s.npr.org/templates/css/fonts/NPRSerif.css',
         'https://s.npr.org/templates/css/fonts/NPRSans.css'
       ]
     },
