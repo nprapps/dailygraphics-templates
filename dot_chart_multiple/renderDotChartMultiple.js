@@ -224,7 +224,7 @@ module.exports = function (config) {
     .enter().append('text')
     .attr('x', d => xScale(d))
     .attr('y', function (d, i) {
-      var offset = 20;
+      var offset = 22;
       var yPos = i * (barHeight + barGap) + (barHeight / 2) + barOffset;
       return yPos + offset;
     })
@@ -234,7 +234,7 @@ module.exports = function (config) {
 
   // shift "overall" label above the bar
   chartElement.selectAll('.value .overall text')
-    .attr('dy', -35)
+    .attr('dy', -40)
     .text(function () {
       var thisText = d3.select(this).text();
       return 'Overall: ' + thisText;

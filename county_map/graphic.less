@@ -1,13 +1,18 @@
 @import "./lib/base";
 
+h1, h2 {
+  .mmedia-constrained-centered();
+}
+
+
 .is-hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .is-hidden-desktop {
-    @media @screen-mobile-above {
-        display: none !important;
-    } 
+  @media @screen-mobile-above {
+    display: none !important;
+  } 
 }
 
 /*=============*/
@@ -15,13 +20,13 @@
 /*=============*/
 
 #county-map {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 
-    .district.highlight {
-        stroke: #000;
-        stroke-width: 2px;
-        cursor: pointer;
-    }
+  .district.highlight {
+    stroke: #000;
+    stroke-width: 2px;
+    cursor: pointer;
+  }
 }
 
 
@@ -30,62 +35,62 @@
 /*=============*/
 
 .key-wrapper {
-    .legend-header {
-        margin-bottom: 20px;
-    }
+  .legend-header {
+    margin-bottom: 20px;
+  }
 }
 
 @media @screen-mobile {
-    .key {
-        .key-item {
-            width: 35px;
-            .end-label {
-                right: -50% !important;
-                left: auto !important;
-            }
-        }
+  .key {
+    .key-item {
+      width: 35px;
+      .end-label {
+        right: -50% !important;
+        left: auto !important;
+      }
     }
+  }
 }
 
 // Numeric scale style
 .key-wrapper.numeric-scale {
-    width: 100%;
-    text-align: center;
-    .legend-header {
-        margin-bottom: 15px;
+  width: 100%;
+  text-align: center;
+  .legend-header {
+    margin-bottom: 15px;
+  }
+
+  .key {
+    .key-item {
+      margin: 0 1px 0 0;
+      position: relative;
+      &.separate {
+        margin-right: 40px;
+        label {
+          width: 80px;
+          left: calc(50% - 40px);
+          white-space: normal;
+        }
+      }
     }
 
-    .key {
-        .key-item {
-            margin: 0 1px 0 0;
-            position: relative;
-            &.separate {
-                margin-right: 40px;
-                label {
-                    width: 80px;
-                    left: calc(50% - 40px);
-                    white-space: normal;
-                }
-            }
-        }
-
-        .key-item b {
-            width: 45px;
-            height: 10px;
-            margin-right: 0;
-        }
-
-        .key-item label {
-            position: absolute;
-            top: 15px;
-            left: -15%;
-
-            &.end-label {
-                left: auto;
-                right: -25%;
-            }
-        }
+    .key-item b {
+      width: 45px;
+      height: 10px;
+      margin-right: 0;
     }
+
+    .key-item label {
+      position: absolute;
+      top: 15px;
+      left: -15%;
+
+      &.end-label {
+        left: auto;
+        right: -25%;
+      }
+    }
+  }
 }
 
 /*=============*/
@@ -93,19 +98,19 @@
 /*=============*/
 
 #tooltip {
-    padding: 5px;
-    border: 1px solid #999;
-    max-width: 270px;
-    position: absolute;
-    z-index: 10;
-    font-size: 12px;
+  padding: 5px;
+  border: 1px solid #999;
+  max-width: 270px;
+  position: absolute;
+  z-index: 10;
+  font-size: 12px;
 
-    .main {
-        font-weight: bold;
-    }
-    .secondary {
-        font-style: normal;
-    }
+  .main {
+    font-weight: bold;
+  }
+  .secondary {
+    font-style: normal;
+  }
 }
 
 /*=============*/
@@ -113,105 +118,107 @@
 /*=============*/
 
 .search-wrapper {
-    width: 100%;
-    align-content: center;
-    margin: 15px auto;
+  width: 100%;
+  align-content: center;
+  margin: 15px auto;
+  text-align: center;
+  background-color: #eee;
+  padding: 5px;
+
+  .search-header {
+    .sans-header();
+    margin: 0 0 10px 0;
+    padding-top: 0;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+    font-size: 12px;
+    color: #333;
+
+    b {
+      font-weight: 900;
+    }
+  }
+
+  .search {
+    width: 300px;
+    display: block;
+    margin: 10px auto 20px auto;
+  }
+
+  input[type="text"] {
+    height: 30px;
+    width: 200px;
+  }
+
+  .no-data-msg {
+    .sans();
     text-align: center;
-    background-color: #eee;
-    padding: 5px;
-
-    .search-header {
-        margin: 0 0 10px 0;
-        .knockout-header();
-        padding-top: 0;
-        line-height: 1.2;
-        letter-spacing: 0.05em;
-        -webkit-font-smoothing: antialiased;
-        font-size: 12px;
-        color: #333;
-    }
-
-    .search {
-        width: 300px;
-        display: block;
-        margin: 10px auto 20px auto;
-    }
-
-    input[type="text"] {
-        height: 30px;
-        width: 200px;
-    }
-
-    .no-data-msg {
-        .knockout();
-        text-align: center;
-        padding: 20px 5px 0px 5px;
-    }
+    padding: 20px 5px 0px 5px;
+  }
 }
 
 table {
-    &.amt { text-align: right; }
-    border-collapse: collapse;
-    padding: 0;
-    width: 100%;
-    font-size: 12px;
-    color: #666;
+  &.amt { text-align: right; }
+  border-collapse: collapse;
+  padding: 0;
+  width: 100%;
+  font-size: 12px;
+  color: #666;
 
-    tr.shadedrow {
-        background-color: #f1f1f1;
-        color: #333;
-        font-weight: bold;
-    }
+  tr.shadedrow {
+    background-color: #f1f1f1;
+    color: #333;
+    font-weight: bold;
+  }
 
-    th {
-        .knockout-header();
-        line-height: 1.2;
-        text-align: left;
-        vertical-align: bottom;
-        border-bottom: 2px solid #eee;
-        padding-top: 0;
-    }
+  th {
+    .sans-header();
+    line-height: 1.2;
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: 2px solid #eee;
+    padding-top: 0;
+  }
 
-    th, td {
-        padding: 2.5px 4px;
-    }
+  th, td {
+    padding: 2.5px 4px;
+  }
 
-    td {
-        border-bottom: 1px solid #eee;
-        vertical-align: top;
-        word-wrap: break-word;
-    }
+  td {
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    word-wrap: break-word;
+  }
 }
 
 // mobile table stacks
 @media @screen-mobile {
-    table, tbody, th, td, tr {
-        display: block;
+  table, tbody, th, td, tr {
+    display: block;
+  }
+
+  table {
+    thead {
+      .sr-only();
     }
 
-    table {
-        thead {
-            .sr-only();
-        }
-
-        td {
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        tr {
-            margin-bottom: 10px;
-        }
-
-        .inline-header {
-            display: inline;
-            font-weight: normal;
-
-            &::after {
-                content: ":";
-            }
-        }
+    td {
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
     }
+
+    tr {
+      margin-bottom: 10px;
+    }
+
+    .inline-header {
+      display: inline;
+      font-weight: normal;
+
+      &::after {
+        content: ":";
+      }
+    }
+  }
 }
-  
