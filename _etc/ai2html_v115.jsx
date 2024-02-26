@@ -145,17 +145,26 @@ var defaultSettings = {
   	{"aifont":"Georgia-Italic","family":"georgia,'times new roman',times,serif","weight":"normal","style":"italic"},
   	{"aifont":"Georgia-BoldItalic","family":"georgia,'times new roman',times,serif","weight":"bold","style":"italic"},
 
-  	{"aifont":"Gotham-Book","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":""},
-  	{"aifont":"Gotham-BookItalic","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":"italic"},
-  	{"aifont":"Gotham-Bold","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":""},
-  	{"aifont":"Gotham-BoldItalic","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":"italic"},
-  	{"aifont":"Knockout-31JuniorMiddlewt","family":"'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"600","style":""},
+  	// {"aifont":"Gotham-Book","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":""},
+  	// {"aifont":"Gotham-BookItalic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":"italic"},
+  	// {"aifont":"Gotham-Bold","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":""},
+  	// {"aifont":"Gotham-BoldItalic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":"italic"},
+  	// {"aifont":"Knockout-31JuniorMiddlewt","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"600","style":""},
 
-    {"aifont":"Lato-Regular","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":""},
-  	{"aifont":"Lato-Italic","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":"italic"},
-  	{"aifont":"Lato-Black","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":""},
-  	{"aifont":"Lato-BlackItalic","family":"'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":"italic"},
-  	{"aifont":"SourceSansPro-SemiBold","family":"'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"600","style":""}
+    // {"aifont":"Lato-Regular","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":""},
+  	// {"aifont":"Lato-Italic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":"italic"},
+  	// {"aifont":"Lato-Black","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":""},
+  	// {"aifont":"Lato-BlackItalic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":"italic"},
+  	// {"aifont":"SourceSansPro-SemiBold","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"600","style":""},
+
+    {"aifont":"NPRSans-Regular","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":""},
+  	{"aifont":"NPRSans-Italic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"400","style":"italic"},
+  	{"aifont":"NPRSans-Bold","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":""},
+  	{"aifont":"NPRSans-BoldItalic","family":"'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif","weight":"900","style":"italic"},
+  	{"aifont":"NPRSerif-Regular","family":"'NPRSerif', georgia,'times new roman',times,serif","weight":"normal","style":""},
+  	{"aifont":"NPRSerifRoman-Bold","family":"'NPRSerif', georgia,'times new roman',times,serif","weight":"bold","style":""},
+  	{"aifont":"NPRSerif-Italic","family":"'NPRSerif', georgia,'times new roman',times,serif","weight":"normal","style":"italic"},
+  	{"aifont":"NPRSerifItalic-Bold","family":"'NPRSerif', georgia,'times new roman',times,serif","weight":"bold","style":"italic"}
   ],
 
   // Width ranges for responsive breakpoints (obsolete, will be removed)

@@ -2,8 +2,12 @@
 
 .bar text {
   fill: #fff;
-  font-size: 11px;
   text-anchor: middle;
+  font-size: 11px;
+
+  @media @screen-mobile-above {
+    font-size: 12px;
+  }
 
   &.hidden {
     display: none;
@@ -16,6 +20,7 @@
       font-weight: bold;
       fill: #454545;
       text-anchor: middle;
+      font-size: 12px;
     }
   }
 
@@ -24,14 +29,5 @@
     path {
       display: none;
     }
-  }
-}
-
-/*
- * small-screen styles
- */
-@media @screen-mobile {
-  .bar text {
-    font-size: 10px;
   }
 }
