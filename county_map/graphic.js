@@ -189,11 +189,11 @@ var render = function (data) {
 
 var renderCountyMap = function (config) {
   let mainProperty = config.valueColumn;
-  var aspectWidth = isMobile.matches ? 4 : 16;
-  var aspectHeight = isMobile.matches ? 2.6 : 10;
+  var aspectWidth = 8;
+  var aspectHeight = 5;
 
   var margins = {
-    top: 30,
+    top: 0,
     right: 0,
     bottom: 0,
     left: 0,
@@ -204,15 +204,19 @@ var renderCountyMap = function (config) {
   var width = containerElement.node().offsetWidth;
   containerElement.html("");
 
-  // Calculate actual chart dimensions
-  var chartWidth = width - margins.left - margins.right;
-  var chartHeight = Math.ceil((width * aspectHeight) / aspectWidth) - margins.top - margins.bottom;
+  // Calculate map dimensions (excluding margins)
+  var mapWidth = width - margins.left - margins.right;
+  var mapHeight = Math.ceil((mapWidth * aspectHeight) / aspectWidth);
+
+  // Calculate svg dimensions (including margins)
+  var graphicWidth = width;
+  var graphicHeight = mapHeight + margins.top + margins.bottom;
 
   // Create param functions like projection, scales, etc.
-  var scaleIncrease = isMobile.matches ? 135 : 155;
+  var scaleIncrease = 1.35;
   var projection = geoAlbersUsaPr()
-    .translate([chartWidth / 2, chartHeight / 2.5]) // Translate to center of screen
-    .scale(width + scaleIncrease); // Scale things down so we can see the whole thing
+    .translate([mapWidth / 2, mapHeight / 2]) // Translate to center of screen
+    .scale(mapWidth * scaleIncrease); // Scale things down so we can see the whole thing
 
   var path = d3.geoPath().projection(projection);
 
@@ -229,9 +233,13 @@ var renderCountyMap = function (config) {
 
   var chartElement = chartWrapper
     .append("svg")
-    .attr("width", chartWidth + margins.left + margins.right)
-    .attr("height", chartHeight + margins.top + margins.bottom)
+    .attr("width", graphicWidth)
+    .attr("height", graphicHeight);
+
+  var mapElement = chartElement
     .append("g")
+    .attr("width", mapWidth)
+    .attr("height", mapHeight)
     .attr("transform", `translate(${margins.left},${margins.top})`);
 
   // Legend
@@ -306,7 +314,7 @@ var renderCountyMap = function (config) {
     var tooltipEl = tooltip.node();
     var tooltipWidth = tooltipEl.getBoundingClientRect().width;
     var offset = x + 10;
-    if (offset >= chartWidth - maxTooltipWidth) {
+    if (offset >= graphicWidth - maxTooltipWidth) {
       offset = x - 10 - tooltipWidth;
     }
     tooltip.style("left", offset + "px");
@@ -316,7 +324,7 @@ var renderCountyMap = function (config) {
   }
 
   // Render Map!
-  chartElement
+  mapElement
     .selectAll(".district")
     .data(config.data.counties.features)
     .enter()
@@ -399,7 +407,7 @@ var renderCountyMap = function (config) {
     ;
 
   // Add state outlines
-  chartElement
+  mapElement
     .selectAll(".states")
     .data(config.data.states.features)
     .enter()
