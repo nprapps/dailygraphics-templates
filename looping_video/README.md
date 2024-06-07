@@ -112,4 +112,4 @@ Video player icons come in part from the [Google Material Design icon library](h
 ## Future development
 
 * Use interaction observer to only autoplay the video when it's visible onscreen?
-* Accessibility test
+* Check if user's environment prefers reduced motion
