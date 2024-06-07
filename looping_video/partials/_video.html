@@ -41,19 +41,15 @@
     <% } %>
   </div>
 
-  <div class="caption">
-      <% if (promo.caption) { %>
-        <p><%= promo.caption %><% if (showControls) { %> <em>(<%= togglePrompt %>)</em><% } %></p>
-      <% } %>
-      <% if (promo.credit) { %>
-        <p class="credit">
-          Credit: <%= promo.credit %>
-          <% if (showControls && !promo.caption) { %>
-            (<%= togglePrompt %>)
-          <% } %>
-        </p>
-      <% } %>
-  </div>
+  <% if (promo.caption) { %>
+    <p class="caption">
+      <%= promo.caption %>
+      <% if (showControls) { %> <em>(<%= togglePrompt %>)</em><% } %>
+    </p>
+  <% } %>
+  <% if (promo.credit) { %>
+    <p class="credit"><%= promo.credit %></p>
+  <% } %>
 
   <script type="text/javascript">
     var VIDEO_SOURCE = "<%= promo.video_url %>";
