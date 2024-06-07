@@ -11,7 +11,11 @@
     }
   %>
 
-  <div id="video" class="video-wrapper <%= promo.key %>">
+  <div id="video" class="video-wrapper <%= promo.key %>" role="img" 
+    <% if (promo.screenreader) { %>
+      aria-label="<%= promo.screenreader %>"
+    <% } %>
+  >
     <% if (mode == "hp" && promo.link) { %>
       <a href="<%= promo.link %>">
     <% } %>
