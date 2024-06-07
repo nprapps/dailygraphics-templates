@@ -1,0 +1,17 @@
+{
+  "templateSheet": "10qAppvpDsqg1lWgILZEYz3HMCg2o4I3az4voUe6_EqY",
+  "fallbackPage": "video.html",
+  "files": [
+    "*.html",
+    "!_*.html",
+    "graphic.js",
+    "graphic.less",
+    "*.png",
+    "*.jpg",
+    "*.gif",
+    "*.json",
+    "!manifest.json",
+    "*.geojson",
+    "*.csv"
+  ]
+}
