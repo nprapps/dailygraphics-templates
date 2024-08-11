@@ -16,42 +16,47 @@ var ANALYTICS = (function () {
     var DIMENSION_PARENT_INITIAL_WIDTH = 'dimension3';
 
     var setupGoogle = function() {
+        var gtagID = window.GOOGLE_ANALYTICS_ID;
+
         // Bail early if opted out of Performance and Analytics consent groups
         if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
 
-        (function(i,s,o,g,r,a,m) {
-            i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        var script = document.createElement("script");
 
-        ga('create', window.GOOGLE_ANALYTICS_ID, 'auto');
+        script.src = "https://www.googletagmanager.com/gtag/js?id=" + gtagID;
+
+        script.async = true;
+
+        var script_embed = document.createElement("script");
+
+        script_embed.innerHTML =
+            "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '" +
+            gtagID +
+            "', { 'send_page_view': false });";
+        document.head.append(script, script_embed);
 
         // By default Google tracks the query string, but we want to ignore it.
-        var location = window.location.protocol +
-            '//' + window.location.hostname +
-            window.location.pathname;
-
-        ga('set', 'location', location);
-        ga('set', 'page', window.location.pathname);
+        var here = new URL(window.location);
 
         // Custom dimensions & metrics
-        var parentUrl = getParameterByName('parentUrl') || '';
-        var parentHostname = '';
+        var parentUrl = here.searchParams.has("parentUrl")
+        ? new URL(here.searchParams.get("parentUrl"))
+        : "";
+        var parentHostname = "";
 
         if (parentUrl) {
-            parentHostname = urlToLocation(parentUrl).hostname;
+        parentHostname = parentUrl.hostname;
         }
 
-        var initialWidth = getParameterByName('initialWidth') || '';
+        var initialWidth = here.searchParams.get("initialWidth") || "";
 
         var customData = {};
-        customData[DIMENSION_PARENT_URL] = parentUrl;
-        customData[DIMENSION_PARENT_HOSTNAME] = parentHostname;
-        customData[DIMENSION_PARENT_INITIAL_WIDTH] = initialWidth;
+        customData["dimension1"] = parentUrl;
+        customData["dimension2"] = parentHostname;
+        customData["dimension3"] = initialWidth;
 
         // Track pageview
-        ga('send', 'pageview', customData);
+        gtag("event", "page_view", customData);
         googleAnalyticsAlreadyInitialized = true;
      }
 
@@ -63,7 +68,6 @@ var ANALYTICS = (function () {
         if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
 
         var eventData = {
-            'hitType': 'event',
             'eventCategory': document.title,
             'eventAction': eventName
         }
@@ -84,8 +88,8 @@ var ANALYTICS = (function () {
         }
         eventData[DIMENSION_PARENT_URL] = parentUrl;
         eventData[DIMENSION_PARENT_HOSTNAME] = parentHostname;
-
-        ga('send', eventData);
+        
+        gtag('event', "dailygraphics", eventData);
     }
 
     setupGoogle();
