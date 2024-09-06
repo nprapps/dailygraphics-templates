@@ -42,15 +42,12 @@ var initUI = function() {
         splitId = button.getAttribute('id').split('-');
 
         // select before image by its unique id
-        // var beforeImages = wrapper.querySelector('#image-' + splitId[1] + '-1');
         var beforeImages = wrapper.querySelectorAll('[id$="before"]');
 
-        if (splitId[2] == '1') {
+        if (splitId[1] == '1') {          
           beforeImages.forEach(el => el.classList.remove('hidden'))
-          // beforeImage.classList.remove('hidden');
         } else {
           beforeImages.forEach(el => el.classList.add('hidden'))
-          // beforeImage.classList.add('hidden');
         }
         
         if (!button.classList.contains('active')) {
@@ -86,8 +83,7 @@ var initUI = function() {
             if (activeToggleBtn) {
                 activeToggleBtn.classList.remove('active');
             }
-            
-            wrapper.querySelector('#toggle-' + splitId[1] + '-' + step).classList.add('active');
+            wrapper.querySelector('#toggle-' + step).classList.add('active');
             
             toggleTimeout = window.setTimeout(toggleStep, 2000, step_i + 1);
           }

@@ -133,10 +133,6 @@ h2 {
   }
 }
 
-.footnotes {
-  display: none;
-}
-
 @media screen and (max-width: 440px) {
   .top-wrapper {
     text-align: center;
@@ -196,16 +192,14 @@ h2 {
 
 // ai2html artboard sizes
 @media screen and (min-width: 500px) {
-    #g-_ai2html-map-small-before { display: none; }
-    #g-_ai2html-map-small-after { display: none; }
+  .ai2html [id$="small-before"],.ai2html [id$="small-after"] { display: none; }
 }
 
 @media screen and (max-width: 499px) {
-    #g-_ai2html-map-wide-before { display: none; }
-    #g-_ai2html-map-wide-after { display: none; }
+  .ai2html [id$="wide-before"],.ai2html [id$="wide-after"] { display: none; }    
 }
 
-#g-_ai2html-map-box .g-artboard {
+.img-wrapper [id$="box"] .g-artboard {
   transition: opacity 500ms ease-out;
   opacity: 1;
   width: 100%;
@@ -216,7 +210,7 @@ h2 {
 }
 
 // Make the "after" sit below the "before"
-#g-_ai2html-map-small-after, #g-_ai2html-map-wide-after {
+.ai2html [id$="after"] {
     position: absolute !important;
     top: 0;
     left: 0;  
@@ -229,7 +223,7 @@ h2 {
 
 // Optional "insta" class for body to create a looping vid for insta
 body.insta {
-  #g-_ai2html-map-box {
+  .img-wrapper [id$="box"] {
     // padding-bottom: 100%;
     // height: 0px;
   }
