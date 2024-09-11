@@ -1,5 +1,71 @@
-ai2html Graphic
-===============
+Before and After Comparison with AI2HTML
+========================
+
+### About this template
+
+This template offers an animated toggle between two ai2html graphics (a "before" and an "after") — often useful for comparing satellite imagery between two time periods.
+
+By default, this template offers the ability to create multiple before and afters in the same graphic slug, as it is common for a single story to have a few such before and after graphics. 
+
+### Creating a new before and after set of graphics
+
+Create an html file, with a name of your choosing. The name of this file will later be the `key` used in the first row of the spreadsheet. For example, if you created a file called `example1.html`, your file should contain the following code:
+
+```
+<% var key = 'example1' %>
+
+<%= await t.include("lib/_head.html") %>
+<%= await t.include("partials/_beforeafter.html", { COPY: { ...COPY, data: [ COPY.data[key] ]}}) %>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>
+```
+
+**NOTE:** The only thing you change from this code is the `example1` in the key variable at top. Change it to whatever your `key` will be in your spreadsheet. 
+
+Next, in the `synced` folder, create your .ai file. This file should be probably be named the same as the `key`, so in our case, `example1.ai`. Create your file, and then run ai2html so that your root directory now also contains your ai2html file. In our example, that is called `_example1.html`. This is also the value of `aiFile` in your spreadsheet. 
+
+Next fill out the spreadsheet. Each row is a different set of before/after ai2html graphics. 
+
+Reminder: There is no "labels" tab in the spreadsheet, because all labels are created in the "data" tab of the spreadsheet in this type of graphic. 
+ 
+-----
+
+### Columns in the spreadsheet
+
+Columns in the spreadsheet:
+* `key` — A unique one-word descriptor for this pair of before and after graphics (such as the location the image). This is used as the unique id for each ai2html embed.
+* `aiFile` - The name of the ai2html output .html file for each before and after set. This is also set in your ai2html settings under `project_name`. 
+* `headline` - A headline for this pair of before and after graphics _(optional)_. This is in lieu of filling in the headline in the `labels` tab, as it doesn't exist.
+* `subhed` - A subhed for this pair of before and after graphics _(optional)_. This is in lieu of filling in the subhed in the `labels` tab, as it doesn't exist.
+* `label_hed1` — The primary label for the first button. When user clicks the button, graphic 1 will be displayed. The text for the label is typically "Before."
+* `label_dek1` — A secondary label for the first button — typically the date when the graphic 1 was taken. _(optional)_
+* `label_hed2` — The primary label for the second button. When user clicks the button, graphic 2 will be displayed. The text for the label is typically "After."
+* `label_dek2` — A secondary label for the second button — typically the date when the graphic 2 was taken. _(optional)_
+* `credit` — Photo and/or graphics credit for graphic 1 and graphic 2. _(optional)_
+* `source` — Source for graphic 1 and graphic 2. _(optional)_
+* `footnote` — Footnote for graphic 1 and graphic 2. _(optional)_
+
+Key files:
+
+* `synced/` — All illustrator files and ai2html output images should go here. (Note: This does not get committed to the repo. Files are published using a separate syncing process. See further below.)
+* `partials/_beforeafter.html` — Template code to display each pair of before and after graphics
+* `index.html` — View all before/after comparisons in this project
+
+-----
+
+### Synced files
+
+For this project, images and AI files are synced to S3 rather than stored in the repo. Run this in dailygraphics-next to retrieve / sync them:
+
+```
+node cli sync $PROJECT_SLUG
+```
+
+
+ai2html 
+=======
 
 The ai2html template uses an open-source script called [ai2html](http://ai2html.org/) to convert Illustrator graphics to HTML and CSS and display them in our responsive dailygraphics template.
 
@@ -24,25 +90,3 @@ The basic ai2html project includes an Illustrator file in `assets`, which you'll
 You can only use fonts that are supported on our website, so make sure you are using the correct typeface and weight. [Here's a list of supported fonts](https://github.com/nprapps/dailygraphics-templates/blob/master/_etc/ai2html_v115.jsx#L138-L159). (For users outside of NPR, refer to the [ai2html docs](http://ai2html.org/#using-fonts-other-than-arial-and-georgia) to learn how to customize your fonts.)
 
 Create your graphic within Illustrator, referring to the [ai2html documentation](http://ai2html.org/#how-to-use-ai2html) for help. When you're ready to export, run File >> Scripts >> ai2html. The resulting graphic will appear within the base template when you load the preview!
-
-Some tips for making a map
---------------------------
-
-**Potential questions to ask that might be helpful:**
-- Does this story need a map?
-- Is the data location-based?
-- Could this data be shown better in another non-map format?
-- What elements are important to include?
-- What location markers might be important for people to orient themselves on the map? (ex. highways or buildings for city-level mapping; major cities or physical features for country-level mapping)
-
-**Common workflows for mapmaking:**
-- Usually the bulk of the work, like analyzing data or mapping it onto different elements, can be done in a GIS software. [QGIS](https://qgis.org/en/site/) is a good free option to use.
-- If you use QGIS in your mapmaking, a collection of NPR style QGIS map templates lives [here](https://github.com/nprapps/qgis-templates). They include styles and base shapefiles, which on their own won't yield finished maps, but can get you most of the way there. The `locator-template` is the most up-to-date template in the repo, and contains styles used in recent locator maps that can be adapted for other maps as well. 
-- Another more advanced option is using [command line tools](https://moriartynaps.org/command-carto-part-one/) and scripting as steps to join data and map files.
-- Then, if additional styling is needed, using or modifying the Illustrator styles in here.
-
-**Here are some good free GIS data sources to pull from:**
-- [Natural Earth](https://www.naturalearthdata.com/downloads/) for global cultural, physical and raster data
-- [USGS EarthExplorer](https://earthexplorer.usgs.gov/) for global satellite imagery
-- [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Downloading_data) for crowd-sourced street level data
-- [Esri Open Data Hub](https://hub.arcgis.com/search) for searching for specific datasets
