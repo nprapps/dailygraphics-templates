@@ -5,6 +5,7 @@ var { isMobile } = require("./lib/breakpoints");
 
 var pymChild = null;
 var isMobile = isMobile.matches;
+var hasStarted = false;
 
 /*
  * Initialize the graphic.
@@ -93,7 +94,24 @@ var initUI = function() {
       }
     };
 
-    autoToggle();
+    //start looping through frames once graphic is visible
+    var observer = new IntersectionObserver(intersectionCallback, {threshold: 0.25});
+    var target = document.querySelector(".target");
+
+    observer.observe(target);
+    
+    function intersectionCallback(entries, observer){
+      entries.forEach(entry=> {
+        
+        if(entry.isIntersecting){
+          //only start animation once
+          if(hasStarted) return;
+
+          autoToggle();
+          hasStarted = true;
+        }
+      })
+    }
   });
 };
 /*
