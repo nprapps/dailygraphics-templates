@@ -2,7 +2,11 @@
 var m = s => (COPY.metadata && COPY.metadata[s]) || `__${s.toUpperCase()}__`;
 %>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
 
-Story URL (not yet published): https://www.npr.org/templates/story/story.php?storyId=<%= m("seamus_id") %>&live=1
+Story ID: <% if (typeof COPY.metadata["seamus_id"] != "undefined") { %><%= COPY.metadata["seamus_id"] %><% } else { %><%= m("story_id") %><% } %>
+
+Story headline: <%= m("story_hed") %>
+
+Preview URL (may expire): <%= m("preview_url") %>
 
 Expected run date: <%= m("time") %>
 

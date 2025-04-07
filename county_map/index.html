@@ -1,0 +1,82 @@
+<%= await t.include("lib/_head.html") %>
+
+<%
+let dropdownCounties = COPY.county_lookup.map(row => {
+  let stateData = COPY.state_lookup.find((x) => {
+    return String(x.fips) == String(row.fips).slice(0,2)
+  });
+  return {
+    label: row.county_name + ", " + stateData.state_abbreviation,
+    value: row.fips
+  }
+})
+%>
+
+<% if (COPY.labels.headline) { %>
+  <h1><%= t.smarty(COPY.labels.headline) %></h1>
+<% } %>
+
+<% if (COPY.labels.subhed) { %>
+  <h2><%= t.smarty(COPY.labels.subhed) %></h2>
+<% } %>
+
+<!-- Graphic -->
+<div id="county-map">
+
+  <!-- Key -->
+  <div class="key-wrapper">
+    <% if (COPY.labels.legend_head) { %>
+      <h3><%= COPY.labels.legend_head %></h3>
+    <% } %>
+    <div id="key" class="key"></div>
+  </div>
+
+  <!-- Map -->
+  <div id="map" class="graphic" role="img"
+  <% if (COPY.labels.screenreader) { %>
+  aria-label="<%- COPY.labels.screenreader %>"
+  <% } %>
+  >
+    <img src="fallback.png" class="fallback">
+  </div>
+
+  <!-- Search box -->
+  <div class="search-wrapper">
+    <div id="search" class="search">
+      <div id="search-hed" class="search-header">Search by <b>County</b></div>
+      <autocomplete-input id="search-input" list="counties" name="counties" type="text"></autocomplete-input>
+      <datalist id="counties">
+        <% for (let i=0; i<dropdownCounties.length; i++) { %>
+          <option value="<%= dropdownCounties[i].value %>"><%= dropdownCounties[i].label %></option>
+        <% } %>
+      </datalist>
+      <div class="no-data-msg is-hidden">No data found.</div>
+    </div>
+  </div>
+
+  <!-- Search results -->
+  <div id="results" clas="results"></div>
+</div>
+
+<% if (COPY.labels.footnote) { %>
+  <div class="footnotes">
+      <h4>Notes</h4>
+      <p><%= COPY.labels.footnote %></p>
+  </div>
+<% } %>
+
+<div class="footer">
+  <% if (COPY.labels.source) { %><p>Source: <%= COPY.labels.source %></p><% } %>
+  <% if (COPY.labels.credit) { %><p>Credit: <%= COPY.labels.credit %></p><% } %>
+</div>
+
+<script type="text/javascript">
+  var STATE_LOOKUP = <%= JSON.stringify(COPY.state_lookup) %>;
+  var COUNTY_LOOKUP = <%= JSON.stringify(COPY.county_lookup) %>;
+  var DATA = <%= JSON.stringify(COPY.data) %>;
+  var LABELS = <%= JSON.stringify(COPY.labels) %>;
+</script>
+
+<script src="./graphic.js"></script>
+
+<%= await t.include("lib/_foot.html") %>

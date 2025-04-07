@@ -8,13 +8,9 @@ The ai2html template uses an open-source script called [ai2html](http://ai2html.
 Installing ai2html
 ------------------
 
-To use this template, you'll need to install ai2html as an Illustrator
-script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx)
-into the Illustrator folder on your machine where scripts are located.
-For example, on Mac OS X running Adobe Illustrator CC 2019, the path would be:
-`/Applications/Adobe Illustrator CC 2019/Presets.localized/en_US/Scripts/ai2html.jsx`
+To use this template, you'll need to install ai2html as an Illustrator script. Copy [the latest version of the script here](https://github.com/nprapps/dailygraphics-templates/blob/master/_etc/ai2html_v115.jsx) into the Illustrator folder on your machine where scripts are located. For example, on Mac OS X running Adobe Illustrator CC 2023, the path would be: `/Applications/Adobe Illustrator CC 2023/Presets.localized/en_US/Scripts/`
 
-**You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html" command in File >> Scripts.
+**You only need to install the script once on your machine.** To check whether you have it installed, open Adobe Illustrator and look for the "ai2html_v115" command in File >> Scripts.
 
 Creating a new ai2html graphic
 ------------------------------
@@ -25,11 +21,6 @@ Once you click through, the rig will create a new folder and copy the template f
 
 The basic ai2html project includes an Illustrator file in `assets`, which you'll use to create your graphic. The three artboards in the file are the three breakpoints for your graphic, allowing you to create custom versions for mobile, tablet and desktop-sized screens. (If you want to change the width of these artboards, you'll need to adjust the media queries in `graphic.less`.)
 
-You can only use fonts that are supported on our website, so make sure
-you are using the correct typeface and weight. [Here's a list of
-supported fonts](https://github.com/nprapps/dailygraphics/blob/master/etc/ai2html.jsx#L592-L605). (For users outside of NPR, refer to the [ai2html docs](http://ai2html.org/#using-fonts-other-than-arial-and-georgia) to learn how to customize your fonts.)
+You can only use fonts that are supported on our website, so make sure you are using the correct typeface and weight. [Here's a list of supported fonts](https://github.com/nprapps/dailygraphics-templates/blob/master/_etc/ai2html_v115.jsx#L138-L159). (For users outside of NPR, refer to the [ai2html docs](http://ai2html.org/#using-fonts-other-than-arial-and-georgia) to learn how to customize your fonts.)
 
-Create your graphic within Illustrator, referring to the [ai2html
-documentation](http://ai2html.org/#how-to-use-ai2html) for help. When
-you're ready to export, run File >> Scripts >> ai2html. The resulting
-graphic will appear within the base template when you load the preview!
+Create your graphic within Illustrator, referring to the [ai2html documentation](http://ai2html.org/#how-to-use-ai2html) for help. When you're ready to export, run File >> Scripts >> ai2html. The resulting graphic will appear within the base template when you load the preview!

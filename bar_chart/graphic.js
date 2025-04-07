@@ -39,4 +39,5 @@ var render = function(data) {
 };
 
 // Initially load the graphic
-window.onload = onWindowLoaded;
+// wait for images to load. see: https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
+window.addEventListener("load", onWindowLoaded);

@@ -78,23 +78,18 @@
 }
 
 .label {
-  font-family: 'Knockout 31 4r';
-  font-size: 12px;
+  .sans();
+  font-size: 11px;
   fill: #979797;
+
+  @media @screen-mobile-above {
+    font-size: 9px;
+  }
+  @media @screen-medium-above {
+    font-size: 7px;
+  }
 }
 
 .label-active {
   fill: #fff;
-}
-
-@media screen and (max-width: 500px){
-  .label {
-    font-size: 15px;
-  }
-}
-
-@media screen and (min-width: 500px){
-  .label {
-    font-size: 8px;
-  }
 }

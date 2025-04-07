@@ -7,25 +7,30 @@
 }
 
 .value text {
-  font-size: 12px;
-  font-weight: bold;
-  fill: #999;
-}
+  font-size: 11px;
+  fill: #636363;
 
-@media screen and (max-width: 500px) {
-  .value text {
-    font-size: 10px;
+  @media @screen-mobile-above {
+    font-size: 12px;
   }
 }
 
-@media screen and (min-width: 500px) {
-  .key {
+.key {
+  .key-item b {  
+    width: 25px;
+    height: 4px;
+    margin-top: 5px;
+  }
+
+  // don't show on larger screens
+  @media @screen-mobile-above {
     display: none;
   }
-}
 
-@media screen and (max-width: 500px) {
-  .key.one-line {
-    display: none;
+  // also don't show if there's just one line
+  @media @screen-mobile {
+    &.one-line {
+      display: none;
+    }
   }
 }

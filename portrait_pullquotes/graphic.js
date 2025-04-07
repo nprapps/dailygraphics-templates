@@ -1,10 +1,15 @@
 var pym = require("./lib/pym");
-var ANALYTICS = require("./lib/analytics");
 require("./lib/webfonts");
 var { isMobile } = require("./lib/breakpoints");
 
-pym.then(child => {
-    child.sendHeight();
+var onWindowLoaded = function() {
+  pym.then(child => {
+      child.sendHeight();
 
-    window.addEventListener("resize", () => child.sendHeight());
-});
+      window.addEventListener("resize", () => child.sendHeight());
+  });
+}
+
+// Initially load the graphic
+// wait for images to load. see: https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
+window.addEventListener("load", onWindowLoaded);

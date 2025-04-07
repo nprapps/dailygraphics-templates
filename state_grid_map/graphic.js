@@ -213,5 +213,5 @@ var renderStateGridMap = function(config) {
 };
 
 // Initially load the graphic
-// (NB: Use window.load to ensure all images have loaded)
-window.onload = onWindowLoaded;
+// wait for images to load. see: https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
+window.addEventListener("load", onWindowLoaded);
