@@ -1,8 +1,14 @@
 <%
-var m = s => (COPY.metadata && COPY.metadata[s]) || `__${s.toUpperCase()}__`;
+  var metadata = copyedit.data.metadata;
+  var m = s => (metadata && metadata[s]) || `__${s.toUpperCase()}__`;
+
+  var gdocURL = `Spreadsheet URL: https://docs.google.com/spreadsheets/d/${ copyedit.gdoc }/edit#gid=0`;
+  if (copyedit.source == "doc") {
+    gdocURL = `Google Doc URL: https://docs.google.com/document/d/${ copyedit.gdoc }/edit?tab=t.0`;
+  }
 %>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
 
-Story ID: <% if (typeof COPY.metadata["seamus_id"] != "undefined") { %><%= COPY.metadata["seamus_id"] %><% } else { %><%= m("story_id") %><% } %>
+Story ID: <% if (typeof metadata["seamus_id"] != "undefined") { %><%= metadata["seamus_id"] %><% } else { %><%= m("story_id") %><% } %>
 
 Story headline: <%= m("story_hed") %>
 
@@ -13,10 +19,14 @@ Expected run date: <%= m("time") %>
 Primary graphics contact: <%= "user" in config ? config.user.displayName : "__GRAPHICS_CONTACT__" %>
 Primary editorial contact: <%= m("editorial_contact") %>
 
+
 ---- GRAPHIC <%= slug %> ----
 <% if (typeof children != "undefined" && children) { %>
 NOTE: This graphic contains multiple sections that will be embedded as separate graphics. On the preview page, use the dropdown box above the graphic to preview each section.
 <% } %>
-Spreadsheet URL: https://docs.google.com/spreadsheets/d/<%= sheet %>/edit#gid=0
+<%= gdocURL %>
+
 Production URL: https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/preview.html
-<% Object.keys(COPY.labels).filter(k => COPY.labels[k]).forEach(key => print(`\n${key}: ${COPY.labels[key]}\n`)); %>
+<% if (typeof copyedit.data.labels != "undefined") { %>
+<% Object.keys(copyedit.data.labels).filter(k => copyedit.data.labels[k]).forEach(key => print(`\n${key}: ${copyedit.data.labels[key]}\n`)); %>
+<% } %>
