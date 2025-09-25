@@ -200,6 +200,9 @@ module.exports = function(config) {
   // Render lines to chart.
   var line = d3
     .line()
+    .defined(function(d) {
+      return d[valueColumn] != "" && typeof d[valueColumn] != "undefined";
+    })
     .x(d => xScale(d[dateColumn]))
     .y(d => yScale(d[valueColumn]));
 
