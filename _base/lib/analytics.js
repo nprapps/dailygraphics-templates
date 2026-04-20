@@ -109,7 +109,7 @@ var ANALYTICS = (function () {
 
   // listen for Data Consent overlay being closed on NPR.org
   window.addEventListener("message", event => {
-    console.log(event);
+    // console.log(event);
     const origin = /.*npr\.org.*/g;
     if (event.data == "Data consent updated" && origin.test(event.origin)) {
       OneTrust.Close();
