@@ -21,7 +21,7 @@ Primary editorial contact: <%= m("editorial_contact") %>
 
 
 ---- GRAPHIC <%= slug %> ----
-<% if (typeof children != "undefined" && children) { %>
+<% if (children.length > 1) { %>
 NOTE: This graphic contains multiple sections that will be embedded as separate graphics. On the preview page, use the dropdown box above the graphic to preview each section.
 <% } %>
 <%= gdocURL %>
