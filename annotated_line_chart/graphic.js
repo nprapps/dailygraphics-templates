@@ -53,13 +53,13 @@ var formatData = function(data) {
   });
 
   // Restructure tabular data for easier charting.
-  for (var name in data[0]) {
+  for (var name in data[data.length - 1]) {
     if (skipLabels.includes(name)) continue;
 
     var values = data.map(function(d) {
       return {
         date: d.date,
-        amt: d[name]
+        amt: d[name] ? d[name] : ''
       };
     });
     // filter out empty data, if your set is inconsistent

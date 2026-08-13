@@ -29,14 +29,14 @@ var formatData = function(data) {
   });
 
   // Restructure tabular data for easier charting.
-  for (var column in data[0]) {
+  for (var column in data[data.length - 1]) {
     if (column == "date") continue;
 
     series.push({
       name: column,
       values: data.map(d => ({
         date: d.date,
-        amt: d[column]
+        amt: d[column] ? d[column] : ''
       }))
     });
   }
