@@ -156,3 +156,31 @@ line {
     .hdr { font-size: 14px; }
   }
 }
+
+
+@media (prefers-color-scheme: dark) {
+  .graphic h4 {
+    color: @dark-strong; 
+  }
+
+  .key {
+    .key-item {
+      &.overall {
+        label {
+          color: @dark-strong; 
+        }
+      }
+      label {
+        color: @dark-medium; 
+      }
+    }
+  }
+
+  .value .overall text {
+    fill: @dark-strong;
+  }
+
+  .bars line {
+    stroke: @dark-light; 
+  }
+}

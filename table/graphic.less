@@ -90,9 +90,19 @@ table {
     th {
       border-bottom: 2px solid #eee;
       padding-top: 0;
+
+      @media (prefers-color-scheme: dark) { 
+        color: @dark-strong;
+      }
     }
 
-    td { border-bottom: 1px solid #eee; }
+    td { 
+      border-bottom: 1px solid #eee; 
+
+      @media (prefers-color-scheme: dark) { 
+        border-bottom: 1px solid @dark-light; 
+      }
+    }
   }
 }
 
@@ -119,6 +129,12 @@ table {
       padding: 10px 0;
 
       &:first-child { border-top: 1px solid #eee; }
+
+      @media (prefers-color-scheme: dark) {
+        border-bottom: 1px solid @dark-light;
+
+        &:first-child { border-top: 1px solid @dark-light; }
+      }
     }
 
     td {
@@ -132,6 +148,10 @@ table {
       color: #333;
       font-size: 15px;
       margin-bottom: 6px;
+
+      @media (prefers-color-scheme: dark) {
+        color: @dark-strong; 
+      }
 
       &:before {
         content: '';

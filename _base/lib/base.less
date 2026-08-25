@@ -381,3 +381,64 @@ img:not([alt]) {
   width: 1px;
   height: 1px;
 }
+
+// Dark mode styles
+
+@dark-background: hsl(0, 0%, 13%);
+@dark-strong: hsl(0, 0%, 95%);
+@dark-medium: hsl(0, 0%, 70%);
+@dark-light: hsl(0, 0%, 30%);
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: @dark-background;
+    color: @dark-strong;
+  }
+
+  h1 {
+    color: @dark-strong;
+  }
+
+  h2, h3 {
+    color: @dark-medium;
+  }
+
+  .labels li {
+    color: @dark-strong;
+  }
+
+  .value text.out {
+    fill: @dark-strong;
+  }
+
+  .grid .tick {
+    stroke: @dark-light;
+    fill: @dark-light;
+    color: @dark-light;
+  }
+
+  .key .key-item {
+    label {
+      color: @dark-medium; 
+    }
+  }
+
+  .dropdown {
+    color: @dark-background;
+
+    li {
+      color: @dark-background;
+    }
+  }
+
+  .footnotes, .footer {
+    p {
+      color: @dark-medium;
+    }
+
+    h4 {
+      color: hsl(0, 0%, 80%);
+    }
+  }
+
+}

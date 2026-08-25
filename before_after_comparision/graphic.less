@@ -21,6 +21,10 @@ h2 {
   font-size: 18px;
   margin-bottom: 11px;
   color: #666;
+
+  @media (prefers-color-scheme: dark) {
+    color: @dark-medium;
+  }
 }
 
 .footer,
@@ -109,6 +113,19 @@ h2 {
 
     img {
       display: none;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: @dark-light;
+    color: @dark-medium;
+
+    &.active {
+      background-color: @dark-medium;
+
+      .btn-dek {
+        color: #555;
+      }
     }
   }
 }

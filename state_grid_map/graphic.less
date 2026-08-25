@@ -93,3 +93,30 @@
 .label-active {
   fill: #fff;
 }
+
+.map {
+  stroke: #fff;
+  fill: #ddd; 
+}
+
+
+/// dark mode
+
+@media (prefers-color-scheme: dark) {
+  .states path {
+    stroke: @dark-background; 
+  }
+
+  .key-wrap .key .key-item label {
+    color: @dark-medium;
+  }
+
+  .map {
+    stroke: @dark-background;
+    fill: @dark-light;
+  }
+
+  .label {
+    fill: @dark-strong;
+  }
+}

@@ -23,3 +23,17 @@
   stroke: #fff;
   stroke-width: 5px;
 }
+
+@media (prefers-color-scheme: dark) {
+  .bars line {
+    stroke: @dark-light; 
+  }
+
+  .value text {
+    fill: @dark-strong;
+  }
+
+  .shadow text {
+    stroke: @dark-background; 
+  }
+}
