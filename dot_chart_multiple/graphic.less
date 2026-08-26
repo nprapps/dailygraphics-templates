@@ -18,7 +18,7 @@ h1 {
 
 .graphic h4 {
   .sans();
-  color: #636363;
+  color: var(--dot-multiple-h4-color);
   font-size: 14px;
   margin: 0 0 11px 0;
   // text-align: center;
@@ -44,6 +44,7 @@ h1 {
   .key-item {
     display: block;
     margin: 0 11px 3px 11px;
+    color: var(--dot-multiple-key-color);
 
     @media @screen-mobile {
       &.overall {
@@ -68,7 +69,7 @@ h1 {
 
       label {
         font-weight: bold;
-        color: #333;
+        color: var(--dot-multiple-key-overall-color);
       }
     }
 
@@ -87,7 +88,7 @@ sup {
 .bars line {
     fill: none;
     stroke-width: 4px;
-    stroke: #ddd;
+    stroke: var(--dot-multiple-bar-color);
 }
 
 circle {
@@ -119,7 +120,7 @@ line {
   font-style: italic;
 
   .overall text {
-    fill: @overall;
+    fill: var(--dot-multiple-value-color);
     text-anchor: middle;
     font-style: normal;
     font-weight: bold;
@@ -154,33 +155,5 @@ line {
     font-size: 13px;
 
     .hdr { font-size: 14px; }
-  }
-}
-
-
-@media (prefers-color-scheme: dark) {
-  .graphic h4 {
-    color: @dark-strong; 
-  }
-
-  .key {
-    .key-item {
-      &.overall {
-        label {
-          color: @dark-strong; 
-        }
-      }
-      label {
-        color: @dark-medium; 
-      }
-    }
-  }
-
-  .value .overall text {
-    fill: @dark-strong;
-  }
-
-  .bars line {
-    stroke: @dark-light; 
   }
 }

@@ -14,10 +14,8 @@ h1, h2 {
   } 
 }
 
-@media (prefers-color-scheme: dark) {
-  #search-input {
-    color: @dark-background;
-  }
+#search-input {
+  color: var(--county-map-search-color);
 }
 
 /*=============*/
@@ -28,22 +26,14 @@ h1, h2 {
   padding-bottom: 15px;
 
   .district.highlight {
-    stroke: #000;
+    stroke: var(--county-map-highlight-color);
     stroke-width: 2px;
     cursor: pointer;
-
-    @media (prefers-color-scheme: dark) {
-      stroke: #fff;
-    }
   }
 
   .states {
-    stroke: #fff;
+    stroke: var(--county-map-state-color);
     fill: none; 
-
-    @media (prefers-color-scheme: dark) {
-      stroke: @dark-background;
-    }
   }
 }
 
@@ -122,16 +112,13 @@ h1, h2 {
   position: absolute;
   z-index: 10;
   font-size: 12px;
+  color: var(--county-map-tooltip-color); 
 
   .main {
     font-weight: bold;
   }
   .secondary {
     font-style: normal;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    color: @dark-background;
   }
 }
 
@@ -144,7 +131,7 @@ h1, h2 {
   align-content: center;
   margin: 15px auto;
   text-align: center;
-  background-color: #eee;
+  background-color: var(--county-map-search-background);
   padding: 5px;
 
   .search-header {
@@ -154,7 +141,7 @@ h1, h2 {
     line-height: 1.2;
     letter-spacing: 0.05em;
     font-size: 12px;
-    color: #333;
+    color: var(--county-map-search-hdr);
 
     b {
       font-weight: 900;
@@ -177,14 +164,6 @@ h1, h2 {
     text-align: center;
     padding: 20px 5px 0px 5px;
   }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: @dark-light;
-
-    .search-header {
-      color: @dark-medium;
-    }
-  }
 }
 
 table {
@@ -193,7 +172,7 @@ table {
   padding: 0;
   width: 100%;
   font-size: 12px;
-  color: #666;
+  color: var(--county-map-table-color);
 
   tr.shadedrow {
     background-color: #f1f1f1;
@@ -206,7 +185,7 @@ table {
     line-height: 1.2;
     text-align: left;
     vertical-align: bottom;
-    border-bottom: 2px solid #eee;
+    border-bottom: 2px solid var(--table-border);
     padding-top: 0;
   }
 
@@ -215,16 +194,9 @@ table {
   }
 
   td {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--table-border);
     vertical-align: top;
     word-wrap: break-word;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    color: @dark-strong;
-
-    th { border-bottom: 2px solid @dark-light; }
-    td { border-bottom: 1px solid @dark-light; }
   }
 }
 

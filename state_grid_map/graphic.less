@@ -25,7 +25,7 @@
     .key-item label {
       white-space: nowrap;
       font-size: 12px;
-      color: #666;
+      color: var(--state-map-key-color);
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
     }
@@ -80,7 +80,7 @@
 .label {
   .sans();
   font-size: 11px;
-  fill: #979797;
+  fill: var(--state-map-label-color);
 
   @media @screen-mobile-above {
     font-size: 9px;
@@ -95,28 +95,10 @@
 }
 
 .map {
-  stroke: #fff;
-  fill: #ddd; 
+  stroke: var(--county-map-state-color);
+  fill: var(--state-map-fill-color); 
 }
 
-
-/// dark mode
-
-@media (prefers-color-scheme: dark) {
-  .states path {
-    stroke: @dark-background; 
-  }
-
-  .key-wrap .key .key-item label {
-    color: @dark-medium;
-  }
-
-  .map {
-    stroke: @dark-background;
-    fill: @dark-light;
-  }
-
-  .label {
-    fill: @dark-strong;
-  }
+.states path {
+  stroke: var(--county-map-state-color);
 }
