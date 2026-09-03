@@ -54,7 +54,10 @@
   --h2-color: #636363;
   --h3-color: #333;
   --labels-li-color: #666;
+  --value-text-in-color: #fff;
   --value-text-out-color: #666;
+  --axis-label-color: #999;
+  --axis-line-color: #ccc;
   --grid-tick-color: #eee;
   --key-label-color: #666;
   --foot-p-color: #808080;
@@ -311,7 +314,7 @@ h3 {
 
 .footer p { font-style: italic; }
 .footer p em { font-style: normal; }
-.footnotes p strong { color: #666; }
+.footnotes p strong { var(--foot-h4-color); }
 
 a, a:link, a:visited {
   color: #4774CC;
@@ -371,12 +374,12 @@ svg { overflow: hidden; }
   .sans();
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
-  fill: #999;
+  fill: var(--axis-label-color);
 
   path,
   line {
     fill: none;
-    stroke: #ccc;
+    stroke: var(--axis-line-color);
     shape-rendering: crispEdges;
   }
 
@@ -441,7 +444,7 @@ rect {
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
 
-  &.in { fill: #fff; }
+  &.in { fill: var(--value-text-in-color); }
   &.out { fill: var(--value-text-out-color); }
 }
 
