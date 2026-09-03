@@ -36,6 +36,14 @@ var colorScheme = [
   COLORS.teal2,
   COLORS.teal1,
 ];
+var colorSchemeDark = [
+  COLORS.teal1,
+  COLORS.teal2,
+  COLORS.teal3,
+  COLORS.teal4,
+  COLORS.teal5,
+  COLORS.teal6,
+];
 
 // Format graphic data.
 var formatData = function(sheetData, geoData) {
@@ -148,6 +156,7 @@ var render = function (data) {
   var colorScheme = colorScheme;
   var valueColumn = "value";
   var isNumeric = window.LABELS.is_numeric;
+  console.log(colorScheme);
   
   var categories = [];
   if (window.LABELS.legend_labels && window.LABELS.legend_labels !== "") {
@@ -221,10 +230,19 @@ var renderCountyMap = function (config) {
   var path = d3.geoPath().projection(projection);
 
   var categories = config.categories;
-  colorScale = d3
-    .scaleThreshold()
-    .domain(categories)
-    .range(colorScheme);
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (!isDark) {
+    colorScale = d3
+      .scaleThreshold()
+      .domain(categories)
+      .range(colorScheme);
+  } else if (isDark) {
+    colorScale = d3
+      .scaleThreshold()
+      .domain(categories)
+      .range(colorSchemeDark);
+  }
 
   // Create the root SVG element.
   var chartWrapper = containerElement
@@ -324,6 +342,8 @@ var renderCountyMap = function (config) {
   }
 
   // Render Map!
+  var noData = isDark ? '#4d4d4d' : '#e8e8e8'; 
+
   mapElement
     .selectAll(".district")
     .data(config.data.counties.features)
@@ -334,7 +354,7 @@ var renderCountyMap = function (config) {
       return `district ${countyClass}`
     })
     .attr("fill", function (d) {
-      return colorScale(d.properties[mainProperty]) || '#e8e8e8';
+      return colorScale(d.properties[mainProperty]) || noData;
     })
     .attr("d", path)
     .attr("stroke-width", ".5px")
@@ -413,9 +433,9 @@ var renderCountyMap = function (config) {
     .enter()
     .append("path")
     .attr("class", "states")
-    .attr("stroke", "#fff")
-    .attr("d", path)
-    .attr("fill", "none");
+    // .attr("stroke", "#fff")
+    .attr("d", path); 
+    // .attr("fill", "none");
 };
 
 // Helper: get county class

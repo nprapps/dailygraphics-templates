@@ -39,6 +39,108 @@
 @blue5      : #A8D5EF;
 @blue6      : #D3EAF7;
 
+// Dark mode colors
+@dark-background: hsl(0, 0%, 13%); // darkest grey
+@dark-strong: hsl(0, 0%, 95%); // light white
+@dark-medium: hsl(0, 0%, 70%); // medium grey
+@dark-light: hsl(0, 0%, 30%); // dark grey
+
+// Export values to CSS properties for dark mode 
+:root {
+  // Base styles
+  --body-color: #555;
+  --body-background: #fff;
+  --h1-color: #333;
+  --h2-color: #636363;
+  --h3-color: #333;
+  --labels-li-color: #666;
+  --value-text-in-color: #fff;
+  --value-text-out-color: #666;
+  --axis-label-color: #999;
+  --axis-line-color: #ccc;
+  --grid-tick-color: #eee;
+  --key-label-color: #666;
+  --foot-p-color: #808080;
+  --foot-h4-color: #666;
+
+  // Template styles
+  --anno-line-color: #636363;
+  --before-after-h4-color: #666; 
+  --before-after-btn-background: #ddd;
+  --before-after-btn-color: #666;
+  --before-after-btn-active-background: #fff;
+  --before-after-btn-active-color: #aaa;
+  --histo-label-color: #636363;
+  --county-map-search-color: #555;
+  --county-map-search-background: #eee;
+  --county-map-search-hdr: #333;
+  --county-map-highlight-color: #000;  
+  --county-map-state-color: #fff; 
+  --county-map-tooltip-color: #555; 
+  --county-map-table-color: #666; 
+  --dot-bars-color: #F5D1CA;
+  --dot-value-color: #999;
+  --dot-shadow-color: #fff;
+  --dot-multiple-h4-color: #636363;
+  --dot-multiple-key-color: #666;
+  --dot-multiple-key-overall-color: #333;
+  --dot-multiple-value-color: #666;
+  --dot-multiple-bar-color: #ddd;
+  --pullquote-color: #333;
+  --stacked-grouped-column-text-color: #454545;
+  --state-map-key-color: #666;
+  --state-map-fill-color: #ddd;
+  --state-map-label-color: #979797;
+  --table-hdr-color: #333;
+  --table-border: #eee;
+
+  @media (prefers-color-scheme: dark) {
+    // Base styles
+    --body-color: @dark-strong;
+    --body-background: @dark-background;
+    --h1-color: @dark-strong;
+    --h2-color: @dark-medium;
+    --h3-color: @dark-medium;
+    --labels-li-color: @dark-strong;
+    --value-text-out-color: @dark-strong;
+    --grid-tick-color: @dark-light;
+    --key-label-color: @dark-medium;
+    --foot-p-color: @dark-medium;
+    --foot-h4-color: hsl(0%, 0%, 80%);
+
+    // Template styles
+    --anno-line-color: @dark-strong;
+    --before-after-h4-color: @dark-medium; 
+    --before-after-btn-background: @dark-light;
+    --before-after-btn-color: @dark-medium;
+    --before-after-btn-active-background: @dark-medium;
+    --before-after-btn-active-color: #555;
+    --histo-label-color: @dark-medium;
+    --county-map-search-color: @dark-background; 
+    --county-map-search-background: @dark-light;
+    --county-map-search-hdr: @dark-medium;
+    --county-map-highlight-color: #fff;
+    --county-map-state-color: @dark-background;
+    --county-map-tooltip-color: @dark-background; 
+    --county-map-table-color: @dark-strong;
+    --dot-bars-color: @dark-light;
+    --dot-value-color: @dark-strong;
+    --dot-shadow-color: @dark-background;
+    --dot-multiple-h4-color: @dark-strong;
+    --dot-multiple-key-color: @dark-medium;
+    --dot-multiple-key-overall-color: @dark-strong; 
+    --dot-multiple-value-color: @dark-medium; 
+    --dot-multiple-bar-color: @dark-light;
+    --pullquote-color: @dark-medium;
+    --stacked-grouped-column-text-color: @dark-strong; 
+    --state-map-key-color: @dark-medium;
+    --state-map-fill-color: @dark-light;
+    --state-map-label-color: @dark-strong;
+    --table-hdr-color: @dark-strong;
+    --table-border: @dark-light;
+  }
+}
+
 // Fonts
 @sans: 'NPRSans', @sans-base;
 @serif: 'NPRSerif', @serif-base;
@@ -147,11 +249,11 @@
 html { -webkit-text-size-adjust: none; }
 
 body {
-  background-color: #fff;
+  background-color: var(--body-background);
   margin: 0;
   padding: 33px 0;
   font: 14px/1.4 @sans;
-  color: #555;
+  color: var(--body-color);
   //remove 300ms click delay in Safari, AKA still the worst
   touch-action: manipulation;
 }
@@ -164,7 +266,7 @@ h1 {
   .sans();
   margin: 0 0 22px 0;
   font-size: 20px;
-  color: #333;
+  color: var(--h1-color);
   font-weight: 600;
   line-height: 1.3;
   -webkit-font-smoothing: antialiased;
@@ -173,7 +275,7 @@ h1 {
 h2 {
   .sans();
   font-weight: normal;
-  color: #636363;
+  color: var(--h2-color);
   font-size: 14px;
   margin: -11px 0 33px 0;
   line-height: 1.6;
@@ -185,7 +287,7 @@ h3 {
   padding-top: 0;
   line-height: 1.2;
   font-size: 12px;
-  color: #333;
+  color: var(--h3-color);
 }
 
 .nowrap {
@@ -210,7 +312,7 @@ h3 {
 
   h4 {
     margin: 2px 0 7px 0;
-    color: #666;
+    color: var(--foot-h4-color);
     font-size: 11px;
   }
 
@@ -219,16 +321,12 @@ h3 {
   margin: 2px 0 0 0;
   font-size: 12px;
   line-height: 1.7;
-  color: #808080;
+  color: var(--foot-p-color);
 }
 
-  li {
-    margin: 0;
-    padding: 0;
-
-    + li { margin-top: 2px; }
-  }
-}
+.footer p { font-style: italic; }
+.footer p em { font-style: normal; }
+.footnotes p strong { color: var(--foot-h4-color); }
 
 a, a:link, a:visited {
   color: #4774CC;
@@ -275,7 +373,7 @@ a:hover, a:active { color: #bccae5; }
     label {
       white-space: nowrap;
       font-size: 12px;
-      color: #666;
+      color: var(--key-label-color);
       font-weight: normal;
       -webkit-font-smoothing: antialiased;
     }
@@ -288,12 +386,12 @@ svg { overflow: hidden; }
   .sans();
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
-  fill: #999;
+  fill: var(--axis-label-color);
 
   path,
   line {
     fill: none;
-    stroke: #ccc;
+    stroke: var(--axis-line-color);
     shape-rendering: crispEdges;
   }
 
@@ -307,8 +405,8 @@ svg { overflow: hidden; }
   path { display: none; }
 
   .tick {
-    stroke: #eee;
-    color: #eee;
+    stroke: var(--grid-tick-color);
+    color: var(--grid-tick-color);
     stroke-width: 1px;
     shape-rendering: crispEdges;
   }
@@ -343,7 +441,7 @@ rect {
     text-align: right;
     font-size: 12px;
     line-height: 1.4;
-    color: #666;
+    color: var(--labels-li-color);
     display: table;
     -webkit-font-smoothing: antialiased;
 
@@ -358,8 +456,8 @@ rect {
   font-size: 11px;
   -webkit-font-smoothing: antialiased;
 
-  &.in { fill: #fff; }
-  &.out { fill: #636363; }
+  &.in { fill: var(--value-text-in-color); }
+  &.out { fill: var(--value-text-out-color); }
 }
 
 // HOMEPAGE

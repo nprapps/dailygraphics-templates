@@ -103,8 +103,9 @@ var renderStateGridMap = function(config) {
   // Create legend
   var legendWrapper = containerElement.select(".key-wrap");
   var legendElement = containerElement.select(".key");
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  if (config.isNumeric) {
+  if (config.isNumeric && !isDark) {
     legendWrapper.classed("numeric-scale", true);
 
     var colorScale = d3
@@ -117,6 +118,20 @@ var renderStateGridMap = function(config) {
         COLORS.teal3,
         COLORS.teal2,
         COLORS.teal1
+      ]);
+  } else if (config.isNumeric && isDark) {
+    legendWrapper.classed("numeric-scale", true);
+
+    var colorScale = d3
+      .scaleThreshold()
+      .domain(categories)
+      .range([
+        COLORS.teal1,
+        COLORS.teal2,
+        COLORS.teal3,
+        COLORS.teal4,
+        COLORS.teal5,
+        COLORS.teal6
       ]);
   } else {
     // Define color scale
