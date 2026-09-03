@@ -1,0 +1,32 @@
+<%
+  var metadata = copyedit.data.metadata;
+  var m = s => (metadata && metadata[s]) || `__${s.toUpperCase()}__`;
+
+  var gdocURL = `Spreadsheet URL: https://docs.google.com/spreadsheets/d/${ copyedit.gdoc }/edit#gid=0`;
+  if (copyedit.source == "doc") {
+    gdocURL = `Google Doc URL: https://docs.google.com/document/d/${ copyedit.gdoc }/edit?tab=t.0`;
+  }
+%>This graphic accompanies <%= m("author") %>'s story, running <%= m("time") %>, about <%= m("subject") %>.
+
+Story ID: <% if (typeof metadata["seamus_id"] != "undefined") { %><%= metadata["seamus_id"] %><% } else { %><%= m("story_id") %><% } %>
+
+Story headline: <%= m("story_hed") %>
+
+Preview URL (may expire): <%= m("preview_url") %>
+
+Expected run date: <%= m("time") %>
+
+Primary graphics contact: <%= "user" in config ? config.user.displayName : "__GRAPHICS_CONTACT__" %>
+Primary editorial contact: <%= m("editorial_contact") %>
+
+
+---- GRAPHIC <%= slug %> ----
+<% if (children.length > 1) { %>
+NOTE: This graphic contains multiple sections that will be embedded as separate graphics. On the preview page, use the dropdown box above the graphic to preview each section.
+<% } %>
+<%= gdocURL %>
+
+Production URL: https://<%= config.deployment.bucket %>/<%= config.deployment.prefix %>/<%= slug %>/preview.html
+<% if (typeof copyedit.data.labels != "undefined") { %>
+<% Object.keys(copyedit.data.labels).filter(k => copyedit.data.labels[k]).forEach(key => print(`\n${key}: ${copyedit.data.labels[key]}\n`)); %>
+<% } %>
